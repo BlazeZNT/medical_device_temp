@@ -1,0 +1,65 @@
+{
+	"pages": [{
+			"path": "pages/home/index",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom",
+				"disableScroll": true
+			}
+		},
+		{
+			"path": "pages/login/pin",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/health/index",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/registeration/index",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/health/detection",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/login/index",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/login/info",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom"
+			}
+		}
+	],
+	"subPackages": [],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#0B0D2E",
+		"pageOrientation": "landscape",
+		"navigationStyle": "custom",
+		"rpxCalcMaxDeviceWidth": 1440, // rpx 计算所支持的最大设备宽度，单位 px，默认值为 960
+		"rpxCalcBaseDeviceWidth": 375, // rpx 计算使用的基准设备宽度，设备实际宽度超出 rpx 计算所支持的最大设备宽度时将按基准宽度计算，单位 px，默认值为 375
+		"rpxCalcIncludeWidth": 750 // rpx 计算特殊处理的值，始终按实际的设备宽度计算，单位 rpx，默认值为 750
+	}
+}

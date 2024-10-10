@@ -1,0 +1,267 @@
+uni-view[data-v-eef40c4c],
+uni-scroll-view[data-v-eef40c4c],
+uni-swiper[data-v-eef40c4c],
+match-media[data-v-eef40c4c],
+uni-movable-area[data-v-eef40c4c],
+uni-movable-view[data-v-eef40c4c],
+uni-cover-view[data-v-eef40c4c],
+uni-cover-image[data-v-eef40c4c],
+uni-icon[data-v-eef40c4c],
+uni-text[data-v-eef40c4c],
+uni-rich-text[data-v-eef40c4c],
+uni-progress[data-v-eef40c4c],
+uni-button[data-v-eef40c4c],
+checkboxe[data-v-eef40c4c],
+ditor[data-v-eef40c4c],
+uni-form[data-v-eef40c4c],
+uni-input[data-v-eef40c4c],
+uni-label[data-v-eef40c4c],
+uni-picker[data-v-eef40c4c],
+uni-picker-view[data-v-eef40c4c],
+uni-radio[data-v-eef40c4c],
+uni-slider[data-v-eef40c4c],
+uni-switch[data-v-eef40c4c],
+uni-textarea[data-v-eef40c4c],
+uni-navigator[data-v-eef40c4c],
+uni-audio[data-v-eef40c4c],
+uni-camera[data-v-eef40c4c],
+uni-image[data-v-eef40c4c],
+uni-video[data-v-eef40c4c],
+uni-live-player[data-v-eef40c4c],
+uni-live-pusher[data-v-eef40c4c],
+uni-map[data-v-eef40c4c],
+uni-canvas[data-v-eef40c4c],
+uni-web-view[data-v-eef40c4c],[data-v-eef40c4c]:before,[data-v-eef40c4c]:after {
+  box-sizing: border-box;
+  font-size: 0.375rem;
+}
+
+/* 隐藏scroll-view的滚动条 */
+[data-v-eef40c4c]::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+uni-view[data-v-eef40c4c],
+uni-scroll-view[data-v-eef40c4c],
+uni-swiper[data-v-eef40c4c],
+match-media[data-v-eef40c4c],
+uni-movable-area[data-v-eef40c4c],
+uni-movable-view[data-v-eef40c4c],
+uni-cover-view[data-v-eef40c4c],
+uni-cover-image[data-v-eef40c4c],
+uni-icon[data-v-eef40c4c],
+uni-text[data-v-eef40c4c],
+uni-rich-text[data-v-eef40c4c],
+uni-progress[data-v-eef40c4c],
+uni-button[data-v-eef40c4c],
+checkboxe[data-v-eef40c4c],
+ditor[data-v-eef40c4c],
+uni-form[data-v-eef40c4c],
+uni-input[data-v-eef40c4c],
+uni-label[data-v-eef40c4c],
+uni-picker[data-v-eef40c4c],
+uni-picker-view[data-v-eef40c4c],
+uni-radio[data-v-eef40c4c],
+uni-slider[data-v-eef40c4c],
+uni-switch[data-v-eef40c4c],
+uni-textarea[data-v-eef40c4c],
+uni-navigator[data-v-eef40c4c],
+uni-audio[data-v-eef40c4c],
+uni-camera[data-v-eef40c4c],
+uni-image[data-v-eef40c4c],
+uni-video[data-v-eef40c4c],
+uni-live-player[data-v-eef40c4c],
+uni-live-pusher[data-v-eef40c4c],
+uni-map[data-v-eef40c4c],
+uni-canvas[data-v-eef40c4c],
+uni-web-view[data-v-eef40c4c],[data-v-eef40c4c]:before,[data-v-eef40c4c]:after {
+  box-sizing: border-box;
+  font-size: 0.375rem;
+}
+
+/* 隐藏scroll-view的滚动条 */
+[data-v-eef40c4c]::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+.header[data-v-eef40c4c] {
+  height: 0.9375rem;
+}
+uni-view[data-v-45258083],
+uni-scroll-view[data-v-45258083],
+uni-swiper[data-v-45258083],
+match-media[data-v-45258083],
+uni-movable-area[data-v-45258083],
+uni-movable-view[data-v-45258083],
+uni-cover-view[data-v-45258083],
+uni-cover-image[data-v-45258083],
+uni-icon[data-v-45258083],
+uni-text[data-v-45258083],
+uni-rich-text[data-v-45258083],
+uni-progress[data-v-45258083],
+uni-button[data-v-45258083],
+checkboxe[data-v-45258083],
+ditor[data-v-45258083],
+uni-form[data-v-45258083],
+uni-input[data-v-45258083],
+uni-label[data-v-45258083],
+uni-picker[data-v-45258083],
+uni-picker-view[data-v-45258083],
+uni-radio[data-v-45258083],
+uni-slider[data-v-45258083],
+uni-switch[data-v-45258083],
+uni-textarea[data-v-45258083],
+uni-navigator[data-v-45258083],
+uni-audio[data-v-45258083],
+uni-camera[data-v-45258083],
+uni-image[data-v-45258083],
+uni-video[data-v-45258083],
+uni-live-player[data-v-45258083],
+uni-live-pusher[data-v-45258083],
+uni-map[data-v-45258083],
+uni-canvas[data-v-45258083],
+uni-web-view[data-v-45258083],[data-v-45258083]:before,[data-v-45258083]:after {
+  box-sizing: border-box;
+  font-size: 0.375rem;
+}
+
+/* 隐藏scroll-view的滚动条 */
+[data-v-45258083]::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+uni-view[data-v-45258083],
+uni-scroll-view[data-v-45258083],
+uni-swiper[data-v-45258083],
+match-media[data-v-45258083],
+uni-movable-area[data-v-45258083],
+uni-movable-view[data-v-45258083],
+uni-cover-view[data-v-45258083],
+uni-cover-image[data-v-45258083],
+uni-icon[data-v-45258083],
+uni-text[data-v-45258083],
+uni-rich-text[data-v-45258083],
+uni-progress[data-v-45258083],
+uni-button[data-v-45258083],
+checkboxe[data-v-45258083],
+ditor[data-v-45258083],
+uni-form[data-v-45258083],
+uni-input[data-v-45258083],
+uni-label[data-v-45258083],
+uni-picker[data-v-45258083],
+uni-picker-view[data-v-45258083],
+uni-radio[data-v-45258083],
+uni-slider[data-v-45258083],
+uni-switch[data-v-45258083],
+uni-textarea[data-v-45258083],
+uni-navigator[data-v-45258083],
+uni-audio[data-v-45258083],
+uni-camera[data-v-45258083],
+uni-image[data-v-45258083],
+uni-video[data-v-45258083],
+uni-live-player[data-v-45258083],
+uni-live-pusher[data-v-45258083],
+uni-map[data-v-45258083],
+uni-canvas[data-v-45258083],
+uni-web-view[data-v-45258083],[data-v-45258083]:before,[data-v-45258083]:after {
+  box-sizing: border-box;
+  font-size: 0.375rem;
+}
+
+/* 隐藏scroll-view的滚动条 */
+[data-v-45258083]::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+.page[data-v-45258083] {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  background-color: #0B0D2E;
+  color: #fff;
+}
+.page .content[data-v-45258083] {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.625rem 0.625rem;
+}
+.page .content .left[data-v-45258083] {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-right: 0.0625rem solid rgba(255, 255, 255, 0.4);
+  height: 100%;
+}
+.page .content .left .label[data-v-45258083] {
+  display: flex;
+  justify-content: flex-start;
+  font-size: 0.625rem;
+  margin-bottom: 0.625rem;
+}
+.page .content .left .selectBox .select-item[data-v-45258083] {
+  width: 6.25rem;
+  border-radius: 0.3125rem;
+  padding: 0.46875rem 0.625rem;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.2));
+  margin-bottom: 0.3125rem;
+}
+.page .content .right[data-v-45258083] {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.page .content .right .loginBox[data-v-45258083] {
+  width: 80%;
+  padding: 0.625rem;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.2));
+  border-radius: 0.3125rem;
+}
+.page .content .right .loginBox .title[data-v-45258083] {
+  width: 100%;
+  text-align: center;
+  font-size: 0.78125rem;
+}
+.page .content .right .loginBox .inputBox[data-v-45258083] {
+  width: 100%;
+}
+.page .content .right .loginBox .inputBox .label[data-v-45258083] {
+  margin-bottom: 0.3125rem;
+  font-size: 0.46875rem;
+}
+.page .content .right .loginBox .inputBox .input[data-v-45258083] {
+  width: 100%;
+  background-color: #fff;
+  padding: 0.3125rem 0.3125rem !important;
+  border-radius: 0.3125rem;
+}
+.page .content .right .loginBox .inputBox .input uni-input[data-v-45258083] {
+  width: 100%;
+  color: #000;
+}
+.page .content .right .loginBox .loginBtn[data-v-45258083] {
+  padding: 0.3125rem 0.3125rem !important;
+  background-color: green;
+  border-radius: 0.3125rem;
+  margin: 0.46875rem 0;
+  text-align: center;
+  font-weight: bold;
+}

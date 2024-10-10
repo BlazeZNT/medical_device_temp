@@ -1,0 +1,232 @@
+uni-view[data-v-daebe06d],
+uni-scroll-view[data-v-daebe06d],
+uni-swiper[data-v-daebe06d],
+match-media[data-v-daebe06d],
+uni-movable-area[data-v-daebe06d],
+uni-movable-view[data-v-daebe06d],
+uni-cover-view[data-v-daebe06d],
+uni-cover-image[data-v-daebe06d],
+uni-icon[data-v-daebe06d],
+uni-text[data-v-daebe06d],
+uni-rich-text[data-v-daebe06d],
+uni-progress[data-v-daebe06d],
+uni-button[data-v-daebe06d],
+checkboxe[data-v-daebe06d],
+ditor[data-v-daebe06d],
+uni-form[data-v-daebe06d],
+uni-input[data-v-daebe06d],
+uni-label[data-v-daebe06d],
+uni-picker[data-v-daebe06d],
+uni-picker-view[data-v-daebe06d],
+uni-radio[data-v-daebe06d],
+uni-slider[data-v-daebe06d],
+uni-switch[data-v-daebe06d],
+uni-textarea[data-v-daebe06d],
+uni-navigator[data-v-daebe06d],
+uni-audio[data-v-daebe06d],
+uni-camera[data-v-daebe06d],
+uni-image[data-v-daebe06d],
+uni-video[data-v-daebe06d],
+uni-live-player[data-v-daebe06d],
+uni-live-pusher[data-v-daebe06d],
+uni-map[data-v-daebe06d],
+uni-canvas[data-v-daebe06d],
+uni-web-view[data-v-daebe06d],[data-v-daebe06d]:before,[data-v-daebe06d]:after {
+  box-sizing: border-box;
+  font-size: 0.375rem;
+}
+
+/* 隐藏scroll-view的滚动条 */
+[data-v-daebe06d]::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+uni-view[data-v-daebe06d],
+uni-scroll-view[data-v-daebe06d],
+uni-swiper[data-v-daebe06d],
+match-media[data-v-daebe06d],
+uni-movable-area[data-v-daebe06d],
+uni-movable-view[data-v-daebe06d],
+uni-cover-view[data-v-daebe06d],
+uni-cover-image[data-v-daebe06d],
+uni-icon[data-v-daebe06d],
+uni-text[data-v-daebe06d],
+uni-rich-text[data-v-daebe06d],
+uni-progress[data-v-daebe06d],
+uni-button[data-v-daebe06d],
+checkboxe[data-v-daebe06d],
+ditor[data-v-daebe06d],
+uni-form[data-v-daebe06d],
+uni-input[data-v-daebe06d],
+uni-label[data-v-daebe06d],
+uni-picker[data-v-daebe06d],
+uni-picker-view[data-v-daebe06d],
+uni-radio[data-v-daebe06d],
+uni-slider[data-v-daebe06d],
+uni-switch[data-v-daebe06d],
+uni-textarea[data-v-daebe06d],
+uni-navigator[data-v-daebe06d],
+uni-audio[data-v-daebe06d],
+uni-camera[data-v-daebe06d],
+uni-image[data-v-daebe06d],
+uni-video[data-v-daebe06d],
+uni-live-player[data-v-daebe06d],
+uni-live-pusher[data-v-daebe06d],
+uni-map[data-v-daebe06d],
+uni-canvas[data-v-daebe06d],
+uni-web-view[data-v-daebe06d],[data-v-daebe06d]:before,[data-v-daebe06d]:after {
+  box-sizing: border-box;
+  font-size: 0.375rem;
+}
+
+/* 隐藏scroll-view的滚动条 */
+[data-v-daebe06d]::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+.logo[data-v-daebe06d] {
+  width: 2.875rem;
+  height: 2.42188rem;
+  position: fixed;
+  top: 0.625rem;
+  left: 0.625rem;
+}
+.logo uni-image[data-v-daebe06d] {
+  width: 100%;
+  height: 100%;
+}
+uni-view[data-v-2c5296db],
+uni-scroll-view[data-v-2c5296db],
+uni-swiper[data-v-2c5296db],
+match-media[data-v-2c5296db],
+uni-movable-area[data-v-2c5296db],
+uni-movable-view[data-v-2c5296db],
+uni-cover-view[data-v-2c5296db],
+uni-cover-image[data-v-2c5296db],
+uni-icon[data-v-2c5296db],
+uni-text[data-v-2c5296db],
+uni-rich-text[data-v-2c5296db],
+uni-progress[data-v-2c5296db],
+uni-button[data-v-2c5296db],
+checkboxe[data-v-2c5296db],
+ditor[data-v-2c5296db],
+uni-form[data-v-2c5296db],
+uni-input[data-v-2c5296db],
+uni-label[data-v-2c5296db],
+uni-picker[data-v-2c5296db],
+uni-picker-view[data-v-2c5296db],
+uni-radio[data-v-2c5296db],
+uni-slider[data-v-2c5296db],
+uni-switch[data-v-2c5296db],
+uni-textarea[data-v-2c5296db],
+uni-navigator[data-v-2c5296db],
+uni-audio[data-v-2c5296db],
+uni-camera[data-v-2c5296db],
+uni-image[data-v-2c5296db],
+uni-video[data-v-2c5296db],
+uni-live-player[data-v-2c5296db],
+uni-live-pusher[data-v-2c5296db],
+uni-map[data-v-2c5296db],
+uni-canvas[data-v-2c5296db],
+uni-web-view[data-v-2c5296db],[data-v-2c5296db]:before,[data-v-2c5296db]:after {
+  box-sizing: border-box;
+  font-size: 0.375rem;
+}
+
+/* 隐藏scroll-view的滚动条 */
+[data-v-2c5296db]::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+uni-view[data-v-2c5296db],
+uni-scroll-view[data-v-2c5296db],
+uni-swiper[data-v-2c5296db],
+match-media[data-v-2c5296db],
+uni-movable-area[data-v-2c5296db],
+uni-movable-view[data-v-2c5296db],
+uni-cover-view[data-v-2c5296db],
+uni-cover-image[data-v-2c5296db],
+uni-icon[data-v-2c5296db],
+uni-text[data-v-2c5296db],
+uni-rich-text[data-v-2c5296db],
+uni-progress[data-v-2c5296db],
+uni-button[data-v-2c5296db],
+checkboxe[data-v-2c5296db],
+ditor[data-v-2c5296db],
+uni-form[data-v-2c5296db],
+uni-input[data-v-2c5296db],
+uni-label[data-v-2c5296db],
+uni-picker[data-v-2c5296db],
+uni-picker-view[data-v-2c5296db],
+uni-radio[data-v-2c5296db],
+uni-slider[data-v-2c5296db],
+uni-switch[data-v-2c5296db],
+uni-textarea[data-v-2c5296db],
+uni-navigator[data-v-2c5296db],
+uni-audio[data-v-2c5296db],
+uni-camera[data-v-2c5296db],
+uni-image[data-v-2c5296db],
+uni-video[data-v-2c5296db],
+uni-live-player[data-v-2c5296db],
+uni-live-pusher[data-v-2c5296db],
+uni-map[data-v-2c5296db],
+uni-canvas[data-v-2c5296db],
+uni-web-view[data-v-2c5296db],[data-v-2c5296db]:before,[data-v-2c5296db]:after {
+  box-sizing: border-box;
+  font-size: 0.375rem;
+}
+
+/* 隐藏scroll-view的滚动条 */
+[data-v-2c5296db]::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+.page[data-v-2c5296db] {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+.page .content[data-v-2c5296db] {
+  display: flex;
+  justify-content: space-evenly;
+}
+.page .content .btns[data-v-2c5296db] {
+  display: flex;
+}
+.page .content .btns .btns-item[data-v-2c5296db] {
+  width: 4.6875rem;
+  height: 4.6875rem;
+  background-color: #fff;
+  border-radius: 0.3125rem;
+  margin-right: 0.625rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  flex-direction: column;
+}
+.page .content .btns .btns-item .icon[data-v-2c5296db] {
+  height: 1.5625rem;
+  margin-bottom: 0.625rem;
+}
+.page .content .btns .btns-item .text[data-v-2c5296db] {
+  font-size: 0.4375rem;
+}
+.page .content .btns .btns-item[data-v-2c5296db]:last-child {
+  margin-right: 0;
+}
