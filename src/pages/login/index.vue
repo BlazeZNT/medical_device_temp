@@ -1,48 +1,83 @@
 <template>
 	<view class="page">
-		<Header title="Login" />
+		<FixedLogo />
 		<view class="content">
-			<view class="left">
-				<view class="label">
-					Login With
-				</view>
-				<view class="selectBox">
-					<view class="select-item">
-						<view>Mobile</view>
+			<CardBox title="Patient Login" tip="Please enter your mobile number to continuee">
+				<view class="boxcenter">
+					<up-form :model="form" labelPosition="top" ref="uFormRef">
+						<up-form-item label="Mobile Number" prop="mobile" label-width="180">
+							  <up-input
+							    placeholder="Mobile Number"
+							    border="surround"
+							    v-model="form.mobile"
+							  ></up-input>
+						</up-form-item>
+					</up-form>
+
+					<view class="btn">
+						<up-button type="primary" size="small" text="Login" :disabled="!form.mobile" @tap="handleTapVerify"
+							:loading="loading" :loadingSize="8"></up-button>
 					</view>
-					<view class="select-item">
-						<view>Unique Id</view>
+					
+					<view class="with-title">
+						Login with:
 					</view>
-					<view class="select-item">
-						<view>Aadhaar Card</view>
-					</view>
-				</view>
-			</view>
-			<view class="right">
-				<view class="loginBox">
-					<view class="title">Patient Login</view>
-					<view class="inputBox">
-						<view class="label">Mobile</view>
-						<view class="input">
-							<input type="text" />
+					
+					<view class="with">
+						<view class="with-item">
+							<view class="icon">
+								<image :src="slibrary.$url.static('/static/login/icon_AddressCard.png')" mode="heightFix"></image>
+							</view>
+							<view class="label">
+								Login with mobile
+							</view>
+						</view>
+						<view class="with-item">
+							<view class="icon">
+								<image :src="slibrary.$url.static('/static/login/icon_AddressCard2.png')" mode="heightFix"></image>
+							</view>
+							<view class="label">
+								Login with Unique ID
+							</view>
+						</view>
+						<view class="with-item">
+							<view class="icon">
+								<image :src="slibrary.$url.static('/static/login/icon_CreditCard.png')" mode="heightFix"></image>
+							</view>
+							<view class="label">
+								Login with Aadhaar Card
+							</view> 
 						</view>
 					</view>
-					<view class="loginBtn" @click="handleGoto">
-						Login
-					</view>
 				</view>
-			</view>
+			</CardBox>
 		</view>
 	</view>
 </template>
 
 <script setup>
-	import Header from '@/components/Header/index.vue'
+	import FixedLogo from '@/components/Common/FixedLogo.vue'
+	import slibrary from '@/slibrary/index.js'
+	import CardBox from '@/components/Common/CardBox.vue'
+	import {
+		ref
+	} from 'vue'
 
-	const handleGoto = () => {
-		uni.navigateTo({
-			url: '/pages/login/code'
-		})
+
+	const form = ref({
+		mobile: '',
+	})
+
+	const loading = ref(false)
+
+	const handleTapVerify = () => {
+
+		loading.value = true
+
+		setTimeout(() => {
+			loading.value = false
+			slibrary.$router.go('/pages/login/consentForm')
+		}, 1500)
 	}
 </script>
 
@@ -50,96 +85,60 @@
 	.page {
 		display: flex;
 		flex-direction: column;
+		justify-content: center;
+		align-items: center;
 		width: 100vw;
 		height: 100vh;
-		background-color: #0B0D2E;
-		color: #fff;
+		overflow: hidden;
+		padding: 20rpx auto;
 
 		.content {
-			flex: 1;
-			overflow: hidden;
-
 			display: flex;
+			flex-direction: column;
 			justify-content: center;
-			align-items: center;
-			padding: 20rpx 20rpx;
+			margin: 20rpx auto;
+			height: 100vh;
 
-			.left {
-				flex: 1;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				flex-direction: column;
-				border-right: 2rpx solid rgba(#fff, 0.4);
-				height: 100%;
+			.boxcenter {
+				margin-top: 10rpx;
+			}
 
-				.label {
+			.btn {
+				margin-top: 14rpx;
+			}
+			
+			.with-title {
+				font-size: 12rpx;
+				margin: 14rpx 0;
+			}
+			
+			.with {
+				
+				.with-item { 
+					width: 100%;
+					padding: 10rpx 15rpx;
+					border:1px solid rgba(#333, 0.5);
+					border-radius: 4rpx;
+					margin-bottom: 10rpx;
 					display: flex;
-					justify-content: flex-start;
-					font-size: 20rpx;
-					margin-bottom: 20rpx;
-				}
-
-				.selectBox {
-					.select-item {
-						width: 200rpx;
-						border-radius: 10rpx;
-						padding: 15rpx 20rpx;
-						background-image: linear-gradient(to right, rgba(#fff, 0.4), rgba(#fff, 0.2));
-						margin-bottom: 10rpx;
+					align-items: center;
+					
+					.label {
+						font-size: 6rpx;
+					}
+					
+					.icon {
+						height: 20rpx;
+						margin-right: 10rpx;
+					}
+					
+					&:last-child {
+						margin-bottom: 0;
 					}
 				}
+				
 			}
 
-			.right {
-				flex: 1;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-
-				.loginBox {
-					width: 80%;
-					padding: 20rpx;
-					background-image: linear-gradient(to right, rgba(#fff, 0.4), rgba(#fff, 0.2));
-					border-radius: 10rpx;
-
-					.title {
-						width: 100%;
-						text-align: center;
-						font-size: 25rpx;
-					}
-
-					.inputBox {
-						width: 100%;
-
-						.label {
-							margin-bottom: 10rpx;
-							font-size: 15rpx;
-						}
-
-						.input {
-							width: 100%;
-							background-color: #fff;
-							padding: 10rpx 10rpx !important;
-							border-radius: 10rpx;
-
-							input {
-								width: 100%;
-								color: #000;
-							}
-						}
-					}
-
-					.loginBtn {
-						padding: 10rpx 10rpx !important;
-						background-color: green;
-						border-radius: 10rpx;
-						margin: 15rpx 0;
-						text-align: center;
-						font-weight: bold;
-					}
-				}
-			}
 		}
 	}
 </style>

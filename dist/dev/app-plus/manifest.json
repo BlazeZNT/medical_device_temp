@@ -85,6 +85,7 @@
       "style": "dark",
       "background": "#F8F8F8"
     },
+    "arguments": "{\"name\":\"\",\"path\":\"pages/login/consentForm\",\"query\":\"\"}",
     "uniStatistics": {
       "enable": false
     },

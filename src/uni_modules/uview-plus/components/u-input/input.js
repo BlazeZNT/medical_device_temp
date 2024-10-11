@@ -34,7 +34,7 @@ export default {
 		selectionEnd: -1,
 		adjustPosition: true,
 		inputAlign: 'left',
-		fontSize: '15px',
+		fontSize: '10px',
 		color: '#303133',
 		prefixIcon: '',
 		prefixIconStyle: '',

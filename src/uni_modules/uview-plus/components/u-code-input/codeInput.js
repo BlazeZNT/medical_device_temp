@@ -20,8 +20,8 @@ export default {
         focus: false,
         bold: false,
         color: '#606266',
-        fontSize: 18,
-        size: 35,
+        fontSize: 16,
+        size: 30,
         disabledKeyboard: false,
         borderColor: '#c9cacc',
 		disabledDot: true

@@ -19,7 +19,7 @@ export default {
         loading: false,
         loadingText: '',
         loadingMode: 'spinner',
-        loadingSize: 15,
+        loadingSize: 8,
         openType: '',
         formType: '',
         appParameter: '',

@@ -16,11 +16,12 @@
 </script>
 
 <style lang="scss">
+	@import "@/uni_modules/uview-plus/index.scss";
 	// @import 'tailwindcss/utilities';
 	// @import 'tailwindcss/base';
 	// @import 'tailwindcss/components';
 	@import '@/scss/main.scss';
-	
+
 	page {
 		width: 100vw;
 		height: 100vh;

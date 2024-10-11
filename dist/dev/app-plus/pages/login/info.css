@@ -35,6 +35,12 @@ uni-web-view[data-v-bf9cf9b7],[data-v-bf9cf9b7]:before,[data-v-bf9cf9b7]:after {
   box-sizing: border-box;
   font-size: 0.375rem;
 }
+uni-button[data-v-bf9cf9b7]:after {
+  border: transparent;
+}
+uni-button[data-v-bf9cf9b7]:before {
+  border-color: transparent;
+}
 
 /* 隐藏scroll-view的滚动条 */
 [data-v-bf9cf9b7]::-webkit-scrollbar {
@@ -80,6 +86,12 @@ uni-canvas[data-v-bf9cf9b7],
 uni-web-view[data-v-bf9cf9b7],[data-v-bf9cf9b7]:before,[data-v-bf9cf9b7]:after {
   box-sizing: border-box;
   font-size: 0.375rem;
+}
+uni-button[data-v-bf9cf9b7]:after {
+  border: transparent;
+}
+uni-button[data-v-bf9cf9b7]:before {
+  border-color: transparent;
 }
 
 /* 隐藏scroll-view的滚动条 */

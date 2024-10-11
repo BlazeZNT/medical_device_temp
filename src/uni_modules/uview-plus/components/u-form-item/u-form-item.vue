@@ -189,7 +189,7 @@
 
 	.u-form-item {
 		@include flex(column);
-		font-size: 14px;
+		font-size: 10px;
 		color: $u-main-color;
 
 		&__body {
@@ -225,7 +225,7 @@
 						align-items: center;
 						flex: 1;
 						color: $u-main-color;
-						font-size: 15px;
+						font-size: 10px;
 					}
 				}
 			}

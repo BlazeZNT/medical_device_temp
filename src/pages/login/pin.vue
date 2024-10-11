@@ -2,32 +2,16 @@
 	<view class="page">
 		<FixedLogo />
 		<view class="content">
-			<view class="btns">
-				<view class="btns-item">
-					<view class="icon">
-						<image :src="slibrary.$url.static('/static/home/icon_Outpatient.png')" mode="heightFix"></image>
+			<CardBox title="M-Pin Verification" tip="Please type in your 6 digit M-Pin tp continue">
+				<view class="boxcenter">
+					<up-code-input v-model="code" :maxlength="6"></up-code-input>
+
+					<view class="btn">
+						<up-button type="primary" size="small" text="Verify" :disabled="!code" @tap="handleTapVerify"
+							:loading="loading"></up-button>
 					</view>
-					<view class="text">Health Checkup</view>
 				</view>
-				<view class="btns-item">
-					<view class="icon">
-						<image :src="slibrary.$url.static('/static/home/icon_ExamMultiple-Choice.png')" mode="heightFix"></image>
-					</view>
-					<view class="text">Report</view>
-				</view>
-				<view class="btns-item">
-					<view class="icon">
-						<image :src="slibrary.$url.static('/static/home/icon_HealthWorkerForm.png')" mode="heightFix"></image>
-					</view>
-					<view class="text">eHealth Record</view>
-				</view>
-				<view class="btns-item">
-					<view class="icon">
-						<image :src="slibrary.$url.static('/static/home/icon_MedicalAdvice.png')" mode="heightFix"></image>
-					</view>
-					<view class="text">Telemedicine</view>
-				</view>
-			</view>
+			</CardBox>
 		</view>
 	</view>
 </template>
@@ -35,6 +19,38 @@
 <script setup>
 	import FixedLogo from '@/components/Common/FixedLogo.vue'
 	import slibrary from '@/slibrary/index.js'
+	import CardBox from '@/components/Common/CardBox.vue'
+	import {
+		ref
+	} from 'vue'
+
+	const code = ref('')
+
+	const loading = ref(false)
+
+	const handleTapVerify = () => {
+		if (!code.value) {
+			uni.showToast({
+				icon: 'none',
+				title: '请输入验证码'
+			})
+			return
+		}
+		if (code.value.length < 6) {
+			uni.showToast({
+				icon: 'none',
+				title: '请输入6位验证码'
+			})
+			return
+		}
+
+		loading.value = true
+
+		setTimeout(() => {
+			loading.value = false
+			slibrary.$router.go('/pages/login/index')
+		}, 1500)
+	}
 </script>
 
 <style lang="scss" scoped>
@@ -45,42 +61,24 @@
 		align-items: center;
 		width: 100vw;
 		height: 100vh;
+		overflow: hidden;
+		padding: 20rpx auto;
 
 		.content {
 			display: flex;
-			justify-content: space-evenly;
+			flex-direction: column;
+			justify-content: center;
+			margin: 20rpx auto;
+			height: 100vh;
 
-			.btns {
-				display: flex;
-
-				.btns-item {
-					width: 150rpx;
-					height: 150rpx;
-					background-color: #fff;
-					border-radius: 10rpx;
-					margin-right: 20rpx;
-					display: flex;
-					justify-content: center;
-					align-items: center;
-					box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
-					flex-direction: column;
-
-					.icon {
-						// width: 50rpx;
-						height: 50rpx;
-						margin-bottom: 20rpx;
-					}
-
-					.text {
-						font-size: 14rpx;
-					}
-
-					&:last-child {
-						margin-right: 0;
-					}
-
-				}
+			.boxcenter {
+				margin-top: 10rpx;
 			}
+
+			.btn {
+				margin-top: 14rpx;
+			}
+
 		}
 	}
 </style>

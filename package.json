@@ -52,6 +52,7 @@
         "@multiavatar/multiavatar": "^1.0.7",
         "alova": "^3.0.9",
         "crypto-js": "^4.2.0",
+        "dayjs": "^1.11.13",
         "lodash-es": "^4.17.21",
         "pinia": "^2.2.2",
         "vue": "^3.4.38",
