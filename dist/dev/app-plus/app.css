@@ -4232,9 +4232,6 @@ uni-button:before {
   -webkit-appearance: none;
   background: transparent;
 }
-* {
-  touch-action: pan-y;
-}
 uni-image {
   width: 100%;
   height: 100%;

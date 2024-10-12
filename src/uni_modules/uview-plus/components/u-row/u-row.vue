@@ -93,5 +93,6 @@
 	
 	.u-row {
 		@include flex;
+		flex-wrap: wrap;
 	}
 </style>

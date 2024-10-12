@@ -1,251 +1,235 @@
 <template>
-	<view class="page overflow-hidden">
-		<Header title="Health" showBack />
-		<view class="flex flex-1 justify-center items-center w-full overflow-hidden flex-col">
-			<view
-				class="bg-white bg-opacity-15 text-white rounded-lg p-6 w-full max-w-4xl w-full relative overflow-y-auto"
-				style="height: 80%;">
+	<view class="page">
+		<view class="logo">
+			<image src="@/static/logo.png"></image>
+		</view>
+		<view class="card">
+			<view class="header">
+				<view class="pinBox_title">
+					Customize your Test
+				</view>
+			</view>
+			<view class="content">
 				<view class="selectAll">
-					<view class="flex items-center">
-						<input type="checkbox" class="form-checkbox h-5 w-5 text-green-500" checked>
-						<span class="ml-2 text-lg">Select all</span>
+					<up-button type="default" size="mini" text="Select All"
+						:customStyle="{ width: '100rpx', border: '1px solid #333'}" shape="circle"></up-button>
+				</view>
+				<view class="selectItemBox">
+					<view class="title">
+						General Health Checkup
+					</view>
+					<view class="items">
+						<up-row gutter="30">
+							<up-col span="3" v-for="(item, index) in generalHealthCheckupTags" :key="index">
+								<view class="item">
+									<up-button :type="selectTags.includes(item.label) ? 'primary' : 'default'"
+										size="mini" :text="item.label" :customStyle="{ border: '1px solid #333'}"
+										shape="circle" @click="handleClickItem(item)"></up-button>
+								</view>
+							</up-col>
+						</up-row>
 					</view>
 				</view>
-				<view class="flex justify-center items-center mb-4">
-					<h2 class="text-2xl font-semibold">Customise Your Test</h2>
-				</view>
-				<view class="mb-4">
-					<view class="title flex items-center mb-2">
-						<input type="checkbox" class="form-checkbox h-5 w-5 text-green-500 mr-2 items-center" checked>
-						<h3 class="text-green-500 text-xl font-semibold ">
-							General Health Checkup
-						</h3>
+				<view class="selectItemBox">
+					<view class="title">
+						Advanced Tests
 					</view>
-
-					<view class="grid grid-cols-3 gap-4 pl-10">
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Height</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Body Fat Analysis</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Temperature</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>SPO2</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Blood Pressure</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Random Blood Sugar</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Hemoglobin</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Far Vision</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Color Blindness</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Nutrition Plan</span>
-						</view>
-					</view>
-				</view>
-				<hr class="border-gray-600 mb-4">
-				<view class="mb-4">
-					<view class="title flex items-center mb-2">
-						<input type="checkbox" class="form-checkbox h-5 w-5 text-green-500 mr-2 items-center" checked>
-						<h3 class="text-green-500 text-xl font-semibold ">
-							General Health Checkup
-						</h3>
-					</view>
-
-					<view class="grid grid-cols-3 gap-4 pl-10">
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Height</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Body Fat Analysis</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Temperature</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>SPO2</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Blood Pressure</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Random Blood Sugar</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Hemoglobin</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Far Vision</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Color Blindness</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Nutrition Plan</span>
-						</view>
-					</view>
-				</view>
-				<hr class="border-gray-600 mb-4">
-				<view class="mb-4">
-					<view class="title flex items-center mb-2">
-						<input type="checkbox" class="form-checkbox h-5 w-5 text-green-500 mr-2 items-center" checked>
-						<h3 class="text-green-500 text-xl font-semibold ">
-							General Health Checkup
-						</h3>
-					</view>
-
-					<view class="grid grid-cols-3 gap-4 pl-10">
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Height</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Body Fat Analysis</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Temperature</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>SPO2</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Blood Pressure</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Random Blood Sugar</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Hemoglobin</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Far Vision</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Color Blindness</span>
-						</view>
-						<view class="flex items-center">
-							<i class="fas fa-check-circle text-green-500 mr-2"></i>
-							<span>Nutrition Plan</span>
-						</view>
+					<view class="items">
+						<up-row gutter="30">
+							<up-col span="3" v-for="(item, index) in generalHealthCheckupTags" :key="index">
+								<view class="item">
+									<up-button :type="selectTags.includes(item.label) ? 'primary' : 'default'"
+										size="mini" :text="item.label" :customStyle="{ border: '1px solid #333'}"
+										shape="circle" @click="handleClickItem(item)"></up-button>
+								</view>
+							</up-col>
+						</up-row>
 					</view>
 				</view>
 			</view>
-
-			<view class="flex justify-between items-center mt-6 w-full max-w-4xl">
-				<view class="flex items-center flex-1">
-					<i class="fas fa-check-circle text-green-500 mr-2"></i>
-					<span>29 Selected</span>
-				</view>
-				<button class="bg-green-500 text-white px-6 py-1 rounded-lg " @click="handleClickSubmit">Submit</button>
+			<view class="footer">
+				<up-button type="primary" size="mini" text="Submit" :customStyle="{ width: '240rpx'}"
+					@click="handleClickGotiRegister"></up-button>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script setup>
-	import Header from '@/components/Header/index.vue'
+	import slibrary from '@/slibrary/index.js'
+	import {
+		ref,
+		reactive
+	} from 'vue';
 
-	const handleClickBtn = (url) => {
-		uni.navigateTo({
-			url: url
-		})
+
+	const generalHealthCheckupTags = ref([{
+			label: 'Height'
+		},
+		{
+			label: 'Blood Pressure'
+		},
+		{
+			label: 'SP02'
+		},
+		{
+			label: 'Hemoglobin'
+		},
+		{
+			label: 'SP02'
+		},
+		{
+			label: 'Body Fat'
+		},
+		{
+			label: 'Height'
+		},
+		{
+			label: 'Body Fat'
+		},
+		{
+			label: 'Hemoglobin'
+		},
+		{
+			label: 'Vision'
+		}
+	])
+
+	const advancedTests = ref([{
+			label: 'Height'
+		},
+		{
+			label: 'Blood Pressure'
+		},
+		{
+			label: 'SP02'
+		},
+		{
+			label: 'Hemoglobin'
+		},
+		{
+			label: 'SP02'
+		},
+		{
+			label: 'Body Fat'
+		},
+		{
+			label: 'Height'
+		},
+		{
+			label: 'Body Fat'
+		},
+		{
+			label: 'Hemoglobin'
+		},
+		{
+			label: 'Vision'
+		}
+	])
+
+	const selectTags = ref([])
+
+	const handleClickItem = (item) => {
+		if (selectTags.value.includes(item.label)) {
+			selectTags.value = selectTags.value.filter(s => s == item.label)
+			return
+		}
+		selectTags.value.push(item.label)
 	}
 
-	const handleClickSubmit = () => {
-		uni.navigateTo({
-			url: '/pages/health/detection'
-		})
+	const handleClickGotiRegister = () => {
+		slibrary.$router.go('/pages/health/detection')
 	}
 </script>
 
 <style lang="scss" scoped>
-	.selectAll {
-		position: absolute;
-		left: 30rpx;
-		top: 30rpx;
-	}
-
 	.page {
-		display: flex;
-		flex-direction: column;
 		width: 100vw;
 		height: 100vh;
-		background-color: #0B0D2E;
-		color: #fff;
-
-		.content {
-			flex: 1;
-			border: 1px solid red;
-			overflow: hidden;
-		}
-	}
-
-	.cardItem {
-		background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);
-		background-repeat: repeat;
-		background-size: normal;
+		overflow: hidden;
+		padding: 20rpx auto;
 		position: relative;
-		transition: all 0.2s ease-in-out;
 
-		&:before {
-			content: '';
-			width: 100%;
-			height: 100%;
-			border: 2px solod transparent;
-			position: absolute;
-			left: 0;
-			right: 0;
-			top: 0;
-			bottom: 0;
-			border-radius: 14rpx;
-			transition: all 0.1s ease-in-out;
+		.logo {
+			width: 92rpx;
+			height: 77.5rpx;
+			position: fixed;
+			top: 20rpx;
+			left: 50%;
+			transform: translateX(-50%);
+
+
+			image {
+				width: 100%;
+				height: 100%;
+			}
 		}
 
-		&:hover {
-			box-shadow: inset 0 0 20px rgba(#3b82f6, 0.8);
+		.card {
+			background: #fff;
+			width: 80%;
+			height: 75%;
+			position: absolute;
+			bottom: 0;
+			left: 50%;
+			transform: translateX(-50%);
+			border-radius: 10rpx 10rpx 0 0;
+			display: flex;
+			flex-direction: column;
+			padding: 10rpx;
 
-			&:before {
-				border: 2px solid #fff;
+			.header {
+				flex-shrink: 0;
+				padding: 5rpx;
+
+				.pinBox_title {
+					text-align: center;
+					font-size: 14rpx;
+					color: #202224;
+					font-weight: bold;
+					margin-bottom: 10rpx;
+				}
+
+				.pinBox_tip {
+					text-align: center;
+					font-size: 10rpx;
+					color: #202224;
+				}
+			}
+
+			.footer {
+				flex-shrink: 0;
+				display: flex;
+				padding: 5rpx;
+			}
+
+			.content {
+				flex: 1;
+				overflow: hidden;
+				overflow-y: auto;
+				padding: 0 10rpx;
+				font-size: 8rpx;
+				color: #333;
+				line-height: 14rpx;
+
+				.selectItemBox {
+					margin-top: 5rpx;
+
+					.title {
+						font-size: 14rpx;
+						color: #4880FF;
+						font-weight: bold;
+					}
+
+					.items {
+						margin-top: 10rpx;
+						width: 100%;
+
+						.item {
+							margin-bottom: 5rpx;
+						}
+					}
+				}
 			}
 		}
 	}
