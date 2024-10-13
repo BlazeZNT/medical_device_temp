@@ -4,7 +4,9 @@
 			<StepBox></StepBox>
 		</view>
 
-		<view class="content"></view>
+		<view class="content">
+			<component :is="stepComponent"></component>
+		</view>
 
 		<view class="footer">
 			<view class="logo">
@@ -18,6 +20,10 @@
 <script setup>
 	import DeviceStatusBox from '@/components/DeviceStatusBox/index.vue'
 	import StepBox from '@/components/StepBox/index.vue'
+	import Height from "@/components/HealthStep/Height.vue";
+	
+	const stepComponent = shallowRef(Height)
+	
 </script>
 <style lang="scss" scoped>
 	.page {

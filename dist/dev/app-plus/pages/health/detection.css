@@ -247,73 +247,365 @@ uni-button[data-v-9020e834]:before {
   /* Chrome Safari */
 }
 .scrollBox .stepBox .stepBoxItem[data-v-9020e834] {
+  padding: 0.46875rem 0.46875rem;
+  background: #fff;
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+uni-view[data-v-e1d75600],
+uni-scroll-view[data-v-e1d75600],
+uni-swiper[data-v-e1d75600],
+match-media[data-v-e1d75600],
+uni-movable-area[data-v-e1d75600],
+uni-movable-view[data-v-e1d75600],
+uni-cover-view[data-v-e1d75600],
+uni-cover-image[data-v-e1d75600],
+uni-icon[data-v-e1d75600],
+uni-text[data-v-e1d75600],
+uni-rich-text[data-v-e1d75600],
+uni-progress[data-v-e1d75600],
+uni-button[data-v-e1d75600],
+checkboxe[data-v-e1d75600],
+ditor[data-v-e1d75600],
+uni-form[data-v-e1d75600],
+uni-input[data-v-e1d75600],
+uni-label[data-v-e1d75600],
+uni-picker[data-v-e1d75600],
+uni-picker-view[data-v-e1d75600],
+uni-radio[data-v-e1d75600],
+uni-slider[data-v-e1d75600],
+uni-switch[data-v-e1d75600],
+uni-textarea[data-v-e1d75600],
+uni-navigator[data-v-e1d75600],
+uni-audio[data-v-e1d75600],
+uni-camera[data-v-e1d75600],
+uni-image[data-v-e1d75600],
+uni-video[data-v-e1d75600],
+uni-live-player[data-v-e1d75600],
+uni-live-pusher[data-v-e1d75600],
+uni-map[data-v-e1d75600],
+uni-canvas[data-v-e1d75600],
+uni-web-view[data-v-e1d75600],[data-v-e1d75600]:before,[data-v-e1d75600]:after {
+  box-sizing: border-box;
+  font-size: 0.375rem;
+}
+uni-button[data-v-e1d75600]:after {
+  border: transparent;
+}
+uni-button[data-v-e1d75600]:before {
+  border-color: transparent;
+}
+
+/* 隐藏scroll-view的滚动条 */
+[data-v-e1d75600]::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+uni-view[data-v-e1d75600],
+uni-scroll-view[data-v-e1d75600],
+uni-swiper[data-v-e1d75600],
+match-media[data-v-e1d75600],
+uni-movable-area[data-v-e1d75600],
+uni-movable-view[data-v-e1d75600],
+uni-cover-view[data-v-e1d75600],
+uni-cover-image[data-v-e1d75600],
+uni-icon[data-v-e1d75600],
+uni-text[data-v-e1d75600],
+uni-rich-text[data-v-e1d75600],
+uni-progress[data-v-e1d75600],
+uni-button[data-v-e1d75600],
+checkboxe[data-v-e1d75600],
+ditor[data-v-e1d75600],
+uni-form[data-v-e1d75600],
+uni-input[data-v-e1d75600],
+uni-label[data-v-e1d75600],
+uni-picker[data-v-e1d75600],
+uni-picker-view[data-v-e1d75600],
+uni-radio[data-v-e1d75600],
+uni-slider[data-v-e1d75600],
+uni-switch[data-v-e1d75600],
+uni-textarea[data-v-e1d75600],
+uni-navigator[data-v-e1d75600],
+uni-audio[data-v-e1d75600],
+uni-camera[data-v-e1d75600],
+uni-image[data-v-e1d75600],
+uni-video[data-v-e1d75600],
+uni-live-player[data-v-e1d75600],
+uni-live-pusher[data-v-e1d75600],
+uni-map[data-v-e1d75600],
+uni-canvas[data-v-e1d75600],
+uni-web-view[data-v-e1d75600],[data-v-e1d75600]:before,[data-v-e1d75600]:after {
+  box-sizing: border-box;
+  font-size: 0.375rem;
+}
+uni-button[data-v-e1d75600]:after {
+  border: transparent;
+}
+uni-button[data-v-e1d75600]:before {
+  border-color: transparent;
+}
+
+/* 隐藏scroll-view的滚动条 */
+[data-v-e1d75600]::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+.functional[data-v-e1d75600] {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.functional .btn[data-v-e1d75600] {
+  padding: 0.3125rem;
+  background: green;
+  color: #fff;
+  border-radius: 0.3125rem;
+}
+.devicesStatus[data-v-e1d75600] {
+  position: absolute;
+  right: 20%;
+  bottom: 0%;
+}
+.devicesStatus .dot[data-v-e1d75600] {
+  margin-left: 0.3125rem;
+  width: 0.3125rem;
+  height: 0.3125rem;
+  background-color: green;
+  border-radius: 100%;
+  position: relative;
+}
+.devicesStatus .dot[data-v-e1d75600]::before {
+  content: "";
+  width: 0.3125rem;
+  height: 0.3125rem;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  border-radius: 50%;
+  animation: dot-e1d75600 1.5s ease-out 0s infinite;
+  background-color: #fff;
+}
+.action[data-v-e1d75600] {
+  background: rgba(59, 130, 246, 0.8);
+  border-radius: 0.9375rem;
+  overflow: hidden;
+}
+@keyframes dot-e1d75600 {
+0% {
+    transform: scale(0.5);
+    opacity: 1;
+}
+30% {
+    opacity: 1;
+}
+100% {
+    transform: scale(1.4);
+    opacity: 0;
+}
+}
+uni-view[data-v-34dc1c8c],
+uni-scroll-view[data-v-34dc1c8c],
+uni-swiper[data-v-34dc1c8c],
+match-media[data-v-34dc1c8c],
+uni-movable-area[data-v-34dc1c8c],
+uni-movable-view[data-v-34dc1c8c],
+uni-cover-view[data-v-34dc1c8c],
+uni-cover-image[data-v-34dc1c8c],
+uni-icon[data-v-34dc1c8c],
+uni-text[data-v-34dc1c8c],
+uni-rich-text[data-v-34dc1c8c],
+uni-progress[data-v-34dc1c8c],
+uni-button[data-v-34dc1c8c],
+checkboxe[data-v-34dc1c8c],
+ditor[data-v-34dc1c8c],
+uni-form[data-v-34dc1c8c],
+uni-input[data-v-34dc1c8c],
+uni-label[data-v-34dc1c8c],
+uni-picker[data-v-34dc1c8c],
+uni-picker-view[data-v-34dc1c8c],
+uni-radio[data-v-34dc1c8c],
+uni-slider[data-v-34dc1c8c],
+uni-switch[data-v-34dc1c8c],
+uni-textarea[data-v-34dc1c8c],
+uni-navigator[data-v-34dc1c8c],
+uni-audio[data-v-34dc1c8c],
+uni-camera[data-v-34dc1c8c],
+uni-image[data-v-34dc1c8c],
+uni-video[data-v-34dc1c8c],
+uni-live-player[data-v-34dc1c8c],
+uni-live-pusher[data-v-34dc1c8c],
+uni-map[data-v-34dc1c8c],
+uni-canvas[data-v-34dc1c8c],
+uni-web-view[data-v-34dc1c8c],[data-v-34dc1c8c]:before,[data-v-34dc1c8c]:after {
+  box-sizing: border-box;
+  font-size: 0.375rem;
+}
+uni-button[data-v-34dc1c8c]:after {
+  border: transparent;
+}
+uni-button[data-v-34dc1c8c]:before {
+  border-color: transparent;
+}
+
+/* 隐藏scroll-view的滚动条 */
+[data-v-34dc1c8c]::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+uni-view[data-v-34dc1c8c],
+uni-scroll-view[data-v-34dc1c8c],
+uni-swiper[data-v-34dc1c8c],
+match-media[data-v-34dc1c8c],
+uni-movable-area[data-v-34dc1c8c],
+uni-movable-view[data-v-34dc1c8c],
+uni-cover-view[data-v-34dc1c8c],
+uni-cover-image[data-v-34dc1c8c],
+uni-icon[data-v-34dc1c8c],
+uni-text[data-v-34dc1c8c],
+uni-rich-text[data-v-34dc1c8c],
+uni-progress[data-v-34dc1c8c],
+uni-button[data-v-34dc1c8c],
+checkboxe[data-v-34dc1c8c],
+ditor[data-v-34dc1c8c],
+uni-form[data-v-34dc1c8c],
+uni-input[data-v-34dc1c8c],
+uni-label[data-v-34dc1c8c],
+uni-picker[data-v-34dc1c8c],
+uni-picker-view[data-v-34dc1c8c],
+uni-radio[data-v-34dc1c8c],
+uni-slider[data-v-34dc1c8c],
+uni-switch[data-v-34dc1c8c],
+uni-textarea[data-v-34dc1c8c],
+uni-navigator[data-v-34dc1c8c],
+uni-audio[data-v-34dc1c8c],
+uni-camera[data-v-34dc1c8c],
+uni-image[data-v-34dc1c8c],
+uni-video[data-v-34dc1c8c],
+uni-live-player[data-v-34dc1c8c],
+uni-live-pusher[data-v-34dc1c8c],
+uni-map[data-v-34dc1c8c],
+uni-canvas[data-v-34dc1c8c],
+uni-web-view[data-v-34dc1c8c],[data-v-34dc1c8c]:before,[data-v-34dc1c8c]:after {
+  box-sizing: border-box;
+  font-size: 0.375rem;
+}
+uni-button[data-v-34dc1c8c]:after {
+  border: transparent;
+}
+uni-button[data-v-34dc1c8c]:before {
+  border-color: transparent;
+}
+
+/* 隐藏scroll-view的滚动条 */
+[data-v-34dc1c8c]::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+.functional[data-v-34dc1c8c] {
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   position: relative;
 }
-.scrollBox .stepBox .stepBoxItem .text[data-v-9020e834] {
+.functional .btn[data-v-34dc1c8c] {
+  padding: 0.625rem;
+  background: green;
+  color: #fff;
+  border-radius: 0.625rem;
+}
+.devicesStatus[data-v-34dc1c8c] {
   position: absolute;
-  bottom: -1.25rem;
+  right: 10%;
+  bottom: 10%;
 }
-.scrollBox .stepBox .stepBoxItem .activeIcon[data-v-9020e834] {
-  position: absolute;
-  top: -2.1875rem;
-  color: #fff;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2;
-  font-size: 0.625rem;
-}
-.scrollBox .stepBox .stepBoxItem.activeSetp .icon[data-v-9020e834] {
-  width: 60px;
-  height: 60px;
-  border: 2px solid #fff;
-  font-size: 28px;
-  background-color: rgb(147, 197, 253);
-}
-.scrollBox .stepBox .stepBoxItem.activeSetp .icon .fas[data-v-9020e834] {
-  color: #fff !important;
-}
-.scrollBox .stepBox .stepBoxItem.doneStep .icon[data-v-9020e834] {
-  background-color: forestgreen;
-  border: 2px solid #fff;
-  color: #fff;
-}
-.scrollBox .stepBox .stepBoxItem.doneStep .icon .fas[data-v-9020e834] {
-  color: #fff;
-}
-.scrollBox .stepBox .stepBoxItem:last-child .icon[data-v-9020e834]::after {
-  width: 0;
-}
-.scrollBox .stepBox .stepBoxItem .icon[data-v-9020e834] {
-  width: 40px;
-  height: 40px;
-  background-color: #fff;
+.devicesStatus .dot[data-v-34dc1c8c] {
+  margin-left: 0.3125rem;
+  width: 0.625rem;
+  height: 0.625rem;
+  background-color: green;
   border-radius: 100%;
+}
+.action[data-v-34dc1c8c] {
+  background: rgba(59, 130, 246, 0.8);
+  border-radius: 0.9375rem;
+  overflow: hidden;
+}
+.gezibox[data-v-34dc1c8c] {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 14px;
-  position: relative;
-  font-size: 20px;
-  border: 2px solid rgb(147, 197, 253);
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-end;
 }
-.scrollBox .stepBox .stepBoxItem .icon .fas[data-v-9020e834] {
-  color: rgb(147, 197, 253);
+.geziitem[data-v-34dc1c8c] {
+  width: 1.25rem;
+  height: 0.0625rem;
+  background-color: #fff;
 }
-.scrollBox .stepBox .stepBoxItem .icon[data-v-9020e834]::after {
+.longLine[data-v-34dc1c8c] {
+  width: 2.5rem;
+}
+.handle[data-v-34dc1c8c] {
   position: absolute;
+  width: 5rem;
+  height: 0.125rem;
+  background-color: rgb(255, 77, 108);
+  top: 1.25rem;
+}
+.handle .text[data-v-34dc1c8c] {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: -20%;
+  top: 0.625rem;
+  align-items: flex-end;
+}
+.handle .text .text1[data-v-34dc1c8c] {
+  font-size: 1.5rem;
+}
+.handle .text .text2[data-v-34dc1c8c] {
+  font-size: 0.75rem;
+}
+.handle[data-v-34dc1c8c]::after {
   content: "";
-  width: 140px;
-  height: 1px;
-  border-top: 2px dashed #ccc;
-  /* 设置为虚线 */
-  top: 50%;
-  right: 0;
-  left: calc(100% + 10px);
-  /* 线在当前步骤的右侧 */
+  width: 1.0625rem;
+  height: 1.0625rem;
+  background-color: rgb(255, 77, 108);
+  border-radius: 100%;
+  position: absolute;
+  left: -20%;
+  top: -0.5rem;
+}
+.heightNumber[data-v-34dc1c8c] {
+  position: absolute;
+  top: 40%;
+  left: 30%;
+}
+.heightNumber .text1[data-v-34dc1c8c] {
+  font-size: 2.5rem;
+}
+.title[data-v-34dc1c8c] {
+  position: absolute;
+  top: 5%;
+  left: 10%;
+  font-size: 1.25rem;
+  color: #fff;
 }
 uni-view[data-v-11700886],
 uni-scroll-view[data-v-11700886],

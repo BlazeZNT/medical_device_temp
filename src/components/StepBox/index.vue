@@ -102,97 +102,64 @@
 			}
 
 			.stepBoxItem {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				flex-direction: column;
-				position: relative;
+				padding: 15rpx 15rpx;
+				background: #fff;
+				box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+				
+				
 
-				.text {
-					position: absolute;
-					bottom: -40rpx;
-				}
+				// .text {
+				// 	position: absolute;
+				// 	bottom: -40rpx;
+				// }
 
-				.activeIcon {
-					position: absolute;
-					top: -70rpx;
-					color: #fff;
-					left: 50%;
-					transform: translateX(-50%);
-					z-index: 2;
-					font-size: 20rpx;
+				// .activeIcon {
+				// 	position: absolute;
+				// 	top: -70rpx;
+				// 	color: #fff;
+				// 	left: 50%;
+				// 	transform: translateX(-50%);
+				// 	z-index: 2;
+				// 	font-size: 20rpx;
 
-				}
+				// }
 
-				&.activeSetp {
-					.icon {
-						width: 60px;
-						height: 60px;
-						border: 2px solid #fff;
-						font-size: 28px;
-						background-color: rgb(147, 197, 253);
+				// &.activeSetp {
+				// 	.icon {
+				// 		width: 60px;
+				// 		height: 60px;
+				// 		border: 2px solid #fff;
+				// 		font-size: 28px;
+				// 		background-color: rgb(147, 197, 253);
 
-						.fas {
-							color: #fff !important;
-						}
-					}
-				}
-
-
-
-				&.doneStep {
-					.icon {
-						background-color: forestgreen;
-						border: 2px solid #fff;
-						color: #fff;
-
-						.fas {
-							color: #fff;
-						}
-					}
-				}
+				// 		.fas {
+				// 			color: #fff !important;
+				// 		}
+				// 	}
+				// }
 
 
-				&:last-child {
-					.icon {
-						&::after {
-							width: 0;
-						}
-					}
-				}
 
-				.icon {
-					width: 40px;
-					height: 40px;
-					background-color: #fff;
-					border-radius: 100%;
-					display: flex;
-					justify-content: center;
-					align-items: center;
-					margin-bottom: 14px;
-					position: relative;
-					font-size: 20px;
-					border: 2px solid rgb(147, 197, 253);
+				// &.doneStep {
+				// 	.icon {
+				// 		background-color: forestgreen;
+				// 		border: 2px solid #fff;
+				// 		color: #fff;
 
-					.fas {
-						color: rgb(147, 197, 253);
-					}
+				// 		.fas {
+				// 			color: #fff;
+				// 		}
+				// 	}
+				// }
 
-					&::after {
-						position: absolute;
-						content: '';
-						width: 140px;
-						height: 1px;
-						// background-color: #fff;
-						border-top: 2px dashed #ccc;
-						/* 设置为虚线 */
-						top: 50%;
-						right: 0;
-						left: calc(100% + 10px);
-						/* 线在当前步骤的右侧 */
 
-					}
-				}
+				// &:last-child {
+				// 	.icon {
+				// 		&::after {
+				// 			width: 0;
+				// 		}
+				// 	}
+				// }
 
 			}
 		}

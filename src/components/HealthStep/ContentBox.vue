@@ -1,7 +1,7 @@
 <template>
 	<view class="w-full h-full flex devicesSontent">
 		<view class="left flex-1 flex justify-center items-center" v-if="image">
-			<view class="img" style="width: 300px;height: 300px;">
+			<view class="img" style="width: 100px;height: 100px;">
 				<img src="@/static/fat2.png" alt="" />
 			</view>
 		</view>
@@ -42,10 +42,10 @@
 		position: relative;
 
 		.btn {
-			padding: 20rpx;
+			padding: 10rpx;
 			background: green;
 			color: #fff;
-			border-radius: 20rpx;
+			border-radius: 10rpx;
 		}
 	}
 
@@ -56,16 +56,16 @@
 
 		.dot {
 			margin-left: 10rpx;
-			width: 20rpx;
-			height: 20rpx;
+			width: 10rpx;
+			height: 10rpx;
 			background-color: green;
 			border-radius: 100%;
 			position: relative;
 
 			&::before {
 				content: '';
-				width: 20rpx;
-				height: 20rpx;
+				width: 10rpx;
+				height: 10rpx;
 				position: absolute;
 				left: 0px;
 				top: 0px;
