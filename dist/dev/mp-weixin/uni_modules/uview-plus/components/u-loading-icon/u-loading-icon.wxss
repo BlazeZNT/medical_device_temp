@@ -1,0 +1,179 @@
+view.data-v-bfe4499f,scroll-view.data-v-bfe4499f,swiper.data-v-bfe4499f,match-media.data-v-bfe4499f,movable-area.data-v-bfe4499f,movable-view.data-v-bfe4499f,cover-view.data-v-bfe4499f,cover-image.data-v-bfe4499f,icon.data-v-bfe4499f,text.data-v-bfe4499f,rich-text.data-v-bfe4499f,progress.data-v-bfe4499f,button.data-v-bfe4499f,checkboxe.data-v-bfe4499f,ditor.data-v-bfe4499f,form.data-v-bfe4499f,input.data-v-bfe4499f,label.data-v-bfe4499f,picker.data-v-bfe4499f,picker-view.data-v-bfe4499f,radio.data-v-bfe4499f,slider.data-v-bfe4499f,switch.data-v-bfe4499f,textarea.data-v-bfe4499f,navigator.data-v-bfe4499f,audio.data-v-bfe4499f,camera.data-v-bfe4499f,image.data-v-bfe4499f,video.data-v-bfe4499f,live-player.data-v-bfe4499f,live-pusher.data-v-bfe4499f,map.data-v-bfe4499f,canvas.data-v-bfe4499f,web-view.data-v-bfe4499f,.data-v-bfe4499f:before,.data-v-bfe4499f:after {
+  box-sizing: border-box;
+  font-size: 12rpx;
+}
+uni-button.data-v-bfe4499f:after {
+  border: transparent;
+}
+uni-button.data-v-bfe4499f:before {
+  border-color: transparent;
+}
+
+/* 隐藏scroll-view的滚动条 */
+.data-v-bfe4499f::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+view.data-v-bfe4499f,scroll-view.data-v-bfe4499f,swiper.data-v-bfe4499f,match-media.data-v-bfe4499f,movable-area.data-v-bfe4499f,movable-view.data-v-bfe4499f,cover-view.data-v-bfe4499f,cover-image.data-v-bfe4499f,icon.data-v-bfe4499f,text.data-v-bfe4499f,rich-text.data-v-bfe4499f,progress.data-v-bfe4499f,button.data-v-bfe4499f,checkboxe.data-v-bfe4499f,ditor.data-v-bfe4499f,form.data-v-bfe4499f,input.data-v-bfe4499f,label.data-v-bfe4499f,picker.data-v-bfe4499f,picker-view.data-v-bfe4499f,radio.data-v-bfe4499f,slider.data-v-bfe4499f,switch.data-v-bfe4499f,textarea.data-v-bfe4499f,navigator.data-v-bfe4499f,audio.data-v-bfe4499f,camera.data-v-bfe4499f,image.data-v-bfe4499f,video.data-v-bfe4499f,live-player.data-v-bfe4499f,live-pusher.data-v-bfe4499f,map.data-v-bfe4499f,canvas.data-v-bfe4499f,web-view.data-v-bfe4499f,.data-v-bfe4499f:before,.data-v-bfe4499f:after {
+  box-sizing: border-box;
+  font-size: 12rpx;
+}
+uni-button.data-v-bfe4499f:after {
+  border: transparent;
+}
+uni-button.data-v-bfe4499f:before {
+  border-color: transparent;
+}
+
+/* 隐藏scroll-view的滚动条 */
+.data-v-bfe4499f::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+.u-empty.data-v-bfe4499f,.u-empty__wrap.data-v-bfe4499f,.u-tabs.data-v-bfe4499f,.u-tabs__wrapper.data-v-bfe4499f,.u-tabs__wrapper__scroll-view-wrapper.data-v-bfe4499f,.u-tabs__wrapper__scroll-view.data-v-bfe4499f,.u-tabs__wrapper__nav.data-v-bfe4499f,.u-tabs__wrapper__nav__line.data-v-bfe4499f,.up-empty.data-v-bfe4499f,.up-empty__wrap.data-v-bfe4499f,.up-tabs.data-v-bfe4499f,.up-tabs__wrapper.data-v-bfe4499f,.up-tabs__wrapper__scroll-view-wrapper.data-v-bfe4499f,.up-tabs__wrapper__scroll-view.data-v-bfe4499f,.up-tabs__wrapper__nav.data-v-bfe4499f,.up-tabs__wrapper__nav__line.data-v-bfe4499f {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  flex-grow: 0;
+  flex-basis: auto;
+  align-items: stretch;
+  align-content: flex-start;
+}
+.u-loading-icon.data-v-bfe4499f {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: #c8c9cc;
+}
+.u-loading-icon__text.data-v-bfe4499f {
+  margin-left: 4px;
+  color: #606266;
+  font-size: 14px;
+  line-height: 20px;
+}
+.u-loading-icon__spinner.data-v-bfe4499f {
+  width: 30px;
+  height: 30px;
+  position: relative;
+  box-sizing: border-box;
+  max-width: 100%;
+  max-height: 100%;
+  animation: u-rotate-bfe4499f 1s linear infinite;
+}
+.u-loading-icon__spinner--semicircle.data-v-bfe4499f {
+  border-width: 2px;
+  border-color: transparent;
+  border-top-right-radius: 100px;
+  border-top-left-radius: 100px;
+  border-bottom-left-radius: 100px;
+  border-bottom-right-radius: 100px;
+  border-style: solid;
+}
+.u-loading-icon__spinner--circle.data-v-bfe4499f {
+  border-top-right-radius: 100px;
+  border-top-left-radius: 100px;
+  border-bottom-left-radius: 100px;
+  border-bottom-right-radius: 100px;
+  border-width: 2px;
+  border-top-color: #e5e5e5;
+  border-right-color: #e5e5e5;
+  border-bottom-color: #e5e5e5;
+  border-left-color: #e5e5e5;
+  border-style: solid;
+}
+.u-loading-icon--vertical.data-v-bfe4499f {
+  flex-direction: column;
+}
+.data-v-bfe4499f:host {
+  font-size: 0px;
+  line-height: 1;
+}
+.u-loading-icon__spinner--spinner.data-v-bfe4499f {
+  animation-timing-function: steps(12);
+}
+.u-loading-icon__text.data-v-bfe4499f:empty {
+  display: none;
+}
+.u-loading-icon--vertical .u-loading-icon__text.data-v-bfe4499f {
+  margin: 6px 0 0;
+  color: #606266;
+}
+.u-loading-icon__dot.data-v-bfe4499f {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.u-loading-icon__dot.data-v-bfe4499f:before {
+  display: block;
+  width: 2px;
+  height: 25%;
+  margin: 0 auto;
+  background-color: currentColor;
+  border-radius: 40%;
+  content: " ";
+}
+.u-loading-icon__dot.data-v-bfe4499f:nth-of-type(1) {
+  transform: rotate(30deg);
+  opacity: 1;
+}
+.u-loading-icon__dot.data-v-bfe4499f:nth-of-type(2) {
+  transform: rotate(60deg);
+  opacity: 0.9375;
+}
+.u-loading-icon__dot.data-v-bfe4499f:nth-of-type(3) {
+  transform: rotate(90deg);
+  opacity: 0.875;
+}
+.u-loading-icon__dot.data-v-bfe4499f:nth-of-type(4) {
+  transform: rotate(120deg);
+  opacity: 0.8125;
+}
+.u-loading-icon__dot.data-v-bfe4499f:nth-of-type(5) {
+  transform: rotate(150deg);
+  opacity: 0.75;
+}
+.u-loading-icon__dot.data-v-bfe4499f:nth-of-type(6) {
+  transform: rotate(180deg);
+  opacity: 0.6875;
+}
+.u-loading-icon__dot.data-v-bfe4499f:nth-of-type(7) {
+  transform: rotate(210deg);
+  opacity: 0.625;
+}
+.u-loading-icon__dot.data-v-bfe4499f:nth-of-type(8) {
+  transform: rotate(240deg);
+  opacity: 0.5625;
+}
+.u-loading-icon__dot.data-v-bfe4499f:nth-of-type(9) {
+  transform: rotate(270deg);
+  opacity: 0.5;
+}
+.u-loading-icon__dot.data-v-bfe4499f:nth-of-type(10) {
+  transform: rotate(300deg);
+  opacity: 0.4375;
+}
+.u-loading-icon__dot.data-v-bfe4499f:nth-of-type(11) {
+  transform: rotate(330deg);
+  opacity: 0.375;
+}
+.u-loading-icon__dot.data-v-bfe4499f:nth-of-type(12) {
+  transform: rotate(360deg);
+  opacity: 0.3125;
+}
+@keyframes u-rotate-bfe4499f {
+0% {
+    transform: rotate(0deg);
+}
+to {
+    transform: rotate(1turn);
+}
+}

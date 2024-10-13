@@ -46,10 +46,14 @@
 			padding-bottom: 20rpx;
 			padding-left: 20rpx;
 			padding-right: 20rpx;
+			position: fixed;
+			bottom: 10rpx;
+			left: 0;
+			right: 0;
 
 			.logo {
-				width: 92rpx;
-				height: 77.5rpx;
+				width: 70rpx;
+				height: 50rpx;
 
 
 				image {
@@ -63,7 +67,8 @@
 
 		.content {
 			flex: 1;
-
+			overflow: hidden;
+			padding-bottom: 18rpx;
 		}
 	}
 </style>

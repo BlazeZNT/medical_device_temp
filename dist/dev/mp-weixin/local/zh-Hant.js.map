@@ -1,0 +1,1 @@
+{"version":3,"file":"zh-Hant.js","sources":["../../../../src/local/zh-Hant.ts"],"sourcesContent":["export default {\n  login: {\n    title: '用戶登錄',\n    btnTitle: '登錄'\n  }\n}"],"names":[],"mappings":";AAAA,MAAe,SAAA;AAAA,EACb,OAAO;AAAA,IACL,OAAO;AAAA,IACP,UAAU;AAAA,EACZ;AACF;AAAA,QAAA,IAAA;"}

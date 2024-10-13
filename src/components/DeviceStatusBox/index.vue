@@ -47,7 +47,36 @@
 				height: 8rpx;
 				background: #04FF00;
 				border-radius: 100%;
+				&::before {
+					content: '';
+					width: 10rpx;
+					height: 10rpx;
+					position: absolute;
+					left: 0px;
+					top: 0px;
+					border-radius: 50%;
+					animation: dot 1.5s ease-out 0s infinite;
+					background-color: #fff;
+				}
+				
 			}
+		}
+	}
+	
+	
+	@keyframes dot {
+		0% {
+			transform: scale(0.5);
+			opacity: 1;
+		}
+	
+		30% {
+			opacity: 1;
+		}
+	
+		100% {
+			transform: scale(1.4);
+			opacity: 0;
 		}
 	}
 </style>

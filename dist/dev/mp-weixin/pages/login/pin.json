@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "uni-app",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "up-code-input": "../../uni_modules/uview-plus/components/u-code-input/u-code-input",
+    "up-button": "../../uni_modules/uview-plus/components/u-button/u-button",
+    "fixed-logo": "../../components/Common/FixedLogo",
+    "card-box": "../../components/Common/CardBox"
+  }
+}

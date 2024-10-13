@@ -1,0 +1,100 @@
+view.data-v-99c0f95a,scroll-view.data-v-99c0f95a,swiper.data-v-99c0f95a,match-media.data-v-99c0f95a,movable-area.data-v-99c0f95a,movable-view.data-v-99c0f95a,cover-view.data-v-99c0f95a,cover-image.data-v-99c0f95a,icon.data-v-99c0f95a,text.data-v-99c0f95a,rich-text.data-v-99c0f95a,progress.data-v-99c0f95a,button.data-v-99c0f95a,checkboxe.data-v-99c0f95a,ditor.data-v-99c0f95a,form.data-v-99c0f95a,input.data-v-99c0f95a,label.data-v-99c0f95a,picker.data-v-99c0f95a,picker-view.data-v-99c0f95a,radio.data-v-99c0f95a,slider.data-v-99c0f95a,switch.data-v-99c0f95a,textarea.data-v-99c0f95a,navigator.data-v-99c0f95a,audio.data-v-99c0f95a,camera.data-v-99c0f95a,image.data-v-99c0f95a,video.data-v-99c0f95a,live-player.data-v-99c0f95a,live-pusher.data-v-99c0f95a,map.data-v-99c0f95a,canvas.data-v-99c0f95a,web-view.data-v-99c0f95a,.data-v-99c0f95a:before,.data-v-99c0f95a:after {
+  box-sizing: border-box;
+  font-size: 12rpx;
+}
+uni-button.data-v-99c0f95a:after {
+  border: transparent;
+}
+uni-button.data-v-99c0f95a:before {
+  border-color: transparent;
+}
+
+/* 隐藏scroll-view的滚动条 */
+.data-v-99c0f95a::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+view.data-v-99c0f95a,scroll-view.data-v-99c0f95a,swiper.data-v-99c0f95a,match-media.data-v-99c0f95a,movable-area.data-v-99c0f95a,movable-view.data-v-99c0f95a,cover-view.data-v-99c0f95a,cover-image.data-v-99c0f95a,icon.data-v-99c0f95a,text.data-v-99c0f95a,rich-text.data-v-99c0f95a,progress.data-v-99c0f95a,button.data-v-99c0f95a,checkboxe.data-v-99c0f95a,ditor.data-v-99c0f95a,form.data-v-99c0f95a,input.data-v-99c0f95a,label.data-v-99c0f95a,picker.data-v-99c0f95a,picker-view.data-v-99c0f95a,radio.data-v-99c0f95a,slider.data-v-99c0f95a,switch.data-v-99c0f95a,textarea.data-v-99c0f95a,navigator.data-v-99c0f95a,audio.data-v-99c0f95a,camera.data-v-99c0f95a,image.data-v-99c0f95a,video.data-v-99c0f95a,live-player.data-v-99c0f95a,live-pusher.data-v-99c0f95a,map.data-v-99c0f95a,canvas.data-v-99c0f95a,web-view.data-v-99c0f95a,.data-v-99c0f95a:before,.data-v-99c0f95a:after {
+  box-sizing: border-box;
+  font-size: 12rpx;
+}
+uni-button.data-v-99c0f95a:after {
+  border: transparent;
+}
+uni-button.data-v-99c0f95a:before {
+  border-color: transparent;
+}
+
+/* 隐藏scroll-view的滚动条 */
+.data-v-99c0f95a::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+.page.data-v-99c0f95a {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  padding: 20rpx auto;
+  position: relative;
+}
+.page .logo.data-v-99c0f95a {
+  width: 92rpx;
+  height: 77.5rpx;
+  position: fixed;
+  top: 20rpx;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.page .logo image.data-v-99c0f95a {
+  width: 100%;
+  height: 100%;
+}
+.page .card.data-v-99c0f95a {
+  background: #fff;
+  width: 80%;
+  height: 75%;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 10rpx 10rpx 0 0;
+  display: flex;
+  flex-direction: column;
+  padding: 10rpx;
+}
+.page .card .header.data-v-99c0f95a {
+  flex-shrink: 0;
+  padding: 5rpx;
+}
+.page .card .header .pinBox_title.data-v-99c0f95a {
+  text-align: center;
+  font-size: 14rpx;
+  color: #202224;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+.page .card .header .pinBox_tip.data-v-99c0f95a {
+  text-align: center;
+  font-size: 10rpx;
+  color: #202224;
+}
+.page .card .footer.data-v-99c0f95a {
+  flex-shrink: 0;
+  display: flex;
+  padding: 5rpx;
+}
+.page .card .content.data-v-99c0f95a {
+  flex: 1;
+  overflow: hidden;
+  overflow-y: auto;
+  padding: 10rpx;
+  font-size: 8rpx;
+  color: #333;
+  line-height: 14rpx;
+}

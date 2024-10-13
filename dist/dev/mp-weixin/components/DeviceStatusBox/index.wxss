@@ -1,0 +1,67 @@
+view.data-v-fe62fb90,scroll-view.data-v-fe62fb90,swiper.data-v-fe62fb90,match-media.data-v-fe62fb90,movable-area.data-v-fe62fb90,movable-view.data-v-fe62fb90,cover-view.data-v-fe62fb90,cover-image.data-v-fe62fb90,icon.data-v-fe62fb90,text.data-v-fe62fb90,rich-text.data-v-fe62fb90,progress.data-v-fe62fb90,button.data-v-fe62fb90,checkboxe.data-v-fe62fb90,ditor.data-v-fe62fb90,form.data-v-fe62fb90,input.data-v-fe62fb90,label.data-v-fe62fb90,picker.data-v-fe62fb90,picker-view.data-v-fe62fb90,radio.data-v-fe62fb90,slider.data-v-fe62fb90,switch.data-v-fe62fb90,textarea.data-v-fe62fb90,navigator.data-v-fe62fb90,audio.data-v-fe62fb90,camera.data-v-fe62fb90,image.data-v-fe62fb90,video.data-v-fe62fb90,live-player.data-v-fe62fb90,live-pusher.data-v-fe62fb90,map.data-v-fe62fb90,canvas.data-v-fe62fb90,web-view.data-v-fe62fb90,.data-v-fe62fb90:before,.data-v-fe62fb90:after {
+  box-sizing: border-box;
+  font-size: 12rpx;
+}
+uni-button.data-v-fe62fb90:after {
+  border: transparent;
+}
+uni-button.data-v-fe62fb90:before {
+  border-color: transparent;
+}
+
+/* 隐藏scroll-view的滚动条 */
+.data-v-fe62fb90::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+view.data-v-fe62fb90,scroll-view.data-v-fe62fb90,swiper.data-v-fe62fb90,match-media.data-v-fe62fb90,movable-area.data-v-fe62fb90,movable-view.data-v-fe62fb90,cover-view.data-v-fe62fb90,cover-image.data-v-fe62fb90,icon.data-v-fe62fb90,text.data-v-fe62fb90,rich-text.data-v-fe62fb90,progress.data-v-fe62fb90,button.data-v-fe62fb90,checkboxe.data-v-fe62fb90,ditor.data-v-fe62fb90,form.data-v-fe62fb90,input.data-v-fe62fb90,label.data-v-fe62fb90,picker.data-v-fe62fb90,picker-view.data-v-fe62fb90,radio.data-v-fe62fb90,slider.data-v-fe62fb90,switch.data-v-fe62fb90,textarea.data-v-fe62fb90,navigator.data-v-fe62fb90,audio.data-v-fe62fb90,camera.data-v-fe62fb90,image.data-v-fe62fb90,video.data-v-fe62fb90,live-player.data-v-fe62fb90,live-pusher.data-v-fe62fb90,map.data-v-fe62fb90,canvas.data-v-fe62fb90,web-view.data-v-fe62fb90,.data-v-fe62fb90:before,.data-v-fe62fb90:after {
+  box-sizing: border-box;
+  font-size: 12rpx;
+}
+uni-button.data-v-fe62fb90:after {
+  border: transparent;
+}
+uni-button.data-v-fe62fb90:before {
+  border-color: transparent;
+}
+
+/* 隐藏scroll-view的滚动条 */
+.data-v-fe62fb90::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+.deviceBox.data-v-fe62fb90 {
+  padding: 10rpx 20rpx;
+  background: #fff;
+  border-radius: 10rpx;
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.deviceBox .title.data-v-fe62fb90 {
+  font-size: 10rpx;
+  font-weight: bold;
+  margin-bottom: 8rpx;
+}
+.deviceBox .status.data-v-fe62fb90 {
+  display: flex;
+  align-items: center;
+}
+.deviceBox .status .status_text.data-v-fe62fb90 {
+  font-size: 8rpx;
+  margin-right: 5rpx;
+}
+.deviceBox .status .dot.data-v-fe62fb90 {
+  width: 8rpx;
+  height: 8rpx;
+  background: #04FF00;
+  border-radius: 100%;
+}

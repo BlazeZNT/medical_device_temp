@@ -1,0 +1,115 @@
+view.data-v-69991aca,scroll-view.data-v-69991aca,swiper.data-v-69991aca,match-media.data-v-69991aca,movable-area.data-v-69991aca,movable-view.data-v-69991aca,cover-view.data-v-69991aca,cover-image.data-v-69991aca,icon.data-v-69991aca,text.data-v-69991aca,rich-text.data-v-69991aca,progress.data-v-69991aca,button.data-v-69991aca,checkboxe.data-v-69991aca,ditor.data-v-69991aca,form.data-v-69991aca,input.data-v-69991aca,label.data-v-69991aca,picker.data-v-69991aca,picker-view.data-v-69991aca,radio.data-v-69991aca,slider.data-v-69991aca,switch.data-v-69991aca,textarea.data-v-69991aca,navigator.data-v-69991aca,audio.data-v-69991aca,camera.data-v-69991aca,image.data-v-69991aca,video.data-v-69991aca,live-player.data-v-69991aca,live-pusher.data-v-69991aca,map.data-v-69991aca,canvas.data-v-69991aca,web-view.data-v-69991aca,.data-v-69991aca:before,.data-v-69991aca:after {
+  box-sizing: border-box;
+  font-size: 12rpx;
+}
+uni-button.data-v-69991aca:after {
+  border: transparent;
+}
+uni-button.data-v-69991aca:before {
+  border-color: transparent;
+}
+
+/* 隐藏scroll-view的滚动条 */
+.data-v-69991aca::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+view.data-v-69991aca,scroll-view.data-v-69991aca,swiper.data-v-69991aca,match-media.data-v-69991aca,movable-area.data-v-69991aca,movable-view.data-v-69991aca,cover-view.data-v-69991aca,cover-image.data-v-69991aca,icon.data-v-69991aca,text.data-v-69991aca,rich-text.data-v-69991aca,progress.data-v-69991aca,button.data-v-69991aca,checkboxe.data-v-69991aca,ditor.data-v-69991aca,form.data-v-69991aca,input.data-v-69991aca,label.data-v-69991aca,picker.data-v-69991aca,picker-view.data-v-69991aca,radio.data-v-69991aca,slider.data-v-69991aca,switch.data-v-69991aca,textarea.data-v-69991aca,navigator.data-v-69991aca,audio.data-v-69991aca,camera.data-v-69991aca,image.data-v-69991aca,video.data-v-69991aca,live-player.data-v-69991aca,live-pusher.data-v-69991aca,map.data-v-69991aca,canvas.data-v-69991aca,web-view.data-v-69991aca,.data-v-69991aca:before,.data-v-69991aca:after {
+  box-sizing: border-box;
+  font-size: 12rpx;
+}
+uni-button.data-v-69991aca:after {
+  border: transparent;
+}
+uni-button.data-v-69991aca:before {
+  border-color: transparent;
+}
+
+/* 隐藏scroll-view的滚动条 */
+.data-v-69991aca::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+.u-empty.data-v-69991aca,.u-empty__wrap.data-v-69991aca,.u-tabs.data-v-69991aca,.u-tabs__wrapper.data-v-69991aca,.u-tabs__wrapper__scroll-view-wrapper.data-v-69991aca,.u-tabs__wrapper__scroll-view.data-v-69991aca,.u-tabs__wrapper__nav.data-v-69991aca,.u-tabs__wrapper__nav__line.data-v-69991aca,.up-empty.data-v-69991aca,.up-empty__wrap.data-v-69991aca,.up-tabs.data-v-69991aca,.up-tabs__wrapper.data-v-69991aca,.up-tabs__wrapper__scroll-view-wrapper.data-v-69991aca,.up-tabs__wrapper__scroll-view.data-v-69991aca,.up-tabs__wrapper__nav.data-v-69991aca,.up-tabs__wrapper__nav__line.data-v-69991aca {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  flex-grow: 0;
+  flex-basis: auto;
+  align-items: stretch;
+  align-content: flex-start;
+}
+
+/**
+ * vue版本动画内置的动画模式有如下：
+ * fade：淡入
+ * zoom：缩放
+ * fade-zoom：缩放淡入
+ * fade-up：上滑淡入
+ * fade-down：下滑淡入
+ * fade-left：左滑淡入
+ * fade-right：右滑淡入
+ * slide-up：上滑进入
+ * slide-down：下滑进入
+ * slide-left：左滑进入
+ * slide-right：右滑进入
+ */
+.u-fade-enter-active.data-v-69991aca,.u-fade-leave-active.data-v-69991aca {
+  transition-property: opacity;
+}
+.u-fade-enter.data-v-69991aca,.u-fade-leave-to.data-v-69991aca {
+  opacity: 0;
+}
+.u-fade-zoom-enter.data-v-69991aca,.u-fade-zoom-leave-to.data-v-69991aca {
+  transform: scale(0.95);
+  opacity: 0;
+}
+.u-fade-zoom-enter-active.data-v-69991aca,.u-fade-zoom-leave-active.data-v-69991aca {
+  transition-property: transform, opacity;
+}
+.u-fade-down-enter-active.data-v-69991aca,.u-fade-down-leave-active.data-v-69991aca,.u-fade-left-enter-active.data-v-69991aca,.u-fade-left-leave-active.data-v-69991aca,.u-fade-right-enter-active.data-v-69991aca,.u-fade-right-leave-active.data-v-69991aca,.u-fade-up-enter-active.data-v-69991aca,.u-fade-up-leave-active.data-v-69991aca {
+  transition-property: opacity, transform;
+}
+.u-fade-up-enter.data-v-69991aca,.u-fade-up-leave-to.data-v-69991aca {
+  transform: translate3d(0, 100%, 0);
+  opacity: 0;
+}
+.u-fade-down-enter.data-v-69991aca,.u-fade-down-leave-to.data-v-69991aca {
+  transform: translate3d(0, -100%, 0);
+  opacity: 0;
+}
+.u-fade-left-enter.data-v-69991aca,.u-fade-left-leave-to.data-v-69991aca {
+  transform: translate3d(-100%, 0, 0);
+  opacity: 0;
+}
+.u-fade-right-enter.data-v-69991aca,.u-fade-right-leave-to.data-v-69991aca {
+  transform: translate3d(100%, 0, 0);
+  opacity: 0;
+}
+.u-slide-down-enter-active.data-v-69991aca,.u-slide-down-leave-active.data-v-69991aca,.u-slide-left-enter-active.data-v-69991aca,.u-slide-left-leave-active.data-v-69991aca,.u-slide-right-enter-active.data-v-69991aca,.u-slide-right-leave-active.data-v-69991aca,.u-slide-up-enter-active.data-v-69991aca,.u-slide-up-leave-active.data-v-69991aca {
+  transition-property: transform;
+}
+.u-slide-up-enter.data-v-69991aca,.u-slide-up-leave-to.data-v-69991aca {
+  transform: translate3d(0, 100%, 0);
+}
+.u-slide-down-enter.data-v-69991aca,.u-slide-down-leave-to.data-v-69991aca {
+  transform: translate3d(0, -100%, 0);
+}
+.u-slide-left-enter.data-v-69991aca,.u-slide-left-leave-to.data-v-69991aca {
+  transform: translate3d(-100%, 0, 0);
+}
+.u-slide-right-enter.data-v-69991aca,.u-slide-right-leave-to.data-v-69991aca {
+  transform: translate3d(100%, 0, 0);
+}
+.u-zoom-enter-active.data-v-69991aca,.u-zoom-leave-active.data-v-69991aca {
+  transition-property: transform;
+}
+.u-zoom-enter.data-v-69991aca,.u-zoom-leave-to.data-v-69991aca {
+  transform: scale(0.95);
+}

@@ -1,0 +1,1 @@
+{"version":3,"file":"langEn.js","sources":["../../../../src/local/langEn.ts"],"sourcesContent":["export default {\n  login: {\n    title: 'user login',\n    btnTitle: 'login'\n  }\n}"],"names":[],"mappings":";AAAA,MAAe,KAAA;AAAA,EACb,OAAO;AAAA,IACL,OAAO;AAAA,IACP,UAAU;AAAA,EACZ;AACF;AAAA,QAAA,IAAA;"}

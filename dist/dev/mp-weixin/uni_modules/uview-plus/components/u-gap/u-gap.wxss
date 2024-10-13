@@ -1,0 +1,47 @@
+view.data-v-47d20285,scroll-view.data-v-47d20285,swiper.data-v-47d20285,match-media.data-v-47d20285,movable-area.data-v-47d20285,movable-view.data-v-47d20285,cover-view.data-v-47d20285,cover-image.data-v-47d20285,icon.data-v-47d20285,text.data-v-47d20285,rich-text.data-v-47d20285,progress.data-v-47d20285,button.data-v-47d20285,checkboxe.data-v-47d20285,ditor.data-v-47d20285,form.data-v-47d20285,input.data-v-47d20285,label.data-v-47d20285,picker.data-v-47d20285,picker-view.data-v-47d20285,radio.data-v-47d20285,slider.data-v-47d20285,switch.data-v-47d20285,textarea.data-v-47d20285,navigator.data-v-47d20285,audio.data-v-47d20285,camera.data-v-47d20285,image.data-v-47d20285,video.data-v-47d20285,live-player.data-v-47d20285,live-pusher.data-v-47d20285,map.data-v-47d20285,canvas.data-v-47d20285,web-view.data-v-47d20285,.data-v-47d20285:before,.data-v-47d20285:after {
+  box-sizing: border-box;
+  font-size: 12rpx;
+}
+uni-button.data-v-47d20285:after {
+  border: transparent;
+}
+uni-button.data-v-47d20285:before {
+  border-color: transparent;
+}
+
+/* 隐藏scroll-view的滚动条 */
+.data-v-47d20285::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+view.data-v-47d20285,scroll-view.data-v-47d20285,swiper.data-v-47d20285,match-media.data-v-47d20285,movable-area.data-v-47d20285,movable-view.data-v-47d20285,cover-view.data-v-47d20285,cover-image.data-v-47d20285,icon.data-v-47d20285,text.data-v-47d20285,rich-text.data-v-47d20285,progress.data-v-47d20285,button.data-v-47d20285,checkboxe.data-v-47d20285,ditor.data-v-47d20285,form.data-v-47d20285,input.data-v-47d20285,label.data-v-47d20285,picker.data-v-47d20285,picker-view.data-v-47d20285,radio.data-v-47d20285,slider.data-v-47d20285,switch.data-v-47d20285,textarea.data-v-47d20285,navigator.data-v-47d20285,audio.data-v-47d20285,camera.data-v-47d20285,image.data-v-47d20285,video.data-v-47d20285,live-player.data-v-47d20285,live-pusher.data-v-47d20285,map.data-v-47d20285,canvas.data-v-47d20285,web-view.data-v-47d20285,.data-v-47d20285:before,.data-v-47d20285:after {
+  box-sizing: border-box;
+  font-size: 12rpx;
+}
+uni-button.data-v-47d20285:after {
+  border: transparent;
+}
+uni-button.data-v-47d20285:before {
+  border-color: transparent;
+}
+
+/* 隐藏scroll-view的滚动条 */
+.data-v-47d20285::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+.u-empty.data-v-47d20285,.u-empty__wrap.data-v-47d20285,.u-tabs.data-v-47d20285,.u-tabs__wrapper.data-v-47d20285,.u-tabs__wrapper__scroll-view-wrapper.data-v-47d20285,.u-tabs__wrapper__scroll-view.data-v-47d20285,.u-tabs__wrapper__nav.data-v-47d20285,.u-tabs__wrapper__nav__line.data-v-47d20285,.up-empty.data-v-47d20285,.up-empty__wrap.data-v-47d20285,.up-tabs.data-v-47d20285,.up-tabs__wrapper.data-v-47d20285,.up-tabs__wrapper__scroll-view-wrapper.data-v-47d20285,.up-tabs__wrapper__scroll-view.data-v-47d20285,.up-tabs__wrapper__nav.data-v-47d20285,.up-tabs__wrapper__nav__line.data-v-47d20285 {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  flex-grow: 0;
+  flex-basis: auto;
+  align-items: stretch;
+  align-content: flex-start;
+}

@@ -1,0 +1,115 @@
+view.data-v-f9bb84ee,scroll-view.data-v-f9bb84ee,swiper.data-v-f9bb84ee,match-media.data-v-f9bb84ee,movable-area.data-v-f9bb84ee,movable-view.data-v-f9bb84ee,cover-view.data-v-f9bb84ee,cover-image.data-v-f9bb84ee,icon.data-v-f9bb84ee,text.data-v-f9bb84ee,rich-text.data-v-f9bb84ee,progress.data-v-f9bb84ee,button.data-v-f9bb84ee,checkboxe.data-v-f9bb84ee,ditor.data-v-f9bb84ee,form.data-v-f9bb84ee,input.data-v-f9bb84ee,label.data-v-f9bb84ee,picker.data-v-f9bb84ee,picker-view.data-v-f9bb84ee,radio.data-v-f9bb84ee,slider.data-v-f9bb84ee,switch.data-v-f9bb84ee,textarea.data-v-f9bb84ee,navigator.data-v-f9bb84ee,audio.data-v-f9bb84ee,camera.data-v-f9bb84ee,image.data-v-f9bb84ee,video.data-v-f9bb84ee,live-player.data-v-f9bb84ee,live-pusher.data-v-f9bb84ee,map.data-v-f9bb84ee,canvas.data-v-f9bb84ee,web-view.data-v-f9bb84ee,.data-v-f9bb84ee:before,.data-v-f9bb84ee:after {
+  box-sizing: border-box;
+  font-size: 12rpx;
+}
+uni-button.data-v-f9bb84ee:after {
+  border: transparent;
+}
+uni-button.data-v-f9bb84ee:before {
+  border-color: transparent;
+}
+
+/* 隐藏scroll-view的滚动条 */
+.data-v-f9bb84ee::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+view.data-v-f9bb84ee,scroll-view.data-v-f9bb84ee,swiper.data-v-f9bb84ee,match-media.data-v-f9bb84ee,movable-area.data-v-f9bb84ee,movable-view.data-v-f9bb84ee,cover-view.data-v-f9bb84ee,cover-image.data-v-f9bb84ee,icon.data-v-f9bb84ee,text.data-v-f9bb84ee,rich-text.data-v-f9bb84ee,progress.data-v-f9bb84ee,button.data-v-f9bb84ee,checkboxe.data-v-f9bb84ee,ditor.data-v-f9bb84ee,form.data-v-f9bb84ee,input.data-v-f9bb84ee,label.data-v-f9bb84ee,picker.data-v-f9bb84ee,picker-view.data-v-f9bb84ee,radio.data-v-f9bb84ee,slider.data-v-f9bb84ee,switch.data-v-f9bb84ee,textarea.data-v-f9bb84ee,navigator.data-v-f9bb84ee,audio.data-v-f9bb84ee,camera.data-v-f9bb84ee,image.data-v-f9bb84ee,video.data-v-f9bb84ee,live-player.data-v-f9bb84ee,live-pusher.data-v-f9bb84ee,map.data-v-f9bb84ee,canvas.data-v-f9bb84ee,web-view.data-v-f9bb84ee,.data-v-f9bb84ee:before,.data-v-f9bb84ee:after {
+  box-sizing: border-box;
+  font-size: 12rpx;
+}
+uni-button.data-v-f9bb84ee:after {
+  border: transparent;
+}
+uni-button.data-v-f9bb84ee:before {
+  border-color: transparent;
+}
+
+/* 隐藏scroll-view的滚动条 */
+.data-v-f9bb84ee::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+.page.data-v-f9bb84ee {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  padding: 20rpx auto;
+  position: relative;
+}
+.page .logo.data-v-f9bb84ee {
+  width: 92rpx;
+  height: 77.5rpx;
+  position: fixed;
+  top: 20rpx;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.page .logo image.data-v-f9bb84ee {
+  width: 100%;
+  height: 100%;
+}
+.page .card.data-v-f9bb84ee {
+  background: #fff;
+  width: 80%;
+  height: 75%;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 10rpx 10rpx 0 0;
+  display: flex;
+  flex-direction: column;
+  padding: 10rpx;
+}
+.page .card .header.data-v-f9bb84ee {
+  flex-shrink: 0;
+  padding: 5rpx;
+}
+.page .card .header .pinBox_title.data-v-f9bb84ee {
+  text-align: center;
+  font-size: 14rpx;
+  color: #202224;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+.page .card .header .pinBox_tip.data-v-f9bb84ee {
+  text-align: center;
+  font-size: 10rpx;
+  color: #202224;
+}
+.page .card .footer.data-v-f9bb84ee {
+  flex-shrink: 0;
+  display: flex;
+  padding: 5rpx;
+}
+.page .card .content.data-v-f9bb84ee {
+  flex: 1;
+  overflow: hidden;
+  overflow-y: auto;
+  padding: 0 10rpx;
+  font-size: 8rpx;
+  color: #333;
+  line-height: 14rpx;
+}
+.page .card .content .selectItemBox.data-v-f9bb84ee {
+  margin-top: 5rpx;
+}
+.page .card .content .selectItemBox .title.data-v-f9bb84ee {
+  font-size: 14rpx;
+  color: #4880FF;
+  font-weight: bold;
+}
+.page .card .content .selectItemBox .items.data-v-f9bb84ee {
+  margin-top: 10rpx;
+  width: 100%;
+}
+.page .card .content .selectItemBox .items .item.data-v-f9bb84ee {
+  margin-bottom: 5rpx;
+}

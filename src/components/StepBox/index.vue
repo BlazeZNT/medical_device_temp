@@ -7,7 +7,7 @@
 				<view class="icon">
 					<i class="fas fa-ruler-vertical "></i>
 				</view>
-				<view class="text" style="width: 200rpx;">
+				<view class="text" >
 					{{ item.text }}
 					<!-- <ScrollText :content="item.text" :index="index"></ScrollText> -->
 				</view>
@@ -26,9 +26,9 @@
 		markRaw
 	} from 'vue'
 	// import ScrollText from '@/components/ScrollText.vue'
-	
+
 	const activeIndex = ref(0)
-	
+
 	const stepArr = shallowRef([{
 			id: 1,
 			text: 'Height'
@@ -80,15 +80,13 @@
 			text: 'Otoscope'
 		}
 	])
-	
+
 	const handleClickStep = (item, index) => {
 		activeIndex.value = index
 	}
 </script>
 
 <style lang="scss" scoped>
-	
-
 	.scrollBox {
 		width: 100%;
 
@@ -105,8 +103,34 @@
 				padding: 15rpx 15rpx;
 				background: #fff;
 				box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+				position: relative;
+				background-color: #f0f4ff;
+				border: 2px solid #a0a5ff;
+				color: #333;
+				font-size: 14px;
+				text-align: center;
+				flex-grow: 1;
+				margin-right: 10px;
+				border-radius: 8px;
+				margin-right: 40rpx;
 				
+				&::after {
+				  content: '';
+				  position: absolute;
+				  right: -10px;
+				  top: 50%;
+				  transform: translateY(-50%);
+				  border-left: 10px solid #a0a5ff;
+				  border-top: 10px solid transparent;
+				  border-bottom: 10px solid transparent;
+				}
 				
+				&.active {
+				  background-color: #a0d5ff;
+				  border-color: #1a73e8;
+				  color: white;
+				}
+
 
 				// .text {
 				// 	position: absolute;

@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sources":["../../../../../uniComponent:/RDovdHkvbWVkaWNhbC1kZXZpY2Uvc3JjL2NvbXBvbmVudHMvRGV2aWNlU3RhdHVzQm94L2luZGV4LnZ1ZQ"],"sourcesContent":["import Component from 'D:/ty/medical-device/src/components/DeviceStatusBox/index.vue'\nwx.createComponent(Component)"],"names":[],"mappings":";;;;;;;AACA,GAAG,gBAAgB,SAAS;"}

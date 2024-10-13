@@ -1,0 +1,1 @@
+{"version":3,"file":"zh-Hans.js","sources":["../../../../src/local/zh-Hans.ts"],"sourcesContent":["export default {\n  login: {\n    title: '用户登录',\n    btnTitle: '登录'\n  }\n}"],"names":[],"mappings":";AAAA,MAAe,SAAA;AAAA,EACb,OAAO;AAAA,IACL,OAAO;AAAA,IACP,UAAU;AAAA,EACZ;AACF;AAAA,QAAA,IAAA;"}

@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText": "uni-app",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "up-input": "../../uni_modules/uview-plus/components/u-input/u-input",
+    "up-form-item": "../../uni_modules/uview-plus/components/u-form-item/u-form-item",
+    "up-form": "../../uni_modules/uview-plus/components/u-form/u-form",
+    "up-button": "../../uni_modules/uview-plus/components/u-button/u-button",
+    "fixed-logo": "../../components/Common/FixedLogo",
+    "card-box": "../../components/Common/CardBox"
+  }
+}

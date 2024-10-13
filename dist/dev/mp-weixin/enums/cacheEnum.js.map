@@ -1,0 +1,1 @@
+{"version":3,"file":"cacheEnum.js","sources":["../../../../src/enums/cacheEnum.ts"],"sourcesContent":["// token key\nexport const TOKEN_KEY = 'TOKEN__';\n\n// user info key\nexport const USER_INFO_KEY = 'USER__INFO__';\n"],"names":[],"mappings":";AACO,MAAM,YAAY;AAAA,QAAA,IAAA;"}
