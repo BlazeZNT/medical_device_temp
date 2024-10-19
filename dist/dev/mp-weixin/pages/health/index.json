@@ -1,9 +1,0 @@
-{
-  "navigationBarTitleText": "uni-app",
-  "navigationStyle": "custom",
-  "usingComponents": {
-    "up-button": "../../uni_modules/uview-plus/components/u-button/u-button",
-    "up-col": "../../uni_modules/uview-plus/components/u-col/u-col",
-    "up-row": "../../uni_modules/uview-plus/components/u-row/u-row"
-  }
-}

@@ -37,7 +37,7 @@
 	import slibrary from '@/slibrary/index.js'
 	
 	const handleClickHealthCheckUp = () => {
-		slibrary.$router.go('/pages/login/pin')
+		slibrary.$router.go('/pages/login/index')
 	}
 </script>
 

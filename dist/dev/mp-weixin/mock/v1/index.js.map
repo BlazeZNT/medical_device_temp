@@ -1,1 +1,0 @@
-{"version":3,"file":"index.js","sources":["../../../../../src/mock/v1/index.ts"],"sourcesContent":["import { authMocks } from '@/mock/v1/modules/auth';\n\nexport const mockGroupV1 = [authMocks];\n"],"names":["authMocks"],"mappings":";;AAEa,MAAA,cAAc,CAACA,qBAAS,CAAA;AAAA,QAAA,IAAA;"}

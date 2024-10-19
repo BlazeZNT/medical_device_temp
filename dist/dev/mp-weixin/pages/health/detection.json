@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "uni-app",
-  "navigationStyle": "custom",
-  "usingComponents": {
-    "device-status-box": "../../components/DeviceStatusBox/index",
-    "step-box": "../../components/StepBox/index"
-  }
-}

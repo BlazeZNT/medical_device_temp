@@ -10,6 +10,8 @@ import { getAuthorization } from '@/utils/auth';
 
 const BASE_URL = getBaseUrl();
 
+console.log(BASE_URL)
+
 const ContentType = {
   'Content-Type': ContentTypeEnum.JSON,
   'Accept': 'application/json, text/plain, */*',
@@ -49,20 +51,23 @@ const alovaInstance = createAlova({
       const { config } = method;
       const { requestType } = config;
       const { statusCode, data: rawData, errMsg } = response as UniNamespace.RequestSuccessCallbackResult;
+	  
+	  
       if (statusCode === 200) {
         if (requestType) {
           return response;
         }
-        const { code, message, data } = rawData as API;
-        if (code === ResultEnum.SUCCESS) {
+        const { code, msg, data } = rawData as API;
+       
+		if (code === ResultEnum.SUCCESS) {
           return data as any;
         }
         // 逻辑错误处理，与业务相关
-        handleLogicError(code, message);
-        throw new Error(`请求错误[${code}]：${message}`);
+        handleLogicError(code, msg);
+        throw new Error(`请求错误[${code}]：${msg}`);
       }
       // 处理http状态错误
-      handleHttpStatus(statusCode, message || '');
+      handleHttpStatus(statusCode, msg || '');
       throw new Error(`HTTP请求错误[${statusCode}]：${errMsg}`);
     },
 

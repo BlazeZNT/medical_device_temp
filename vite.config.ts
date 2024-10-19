@@ -13,12 +13,12 @@ import { createVitePlugins, currentPlatform, resolveProxy } from './build';
 
 import { uniReadPagesV3Plugin }  from './src/slibrary/router/utils/uni-read-pages-v3.js';
 // import mpliveMainfestPlugin from './sheep/libs/mplive-manifest-plugin';
-
 export default defineConfig(async ({ mode }) => {
 	const root = process.cwd();
 	const env = loadEnv(mode, resolve(root, 'env'));
 	const isProd = mode === 'production';
 	const { VITE_PROXY_PREFIX, VITE_UPLOAD_PROXY_PREFIX, VITE_BASE_URL, VITE_UPLOAD_URL, VITE_PORT } = env;
+	console.log(env)
 	return {
 		base: './',
 		envDir: './env', // 自定义env目录

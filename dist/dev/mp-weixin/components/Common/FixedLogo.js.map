@@ -1,1 +1,0 @@
-{"version":3,"file":"FixedLogo.js","sources":["../../../../../uniComponent:/RDovdHkvbWVkaWNhbC1kZXZpY2Uvc3JjL2NvbXBvbmVudHMvQ29tbW9uL0ZpeGVkTG9nby52dWU"],"sourcesContent":["import Component from 'D:/ty/medical-device/src/components/Common/FixedLogo.vue'\nwx.createComponent(Component)"],"names":[],"mappings":";;;;;;;;;AACA,GAAG,gBAAgB,SAAS;"}

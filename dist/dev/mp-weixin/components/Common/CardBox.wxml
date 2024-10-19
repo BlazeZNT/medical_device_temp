@@ -1,1 +1,0 @@
-<view class="pinBox data-v-437fe14b" style="{{'width:' + e}}"><view wx:if="{{a}}" class="pinBox_title data-v-437fe14b">{{b}}</view><view wx:if="{{c}}" class="pinBox_tip data-v-437fe14b">{{d}}</view><view class="pinBox_content data-v-437fe14b"><slot></slot></view></view>

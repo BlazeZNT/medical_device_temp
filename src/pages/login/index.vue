@@ -2,24 +2,25 @@
 	<view class="page">
 		<FixedLogo />
 		<view class="content">
-			<CardBox title="Patient Login" tip="Please enter your mobile number to continuee">
+			<CardBox title="Patient Login" tip="Please enter your email">
 				<view class="boxcenter">
 					<up-form :model="form" labelPosition="top" ref="uFormRef">
-						<up-form-item label="Mobile Number" prop="mobile" label-width="180">
+						<up-form-item label="Email" prop="email" label-width="180">
 							  <up-input
-							    placeholder="Mobile Number"
+							    placeholder="Email"
 							    border="surround"
-							    v-model="form.mobile"
+							    v-model="form.email"
+								type="email"
 							  ></up-input>
 						</up-form-item>
 					</up-form>
 
 					<view class="btn">
-						<up-button type="primary" size="small" text="Login" :disabled="!form.mobile" @tap="handleTapVerify"
+						<up-button type="primary" size="small" text="Login" :disabled="!form.email" @tap="handleTapVerify"
 							:loading="loading" :loadingSize="8"></up-button>
 					</view>
 					
-					<view class="with-title">
+					<!-- <view class="with-title">
 						Login with:
 					</view>
 					
@@ -48,7 +49,7 @@
 								Login with Aadhaar Card
 							</view> 
 						</view>
-					</view>
+					</view> -->
 				</view>
 			</CardBox>
 		</view>
@@ -62,22 +63,31 @@
 	import {
 		ref
 	} from 'vue'
-
+	import {
+		sendCode
+	} from '@/services/api/auth';
 
 	const form = ref({
-		mobile: '',
+		email: '',
 	})
 
 	const loading = ref(false)
 
-	const handleTapVerify = () => {
+	const handleTapVerify = async () => {
 
 		loading.value = true
 
-		setTimeout(() => {
-			loading.value = false
-			slibrary.$router.go('/pages/login/consentForm')
-		}, 1500)
+		try {
+			const res = await sendCode({
+				email: form.value.email
+			})
+			console.log(res)
+			setTimeout(() => {
+				loading.value = false
+				// slibrary.$router.go('/pages/login/pin')
+			}, 1500)
+		}catch(err) {
+		}
 	}
 </script>
 
