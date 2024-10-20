@@ -1,5 +1,5 @@
 <template>
-	<ContentBox image="@/static/height.jpg">
+	<ContentBox image="../../static/step/4.png">
 		<view class="charts-box">
 			<qiun-data-charts type="arcbar" :opts="opts" :chartData="chartData" />
 		</view>
@@ -24,7 +24,7 @@
 					padding: undefined,
 					title: {
 						name: "80%",
-						fontSize: 35,
+						fontSize: 16,
 						color: "#2fc25b"
 					},
 					subtitle: {
@@ -35,7 +35,7 @@
 					extra: {
 						arcbar: {
 							type: "default",
-							width: 30,
+							width: 15,
 							backgroundColor: "#E9E9E9",
 							startAngle: 0.75,
 							endAngle: 0.25,
@@ -81,7 +81,7 @@
 		position: relative;
 
 		.btn {
-			padding: 20rpx;
+			padding: 10rpx;
 			background: green;
 			color: #fff;
 			border-radius: 20rpx;
@@ -89,7 +89,7 @@
 	}
 
 	.charts-box {
-		width: 600rpx;
-		height: 600rpx;
+		width: 300rpx;
+		height: 300rpx;
 	}
 </style>

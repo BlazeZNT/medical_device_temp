@@ -2,7 +2,7 @@
 	<view class="w-full h-full flex devicesSontent">
 		<view class="left" v-if="image">
 			<view class="img">
-				<image style="width: 100%;height: 100%;" src="@/static/fat2.png" alt="" mode="scaleToFill" />
+				<image style="width: 100%;height: 100%;" :src="image"  ref="imgRef" alt="" mode="scaleToFill" />
 			</view>
 		</view>
 		<view class="right">
@@ -12,11 +12,15 @@
 </template>
 
 <script setup>
+	import { ref, onMounted } from 'vue' 
 	const props = defineProps({
 		image: {
 			type: String,
 			default: ''
 		}
+	})
+	
+	onMounted(() => {
 	})
 </script>
 
@@ -27,11 +31,19 @@
 		align-items: center;
 		flex: 1;
 		overflow: hidden;
+		
+		.img {
+			width: 300rpx;
+			height: 240rpx;
+		}
 	}
 
 	.right {
 		overflow: hidden;
-		flex: 2;
+		flex: 1;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 	.devicesSontent {
@@ -41,10 +53,7 @@
 		padding: 10rpx 20rpx;
 		overflow: hidden;
 		
-		.img {
-			width: 200rpx;
-			height: 100rpx;
-		}
+		
 	}
 
 </style>

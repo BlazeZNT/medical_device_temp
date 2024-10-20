@@ -1,7 +1,7 @@
 <template>
 	<view class="page">
 		<view class="steps">
-			<StepBox></StepBox>
+			<StepBox @change="stepChange"></StepBox>
 		</view>
 
 		<view class="content">
@@ -21,9 +21,30 @@
 	import DeviceStatusBox from '@/components/DeviceStatusBox/index.vue'
 	import StepBox from '@/components/StepBox/index.vue'
 	import Height from "@/components/HealthStep/Height.vue";
-	
+	import BodyFat from "@/components/HealthStep/BodyFat.vue";
+	import Erwen from "@/components/HealthStep/Erwen.vue";
+	import Oximeter from "@/components/HealthStep/Oximeter.vue";
+	import BloodPressure from "@/components/HealthStep/BloodPressure.vue";
+	import RandomBloodSugar from "@/components/HealthStep/RandomBloodSugar.vue";
+	import HBA1C from "@/components/HealthStep/HBA1C.vue";
+	import HemoglobinTest from "@/components/HealthStep/HemoglobinTest.vue";
+	import Lipid from "@/components/HealthStep/Lipid.vue";
+
 	const stepComponent = shallowRef(Height)
-	
+
+	const Components = {
+		Height: Height,
+		BodyFat: BodyFat,
+		Erwen,
+		Oximeter,
+		BloodPressure,
+		HBA1C,
+		Lipid
+	}
+
+	const stepChange = (e) => {
+		stepComponent.value = Components[e.text]
+	}
 </script>
 <style lang="scss" scoped>
 	.page {
@@ -37,6 +58,7 @@
 			flex-shrink: 0;
 			overflow: hidden;
 			width: 100vw;
+			padding: 20rpx;
 		}
 
 		.footer {

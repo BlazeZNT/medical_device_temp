@@ -4,15 +4,17 @@
 			<view class="stepBoxItem" v-for="(item, index) in stepArr"
 				:class="[activeIndex == index ? 'activeSetp' : '', item.status == 'pass' ? 'doneStep' : '']"
 				:key="item.id" @click="handleClickStep(item, index)">
-				<view class="icon">
-					<i class="fas fa-ruler-vertical "></i>
-				</view>
-				<view class="text" >
-					{{ item.text }}
-					<!-- <ScrollText :content="item.text" :index="index"></ScrollText> -->
-				</view>
-				<view class="activeIcon" v-if="activeIndex == index">
-					<i class="fas fa-running text-white text-2xl"></i>
+				<view class="bar"></view>
+				<view class="statusBox">
+					{{ item.status }}
+					<view class="statusIcon">
+						<up-icon name="checkmark-circle-fill" color="green" size="14" v-if="item.status == 'pass'"></up-icon>
+						<view class="activeSetp" v-if="item.status == 'activeSetp'"></view>
+						<view class="defaultIcon" v-else></view>
+					</view>
+					<view class="name">
+						<ScrollText :content="item.text" :index="index"></ScrollText>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -25,64 +27,88 @@
 		shallowRef,
 		markRaw
 	} from 'vue'
-	// import ScrollText from '@/components/ScrollText.vue'
+	import ScrollText from '@/components/ScrollText.vue'
 
 	const activeIndex = ref(0)
 
 	const stepArr = shallowRef([{
 			id: 1,
-			text: 'Height'
+			text: 'Height',
+			statue: ''
 		}, {
 			id: 2,
-			text: 'BodyFat'
+			text: 'BodyFat',
+			status: ''
 		}, {
 			id: 3,
-			text: 'Erwen'
+			text: 'Erwen',
+			status: ''
 		}, {
 			id: 4,
-			text: 'Oximeter'
+			text: 'Oximeter',
+			status: ''
 		}, {
 			id: 5,
-			text: 'BloodPressure'
+			text: 'BloodPressure',
+			status: ''
 		},
 		{
 			id: 6,
-			text: 'RandomBloodSugar'
+			text: 'RandomBloodSugar',
+			status: ''
+			
 		}, {
 			id: 7,
-			text: 'HBA1C'
+			text: 'HBA1C',
+			status: ''
 		}, {
 			id: 8,
-			text: 'HemoglobinTest'
+			text: 'HemoglobinTest',
+			status: ''
+			
 		}, {
 			id: 9,
-			text: 'Lipid'
+			text: 'Lipid',
+			status: ''
+			
 		}, {
 			id: 10,
-			text: 'SixLeadECG'
+			text: 'SixLeadECG',
+			status: ''
+			
 		}, {
 			id: 10,
-			text: 'Spirometry'
+			text: 'Spirometry',
+			status: ''
 		}, {
 			id: 10,
-			text: 'CardiovascularSystemicExamination'
+			text: 'CardiovascularSystemicExamination',
+			status: ''
 		}, {
 			id: 10,
-			text: 'SnellenChart'
+			text: 'SnellenChart',
+			status: ''
 		}, {
 			id: 10,
-			text: 'Audiometry'
+			text: 'Audiometry',
+			status: ''
 		}, {
 			id: 10,
-			text: 'Dermascope'
+			text: 'Dermascope',
+			status: ''
 		}, {
 			id: 10,
-			text: 'Otoscope'
+			text: 'Otoscope',
+			status: ''
 		}
 	])
-
+	
+	const emit = defineEmits(['change'])
 	const handleClickStep = (item, index) => {
 		activeIndex.value = index
+		// stepArr.value[index - 1]['status'] = 'pass'
+		// stepArr.value[index]['status'] = 'activeSetp'
+		emit('change', stepArr.value[index])
 	}
 </script>
 
@@ -100,36 +126,64 @@
 			}
 
 			.stepBoxItem {
-				padding: 15rpx 15rpx;
-				background: #fff;
-				box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
 				position: relative;
-				background-color: #f0f4ff;
-				border: 2px solid #a0a5ff;
-				color: #333;
-				font-size: 14px;
-				text-align: center;
-				flex-grow: 1;
-				margin-right: 10px;
-				border-radius: 8px;
-				margin-right: 40rpx;
-				
-				&::after {
-				  content: '';
-				  position: absolute;
-				  right: -10px;
-				  top: 50%;
-				  transform: translateY(-50%);
-				  border-left: 10px solid #a0a5ff;
-				  border-top: 10px solid transparent;
-				  border-bottom: 10px solid transparent;
+				// width: 300rpx;
+				// display: flex;
+				margin-right: 20rpx;
+
+				.bar {
+					width: 120rpx;
+					height: 5rpx;
+					border-radius: 20rpx;
+					background: #fff;
+					margin-bottom: 6rpx;
 				}
-				
-				&.active {
-				  background-color: #a0d5ff;
-				  border-color: #1a73e8;
-				  color: white;
+
+				.statusBox {
+					display: flex;
+					align-items: center;
+					width: 100%;
+					overflow: hidden;
+
+					.statusIcon {
+						margin-right: 6rpx;
+
+						.activeSetp,
+						.defaultIcon {
+							width: 14rpx;
+							height: 14rpx;
+							border-radius: 100%;
+							border: 2rpx solid #fff;
+						}
+						
+						.activeSetp {
+							border: 4rpx solid green;
+						}
+
+
+					}
+
+					.name {
+						color: #fff;
+					}
 				}
+
+				// &::after {
+				//   content: '';
+				//   position: absolute;
+				//   right: -10px;
+				//   top: 50%;
+				//   transform: translateY(-50%);
+				//   border-left: 10px solid #a0a5ff;
+				//   border-top: 10px solid transparent;
+				//   border-bottom: 10px solid transparent;
+				// }
+
+				// &.active {
+				//   background-color: #a0d5ff;
+				//   border-color: #1a73e8;
+				//   color: white;
+				// }
 
 
 				// .text {

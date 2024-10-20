@@ -10,25 +10,26 @@
 				</view>
 			</view>
 			<view class="content">
-				<up-form :labelWidth="100" labelPosition="top" :model="state.model1" :rules="state.rules" ref="form1">
+				<up-form :labelWidth="100" labelPosition="top" :model="state.userInfo" :rules="state.rules"
+					ref="formRef">
 					<up-row :gutter="40">
 						<up-col span="6">
-							<up-form-item label="Name" prop="userInfo.name" borderBottom ref="item1">
-								<up-input v-model="state.model1.userInfo.name" placeholder="Name"></up-input>
+							<up-form-item label="Name" prop="name" borderBottom ref="item1">
+								<up-input v-model="state.userInfo.name" placeholder="Name"></up-input>
 							</up-form-item>
 						</up-col>
 						<up-col span="6">
-							<up-form-item label="Gender" prop="userInfo.name" borderBottom ref="item1">
-								<up-input v-model="state.model1.userInfo.name" placeholder="Email"></up-input>
+							<up-form-item label="Email" prop="email" borderBottom ref="item1">
+								<up-input v-model="state.userInfo.email" placeholder="Email"></up-input>
 							</up-form-item>
 						</up-col>
 					</up-row>
 					<up-row :gutter="40">
 						<up-col span="6">
-							<up-form-item label="Gender" prop="userInfo.name" borderBottom ref="item1"
+							<up-form-item label="Gender" prop="gender" borderBottom ref="item1"
 								@click="state.showSex = true;">
-								<up-input v-model="state.model1.userInfo.sex" disabled disabledColor="#ffffff"
-									placeholder="请选择性别">
+								<up-input v-model="state.userInfo.gender" disabled disabledColor="#ffffff"
+									placeholder="Please select gender">
 									<template #suffix>
 										<up-icon name="arrow-down"></up-icon>
 									</template>
@@ -36,27 +37,23 @@
 							</up-form-item>
 						</up-col>
 						<up-col span="6">
-							<up-form-item label="Aadhar Card" prop="userInfo.name" borderBottom ref="item1">
-								<up-input v-model="state.model1.userInfo.name" placeholder="Email"></up-input>
+							<up-form-item label="Date of Birth" prop="birth" borderBottom>
+								<up-datetime-picker style="width: 100%;" hasInput v-model="state.dateTime"
+									mode="date" :formatter="formatter" @change="dateChange"></up-datetime-picker>
 							</up-form-item>
 						</up-col>
 					</up-row>
 					<up-row :gutter="40">
 						<up-col span="6">
-							<up-form-item label="Date of Birth" prop="userInfo.name" borderBottom ref="item1">
-								<up-input v-model="state.model1.userInfo.name" placeholder="Name"></up-input>
-							</up-form-item>
-						</up-col>
-						<up-col span="6">
-							<up-form-item label="Unique ID" prop="userInfo.name" borderBottom ref="item1">
-								<up-input v-model="state.model1.userInfo.name" placeholder="Email"></up-input>
+							<up-form-item label="Phone Number" prop="phone" borderBottom ref="item1">
+								<up-input v-model="state.userInfo.phone" placeholder="Phone Number"></up-input>
 							</up-form-item>
 						</up-col>
 					</up-row>
-					<up-row :gutter="40">
+					<!-- <up-row :gutter="40">
 						<up-col span="6">
-							<up-form-item label="Phone Number" prop="userInfo.name" borderBottom ref="item1">
-								<up-input v-model="state.model1.userInfo.name" placeholder="Name"></up-input>
+							<up-form-item label="Phone Number" prop="userInfo.phone" borderBottom ref="item1">
+								<up-input v-model="state.model1.userInfo.phone" placeholder="Name"></up-input>
 							</up-form-item>
 						</up-col>
 						<up-col span="6">
@@ -64,7 +61,7 @@
 								<up-input v-model="state.model1.userInfo.name" placeholder="Email"></up-input>
 							</up-form-item>
 						</up-col>
-					</up-row>
+					</up-row> -->
 				</up-form>
 			</view>
 			<view class="footer">
@@ -72,7 +69,7 @@
 					@click="handleClickGotiRegister"></up-button>
 			</view>
 		</view>
-		<up-action-sheet :show="state.showSex" :actions="state.actions" title="请选择性别" description="如果选择保密会报错"
+		<up-action-sheet :show="state.showSex" :actions="state.actions" title="Please select gender"
 			@close="state.showSex = false" @select="sexSelect">
 		</up-action-sheet>
 	</view>
@@ -85,37 +82,64 @@
 		reactive
 	} from 'vue';
 
+	import {
+		sendCode
+	} from '@/services/api/auth';
+	import dayjs from 'dayjs/esm/index';
+
+
 	// 使用 reactive 创建响应式状态  
 	const state = reactive({
 		showSex: false,
-		model1: {
-			userInfo: {
-				name: '',
-				sex: '',
-			},
+		showDate: false,
+		dateTime: '',
+		userInfo: {
+			name: '',
+			gender: '',
+			email: '',
+			birth: '',
+			phone: ''
 		},
 		actions: [{
-				name: '男'
+				name: '男',
+				value: 'Man'
 			},
 			{
-				name: '女'
+				name: '女',
+				value: 'Woman'
 			},
 			{
-				name: '保密'
+				name: '保密',
+				value: 'null'
 			},
 		],
 		rules: {
-			'userInfo.name': {
+			'name': {
 				type: 'string',
 				required: true,
-				message: '请填写姓名',
+				message: 'Name',
 				trigger: ['blur', 'change'],
 			},
-			'userInfo.sex': {
-				type: 'string',
-				max: 1,
+			'gender': {
 				required: true,
-				message: '请选择男或女',
+				message: 'gender',
+				trigger: ['blur', 'change'],
+			},
+			'email': {
+				type: 'string',
+				required: true,
+				message: 'email',
+				trigger: ['blur', 'change'],
+			},
+			'birth': {
+				required: true,
+				message: 'birth',
+				trigger: ['blur', 'change'],
+			},
+			'phone': {
+				type: 'string',
+				required: true,
+				message: 'phone',
 				trigger: ['blur', 'change'],
 			},
 		},
@@ -128,15 +152,51 @@
 
 	// 定义方法  
 	function sexSelect(e) {
-		state.model1.userInfo.sex = e.name;
+		state.userInfo.gender = e.value;
 		if (formRef.value) {
-			formRef.value.validateField('userInfo.sex');
+			formRef.value.validateField('sex');
+		}
+	}
+	const loading = ref(false)
+	const handleClickGotiRegister = () => {
+		formRef.value.validate().then(async valid => {
+			if (valid) {
+				loading.value = true
+				try {
+					const res = await sendCode({
+						email: state.userInfo.email
+					})
+					loading.value = false
+					uni.setStorageSync('regUserInfo', {
+						...state.userInfo
+					})
+					slibrary.$router.go('/pages/login/pin')
+				} catch (err) {}
+
+			}
+		});
+
+	}
+	const dateChange = (e) => {
+		state.userInfo.birth = dayjs(e.value).format('YYYY-MM-DD')
+		console.log(state.userInfo.birth)
+		if (formRef.value) {
+			formRef.value.validateField('birth');
 		}
 	}
 
-	const handleClickGotiRegister = () => {
-		slibrary.$router.go('/pages/health/index')
-	}
+	const formatter = (type, value) => {
+		if (type === 'year') {
+			return `${value}年`;
+		}
+		if (type === 'month') {
+			return `${value}月`;
+		}
+		if (type === 'day') {
+			return `${value}日`;
+		}
+		return value;
+	};
 </script>
 
 <style lang="scss" scoped>

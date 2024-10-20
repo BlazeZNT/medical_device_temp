@@ -23,12 +23,24 @@
 	import {
 		ref
 	} from 'vue'
-
+	import {
+		onLoad,
+		onShow
+	} from '@dcloudio/uni-app';
+	import {
+		resgister
+	} from '@/services/api/auth';
+	
+	
+	const userInfo = ref(null)
+	onLoad( () => {
+		userInfo.value = uni.getStorageSync('regUserInfo')
+	})	
 	const code = ref('')
 
 	const loading = ref(false)
 
-	const handleTapVerify = () => {
+	const handleTapVerify = async () => {
 		if (!code.value) {
 			uni.showToast({
 				icon: 'none',
@@ -45,11 +57,15 @@
 		}
 
 		loading.value = true
-
-		setTimeout(() => {
-			loading.value = false
-			slibrary.$router.go('/pages/login/index')
-		}, 1500)
+		
+		const res = await resgister({
+			...userInfo.value,
+			captcha: code.value
+		})
+		
+		
+		
+		console.log(res)
 	}
 </script>
 

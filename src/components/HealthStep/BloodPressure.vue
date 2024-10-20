@@ -57,10 +57,6 @@
 	.functional {
 		width: 100%;
 		height: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
 		position: relative;
 
 		.btn {
@@ -72,8 +68,8 @@
 	}
 
 	.box {
-		width: 400rpx;
-		height: 400rpx;
+		width: 200rpx;
+		height: 200rpx;
 		display: flex;
 		flex-direction: column;
 
@@ -84,12 +80,12 @@
 			color: green;
 
 			.num {
-				font-size: 80rpx;
-				margin-right: 20rpx;
+				font-size: 40rpx;
+				margin-right: 10rpx;
 			}
 
 			.tip {
-				line-height: 30rpx;
+				line-height: 15rpx;
 			}
 		}
 	}

@@ -81,7 +81,6 @@
 			const res = await sendCode({
 				email: form.value.email
 			})
-			console.log(res)
 			setTimeout(() => {
 				loading.value = false
 				// slibrary.$router.go('/pages/login/pin')

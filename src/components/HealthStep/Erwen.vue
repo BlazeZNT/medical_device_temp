@@ -1,5 +1,5 @@
 <template>
-	<ContentBox image="@/static/height.jpg">
+	<ContentBox image="../../static/step/3.png">
 		<view class="charts-box">
 			<qiun-data-charts type="gauge" :opts="opts" :chartData="chartData" />
 		</view>
@@ -104,19 +104,19 @@
 		position: relative;
 
 		.btn {
-			padding: 20rpx;
+			padding: 10rpx;
 			background: green;
 			color: #fff;
-			border-radius: 20rpx;
+			border-radius: 10rpx;
 		}
 	}
 
 	.charts-box {
-		width: 600rpx;
-		height: 600rpx;
+		width: 300rpx;
+		height: 300rpx;
 		background: rgba(#3b82f6, 0.8);
-		border-radius: 30rpx;
+		border-radius: 15rpx;
 		overflow: hidden;
-		padding: 40rpx;
+		padding: 20rpx;
 	}
 </style>
