@@ -60,12 +60,21 @@
 			}
 		},
 		{
+			"path": "pages/report/index",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom",
+				"disableScroll": true
+			}
+		},
+		{
 			"path": "pages/login/info",
 			"style": {
 				"navigationBarTitleText": "uni-app",
 				"navigationStyle": "custom"
 			}
 		}
+		
 	],
 	"subPackages": [],
 	"globalStyle": {
