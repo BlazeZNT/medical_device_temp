@@ -10,7 +10,6 @@
       </li>
     </ul>
     
-    <!-- Add buttons section -->
     <div class="button-group">
       <button class="sidebar-btn download-btn" @click="onDownload">Download</button>
       <button class="sidebar-btn view-btn" @click="onView">View</button>
@@ -42,13 +41,13 @@ export default {
       this.$emit('menu-selected', item);
     },
     onDownload() {
-      alert('Download clicked');
+      // alert('Download clicked');
     },
     onView() {
-      alert('View clicked');
+      // alert('View clicked');
     },
     onShare() {
-      alert('Share clicked');
+      // alert('Share clicked');
     }
   },
 };
@@ -57,14 +56,12 @@ export default {
 <style scoped>
 .sidebar {
   margin: 0;
-  padding-bottom: 20px; 
+  padding-bottom: 20rpx; 
   width: 30%;
   background-color: #ffffff;
   height: 100%;
   border-right: 1px solid #ccc;
-  /* display: flex;
-  flex-direction: column;
-  justify-content: space-between; */
+
 }
 
 .sidebar ul {
@@ -73,8 +70,9 @@ export default {
 }
 
 .sidebar li {
-  padding: 25px;
+  padding: 16rpx;
   cursor: pointer;
+  font-size: 8rpx;
   color: #3D4EAC;
   border-bottom: 0.5px solid gray;
 }
@@ -83,7 +81,6 @@ export default {
   background-color: #DFE3FD;
 }
 
-/* Button section */
 .button-group {
   margin-top: 8rpx;
   display: flex;
@@ -93,11 +90,12 @@ export default {
 
 .sidebar-btn {
   width: 160rpx;
+  padding: 0;
   margin: 5px 0;
   border: none;
   background-color: #3D4EAC;
   color: white;
-  font-size: auto;
+  font-size: 8rpx;
   font-weight: 400;
   cursor: pointer;
   text-align: center;

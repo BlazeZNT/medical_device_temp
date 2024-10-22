@@ -74,14 +74,14 @@ table {
 
 .table-header {
   @apply p-1 font-semibold text-gray-800 border-b; 
-  font-size: 0.2rem;
+  font-size: 8rpx;
 }
 
 .table-cell {
   @apply px-2 py-1 text-gray-700;
   height:16rpx;
-  margin-top: 1px;
-  font-size: 0.3rem;
+  margin-top: 1rpx;
+  font-size: 10rpx;
 }
 
 .border-b {
