@@ -85,7 +85,7 @@
       "style": "dark",
       "background": "#F8F8F8"
     },
-    "arguments": "{\"name\":\"\",\"path\":\"pages/health/detection\",\"query\":\"\"}",
+    "arguments": "{\"name\":\"\",\"path\":\"pages/report/index\",\"query\":\"\"}",
     "uniStatistics": {
       "enable": false
     },

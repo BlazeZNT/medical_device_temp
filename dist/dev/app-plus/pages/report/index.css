@@ -1,0 +1,142 @@
+
+.sidebar[data-v-df0ec889] {
+  margin: 0;
+  padding-bottom: 20px; 
+  width: 30%;
+  background-color: #ffffff;
+  height: 100%;
+  border-right: 1px solid #ccc;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: space-between; */
+}
+.sidebar ul[data-v-df0ec889] {
+  list-style-type: none;
+  padding: 0;
+}
+.sidebar li[data-v-df0ec889] {
+  padding: 25px;
+  cursor: pointer;
+  color: #3D4EAC;
+  border-bottom: 0.5px solid gray;
+}
+.sidebar li[data-v-df0ec889]:hover, .sidebar li.active[data-v-df0ec889] {
+  background-color: #DFE3FD;
+}
+
+/* Button section */
+.button-group[data-v-df0ec889] {
+  margin-top: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.sidebar-btn[data-v-df0ec889] {
+  width: 5rem;
+  margin: 5px 0;
+  border: none;
+  background-color: #3D4EAC;
+  color: white;
+  font-size: auto;
+  font-weight: 400;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 5px;
+}
+.download-btn[data-v-df0ec889] {
+  background-color: #979797;
+}
+.view-btn[data-v-df0ec889] {
+  background-color: #979797;
+}
+.share-btn[data-v-df0ec889] {
+  background-color: #4880FF;
+}
+
+
+
+
+.results-table[data-v-b90a6865] {
+  margin-top: 1rem;
+}
+.table-container[data-v-b90a6865] {
+  margin-left: 3rem;
+  margin-right: 3rem;
+  border-radius: 0.375rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  max-height: 80vh; 
+  overflow-y: auto;
+}
+table[data-v-b90a6865] {
+  width: 100%;
+}
+.table-header[data-v-b90a6865] {
+  border-bottom-width: 1px;
+  padding: 0.25rem;
+  font-weight: 600;
+  --tw-text-opacity: 1;
+  color: rgb(31 41 55 / var(--tw-text-opacity));
+  border-bottom: 1px solid rgba(209, 213, 219, 1); 
+  font-size: 0.2rem;
+}
+.table-cell[data-v-b90a6865] {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity));
+  height:0.5rem;
+  margin-top: 1px;
+  font-size: 0.3rem;
+}
+.border-b[data-v-b90a6865] {
+  border-bottom: 1px solid rgba(209, 213, 219, 1);
+}
+.border-b-gray-300[data-v-b90a6865] {
+  border-bottom: 1px solid;
+  border-color: #D1D5DB;
+}
+.bg-green-100[data-v-b90a6865] {
+  background-color: #E6FFFA;
+}
+.text-green-700[data-v-b90a6865] {
+  color: #2F855A;
+}
+.bg-blue-100[data-v-b90a6865] {
+  background-color: #EBF8FF;
+}
+.text-blue-700[data-v-b90a6865] {
+  color: #2B6CB0;
+}
+.bg-red-100[data-v-b90a6865] {
+  background-color: #FED7D7;
+}
+.text-red-700[data-v-b90a6865] {
+  color: #C53030;
+}
+
+
+#app {
+  width: 100%; /* Corrected from weight to width */
+  display: flex;
+  overflow: hidden; /* Changed from none to hidden */
+  height: 100vh; /* Ensure it takes full height of the viewport */
+  background-image: url('../../static/bgImage.png'); /* Move to CSS */
+  background-size: cover; /* Cover to fill the entire area */
+  background-repeat: no-repeat; /* Prevents repetition */
+}
+
+/* Add a specific height to Sidebar or ResultsTable if needed */
+ResultsTable {
+  flex: 1;
+  max-width: 25rem; /* Ensures it does not exceed this width */
+}

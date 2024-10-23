@@ -9632,7 +9632,7 @@ ${i3}
       }, wait);
     }
   }
-  var define_ROUTES_MAP_default = { "/pages/health/detection": { path: "/pages/health/detection", aliasPath: "/" }, "/pages/home/index": { path: "/pages/home/index" }, "/pages/login/pin": { path: "/pages/login/pin" }, "/pages/health/index": { path: "/pages/health/index" }, "/pages/registeration/index": { path: "/pages/registeration/index" }, "/pages/login/index": { path: "/pages/login/index" }, "/pages/login/consentForm": { path: "/pages/login/consentForm" }, "/pages/login/info": { path: "/pages/login/info" } };
+  var define_ROUTES_MAP_default = { "/pages/health/detection": { path: "/pages/health/detection", aliasPath: "/" }, "/pages/home/index": { path: "/pages/home/index" }, "/pages/login/pin": { path: "/pages/login/pin" }, "/pages/health/index": { path: "/pages/health/index" }, "/pages/registeration/index": { path: "/pages/registeration/index" }, "/pages/login/index": { path: "/pages/login/index" }, "/pages/login/consentForm": { path: "/pages/login/consentForm" }, "/pages/report/index": { path: "/pages/report/index" }, "/pages/login/info": { path: "/pages/login/info" } };
   var define_TABBAR_default = [];
   const _go = (path, params = {}, options2 = {
     redirect: false
@@ -22491,7 +22491,7 @@ This will fail in production.`);
       }
     });
   }
-  var define_ROUTES_default = [{ path: "/pages/health/detection", aliasPath: "/" }, { path: "/pages/home/index" }, { path: "/pages/login/pin" }, { path: "/pages/health/index" }, { path: "/pages/registeration/index" }, { path: "/pages/login/index" }, { path: "/pages/login/consentForm" }, { path: "/pages/login/info" }, { path: "/pages/health/detection", aliasPath: "/" }, { path: "/pages/home/index" }, { path: "/pages/login/pin" }, { path: "/pages/health/index" }, { path: "/pages/registeration/index" }, { path: "/pages/login/index" }, { path: "/pages/login/consentForm" }, { path: "/pages/login/info" }];
+  var define_ROUTES_default = [{ path: "/pages/health/detection", aliasPath: "/" }, { path: "/pages/home/index" }, { path: "/pages/login/pin" }, { path: "/pages/health/index" }, { path: "/pages/registeration/index" }, { path: "/pages/login/index" }, { path: "/pages/login/consentForm" }, { path: "/pages/report/index" }, { path: "/pages/login/info" }, { path: "/pages/health/detection", aliasPath: "/" }, { path: "/pages/home/index" }, { path: "/pages/login/pin" }, { path: "/pages/health/index" }, { path: "/pages/registeration/index" }, { path: "/pages/login/index" }, { path: "/pages/login/consentForm" }, { path: "/pages/report/index" }, { path: "/pages/login/info" }];
   const router = _({
     routes: [...define_ROUTES_default]
     // 路由表信息
