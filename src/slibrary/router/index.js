@@ -58,7 +58,7 @@ console.log(ROUTES_MAP)
   }
 
   // 页面登录拦截
-  if (nextRoute.meta?.auth && !$store('user').isLogin) {
+  if (nextRoute?.meta?.auth && !$store('user').isLogin) {
     showAuthModal();
     return;
   }
