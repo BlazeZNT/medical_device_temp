@@ -28,14 +28,18 @@
 		onShow
 	} from '@dcloudio/uni-app';
 	import {
-		resgister
+		resgister,
 	} from '@/services/api/auth';
-	
-	
+	import {
+		useUserStore
+	} from '@/stores/modules/user';
+	const userStore = useUserStore();
+
+
 	const userInfo = ref(null)
-	onLoad( () => {
+	onLoad(() => {
 		userInfo.value = uni.getStorageSync('regUserInfo')
-	})	
+	})
 	const code = ref('')
 
 	const loading = ref(false)
@@ -57,15 +61,18 @@
 		}
 
 		loading.value = true
-		
-		const res = await resgister({
-			...userInfo.value,
-			captcha: code.value
-		})
-		
-		
-		
-		console.log(res)
+
+		try {
+			await userStore.login({
+				...userInfo.value,
+				captcha: code.value
+			})
+			loading.value = false
+			slibrary.$router.go('/pages/index/index')
+		} catch {
+			loading.value = false
+			
+		}
 	}
 </script>
 

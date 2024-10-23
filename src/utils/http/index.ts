@@ -7,6 +7,7 @@ import { mockAdapter } from '@/mock';
 import { ContentTypeEnum, ResultEnum } from '@/enums/httpEnum';
 import type { API } from '@/services/model/baseModel';
 import { getAuthorization } from '@/utils/auth';
+import slibrary from '@/slibrary/index.js'
 
 const BASE_URL = getBaseUrl();
 
@@ -33,7 +34,7 @@ const alovaInstance = createAlova({
   beforeRequest: async (method) => {
     method.config.headers = assign(method.config.headers, ContentType);
     const { config } = method;
-    const ignoreAuth = !config.meta?.ignoreAuth;
+    const ignoreAuth = !config?.meta?.ignoreAuth;
     const authorization = ignoreAuth ? getAuthorization() : null;
     if (ignoreAuth && !authorization) {
       throw new Error('[请求错误]：未登录');
@@ -50,6 +51,7 @@ const alovaInstance = createAlova({
     onSuccess: async (response, method) => {
       const { config } = method;
       const { requestType } = config;
+	  console.log(response)
       const { statusCode, data: rawData, errMsg } = response as UniNamespace.RequestSuccessCallbackResult;
 	  
 	  

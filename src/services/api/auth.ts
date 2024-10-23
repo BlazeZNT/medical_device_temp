@@ -54,3 +54,14 @@ export function logout() {
 export function refreshToken() {
 	return request.Post<LoginModel>(REFRESH_TOKEN, {});
 }
+
+/**
+ * 刷新token
+ */
+export function checkCode(params) {
+	return request.Post<LoginModel>('/api/fronted/checkCode', params, {
+		meta: {
+			ignoreAuth: true,
+		},
+	});
+}

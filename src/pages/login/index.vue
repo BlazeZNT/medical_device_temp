@@ -74,16 +74,15 @@
 	const loading = ref(false)
 
 	const handleTapVerify = async () => {
-
 		loading.value = true
-
 		try {
 			const res = await sendCode({
 				email: form.value.email
 			})
+			slibrary.$helper.toast('发送成功！')
 			setTimeout(() => {
 				loading.value = false
-				// slibrary.$router.go('/pages/login/pin')
+				slibrary.$router.go('/pages/login/pin')
 			}, 1500)
 		}catch(err) {
 		}
