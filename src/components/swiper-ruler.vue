@@ -1,24 +1,13 @@
 <template>
 	<view>
 		<view class="rulerContainer">
-			<swiper v-if="ruleType==='cm'" @animationfinish="finishRuler" :current="current"
+			<swiper v-if="ruleType === 'cm'" @animationfinish="finishRuler" :current="current"
 				:display-multiple-items="40" :acceleration="true" :int="false">
-				<!-- 留30刻度以便可以左滑到底-->
-				<swiper-item v-for="(item,index) in 15" :key="index">
+				<swiper-item v-for="(item, index) in initialItems" :key="index">
 					<view class="swiper-item">
-						<view class="zoro-line" :class="((index)%10)==0||((index)%10)==5?'num-line-6':'num-line-3'">
-						</view>
-						<view class="text-num-init" v-if="(index/5)%1==0">
-							<view class="zoro-line-num" :class="(index/10)>=10?'big-line-num':''"></view>
-						</view>
-					</view>
-				</swiper-item>
-				<swiper-item v-for="(item,index) in (maxValue+225)" :key="index">
-					<view class="swiper-item">
-						<view class="zoro-line" :class="((index)%10)==0||((index)%10)==5?'num-line-6':'num-line-3'">
-						</view>
-						<view class="text-num-init" v-if="(index/10)%1==0">
-							<view class="zoro-line-num" :class="(index/10)>=10?'big-line-num':''">{{index/10}}</view>
+						<view class="zoro-line" :class="getLineClass(index)"></view>
+						<view class="text-num-init" v-if="isTextVisible(index)">
+							<view class="zoro-line-num" :class="getNumClass(index)">{{ getNumText(index) }}</view>
 						</view>
 					</view>
 				</swiper-item>
@@ -27,48 +16,58 @@
 		</view>
 	</view>
 </template>
+
 <script>
 	export default {
 		name: "SwiperRuler",
 		props: {
-			// 选中的页码
 			current: {
 				type: [Number, String],
 				default: 0
 			},
-			// 尺子大小 10cm 传100,10in 传100
 			maxValue: {
 				type: Number,
-				index: -2,
 				default: 225
 			},
-			// 尺子类型 cm,in
 			ruleType: {
 				type: String,
 				default: 'cm'
 			}
 		},
-		data() {
-			return {};
-		},
-		created() {
-
+		computed: {
+			initialItems() {
+				return [...Array(15).keys()].concat([...Array(this.maxValue + 226).keys()]);
+			}
 		},
 		methods: {
 			finishRuler(e) {
-				console.log(e)
-				console.log((e.detail.current / 10))
-				this.$emit('finishRuler', this.ruleType === 'cm' ? (e.detail.current / 10) : (1 / 16) * e.detail.current)
+				const value = this.ruleType === 'cm' ? (e.detail.current / 10) : (1 / 16) * e.detail.current;
+				console.log(value);  // Log the calculated value to the console
+				this.$emit('finishRuler', value);
+			},
+			getLineClass(index) {
+				return ((index) % 10 === 0 || (index) % 10 === 5) ? 'num-line-6' : 'num-line-3';
+			},
+			isTextVisible(index) {
+				return (index / 5) % 1 === 0;
+			},
+			getNumClass(index) {
+				return (index / 10) >= 10 ? 'big-line-num' : '';
+			},
+			getNumText(index) {
+				return (index / 10).toString();
 			}
 		}
 	};
 </script>
+
 <style>
 	.rulerContainer .uni-swiper-slide-frame {
 		left: 50%;
 		width: 8upx !important;
 	}
 </style>
+
 <style scoped>
 	.rulerContainer {
 		text-align: center;
@@ -156,7 +155,6 @@
 		width: 100%;
 		left: 0;
 		text-align: left;
-		/* position: relative; */
 		color: #fff;
 		font-size: 9upx;
 	}
