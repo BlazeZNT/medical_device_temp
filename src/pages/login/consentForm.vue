@@ -56,7 +56,7 @@
 	import slibrary from '@/slibrary/index.js'
 
 	const handleClickGotiRegister = () => {
-		slibrary.$router.go('/pages/registeration/index')
+		slibrary.$router.go('/pages/login/index')
 	}
 </script>
 

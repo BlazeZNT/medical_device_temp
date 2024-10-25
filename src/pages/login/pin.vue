@@ -68,7 +68,7 @@
 				captcha: code.value
 			})
 			loading.value = false
-			slibrary.$router.go('/pages/index/index')
+			slibrary.$router.go('/pages/health/index')
 		} catch {
 			loading.value = false
 			

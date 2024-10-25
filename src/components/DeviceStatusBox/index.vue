@@ -36,6 +36,7 @@
 		.status {
 			display: flex;
 			align-items: center;
+			position: relative;
 			
 			.status_text {
 				font-size: 8rpx;
@@ -45,18 +46,20 @@
 			.dot {
 				width: 8rpx;
 				height: 8rpx;
-				background: #04FF00;
+				// background: #04FF00;
 				border-radius: 100%;
+				position: relative;
+				
 				&::before {
 					content: '';
-					width: 10rpx;
-					height: 10rpx;
+					width: 8rpx;
+					height: 8rpx;
 					position: absolute;
 					left: 0px;
 					top: 0px;
 					border-radius: 50%;
 					animation: dot 1.5s ease-out 0s infinite;
-					background-color: #fff;
+					background-color: #04FF00;
 				}
 				
 			}

@@ -1,7 +1,7 @@
 <template>
   <div class="text-container">
     <span ref="scrollText" :class="{'scroll-text': isOverflow}">
-      {{ content }}
+     {{ content }}
     </span>
   </div>
 </template>
@@ -20,7 +20,7 @@ export default {
   },
   data() {
     return {
-      isOverflow: false, // 判断文字是否超出容器
+      isOverflow: true, // 判断文字是否超出容器
     };
   },
   mounted() {
@@ -30,7 +30,6 @@ export default {
     checkOverflow() {
       const container = this.$el;
       const text = this.$refs.scrollText;
-
       this.$nextTick(() => {
         // 判断文本宽度是否超出容器宽度
         this.isOverflow = text.offsetWidth > container.offsetWidth;
@@ -50,14 +49,14 @@ export default {
   overflow: hidden;
   /* border: 1px solid #ccc; */
   display: flex;
-  justify-content: center;
+  /* justify-content: center;	 */
   align-items: center;
 }
 
 .scroll-text {
   display: inline-block;
   white-space: nowrap;
-  animation: marquee var(--scrollDuration) linear infinite;
+  animation: marquee 0.3s linear infinite;
 }
 
 @keyframes marquee {

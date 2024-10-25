@@ -1,7 +1,7 @@
 <template>
 	<view class="page">
 		<view class="steps">
-			<StepBox @change="stepChange"></StepBox>
+			<StepBox :active="active" :activeIndex="activeIndex" @change="stepChange"></StepBox>
 		</view>
 
 		<view class="content">
@@ -9,7 +9,7 @@
 		</view>
 
 		<view class="footer">
-			<view class="logo">
+			<view class="logo" @click="slibrary.$router.go('/pages/home/index')">
 				<image src="@/static/logo.png"></image>
 			</view>
 
@@ -29,6 +29,7 @@
 	import HBA1C from "@/components/HealthStep/HBA1C.vue";
 	import HemoglobinTest from "@/components/HealthStep/HemoglobinTest.vue";
 	import Lipid from "@/components/HealthStep/Lipid.vue";
+	import slibrary from '@/slibrary/index.js'
 
 	const stepComponent = shallowRef(Height)
 
@@ -41,8 +42,14 @@
 		HBA1C,
 		Lipid
 	}
-
-	const stepChange = (e) => {
+	
+	
+	const active = ref('Height')
+	const activeIndex = ref(0)
+	
+	const stepChange = (e, i) => {
+		active.value = e.text	
+		activeIndex.value = i
 		stepComponent.value = Components[e.text]
 	}
 </script>

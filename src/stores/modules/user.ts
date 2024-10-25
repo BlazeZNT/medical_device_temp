@@ -12,10 +12,10 @@ export const useUserStore = defineStore('UserStore', () => {
 
 	// 初始化
 	function initUserInfo() {
-		if (isLogin()) {
-			token.value = getToken();
-			getUserInfo();
-		}
+		// if (isLogin()) {
+		// 	token.value = getToken();
+		// 	getUserInfo();
+		// }
 	}
 
 	// 是否登录
@@ -28,7 +28,7 @@ export const useUserStore = defineStore('UserStore', () => {
 			const res = await sendLogin(params);
 			token.value = res;
 			setToken(res);
-			await getUserInfo();
+			// await getUserInfo();
 		} catch (error) {
 			throw error;
 		}

@@ -1,15 +1,16 @@
 <template>
-	<scroll-view scroll-x="true" class="scrollBox flex-shrink-0" :show-scrollbar="false">
+	<scroll-view scroll-x="true" class="scrollBox flex-shrink-0" :show-scrollbar="false" :scroll-into-view="'setp' + props.activeIndex" scroll-with-animation	>
 		<view class="stepBox  space-x-40">
-			<view class="stepBoxItem" v-for="(item, index) in stepArr"
-				:class="[activeIndex == index ? 'activeSetp' : '', item.status == 'pass' ? 'doneStep' : '']"
+			<view class="stepBoxItem" :id="'setp' + index" v-for="(item, index) in stepArr"
+				:class="[props.active == item.text ? 'activeSetp' : '', item.status == 'pass' ? 'doneStep' : '']"
 				:key="item.id" @click="handleClickStep(item, index)">
 				<view class="bar"></view>
 				<view class="statusBox">
 					{{ item.status }}
 					<view class="statusIcon">
-						<up-icon name="checkmark-circle-fill" color="green" size="14" v-if="item.status == 'pass'"></up-icon>
-						<view class="activeSetp" v-if="item.status == 'activeSetp'"></view>
+						<up-icon name="checkmark-circle-fill" color="green" size="14"
+							v-if="item.status == 'pass'"></up-icon>
+						<view class="activeSetp" v-if="props.active == item.text"></view>
 						<view class="defaultIcon" v-else></view>
 					</view>
 					<view class="name">
@@ -25,11 +26,28 @@
 	import {
 		ref,
 		shallowRef,
-		markRaw
+		markRaw,
+		watch
 	} from 'vue'
 	import ScrollText from '@/components/ScrollText.vue'
 
-	const activeIndex = ref(0)
+
+	const props = defineProps({
+		active: {
+			type: String,
+			default: ''
+		},
+		activeIndex: {
+			type: Number,
+			default: 0
+		}
+	})
+
+	watch(() => props.active, (newVal) => {
+
+	})
+
+	// const activeIndex = ref(0)
 
 	const stepArr = shallowRef([{
 			id: 1,
@@ -47,68 +65,66 @@
 			id: 4,
 			text: 'Oximeter',
 			status: ''
-		}, {
-			id: 5,
-			text: 'BloodPressure',
-			status: ''
-		},
-		{
-			id: 6,
-			text: 'RandomBloodSugar',
-			status: ''
-			
-		}, {
-			id: 7,
-			text: 'HBA1C',
-			status: ''
-		}, {
-			id: 8,
-			text: 'HemoglobinTest',
-			status: ''
-			
-		}, {
-			id: 9,
-			text: 'Lipid',
-			status: ''
-			
-		}, {
-			id: 10,
-			text: 'SixLeadECG',
-			status: ''
-			
-		}, {
-			id: 10,
-			text: 'Spirometry',
-			status: ''
-		}, {
-			id: 10,
-			text: 'CardiovascularSystemicExamination',
-			status: ''
-		}, {
-			id: 10,
-			text: 'SnellenChart',
-			status: ''
-		}, {
-			id: 10,
-			text: 'Audiometry',
-			status: ''
-		}, {
-			id: 10,
-			text: 'Dermascope',
-			status: ''
-		}, {
-			id: 10,
-			text: 'Otoscope',
-			status: ''
 		}
+		// , {
+		// 	id: 5,
+		// 	text: 'BloodPressure',
+		// 	status: ''
+		// },
+		// {
+		// 	id: 6,
+		// 	text: 'RandomBloodSugar',
+		// 	status: ''
+
+		// }, {
+		// 	id: 7,
+		// 	text: 'HBA1C',
+		// 	status: ''
+		// }, {
+		// 	id: 8,
+		// 	text: 'HemoglobinTest',
+		// 	status: ''
+
+		// }, {
+		// 	id: 9,
+		// 	text: 'Lipid',
+		// 	status: ''
+
+		// }, {
+		// 	id: 10,
+		// 	text: 'SixLeadECG',
+		// 	status: ''
+
+		// }, {
+		// 	id: 10,
+		// 	text: 'Spirometry',
+		// 	status: ''
+		// }, {
+		// 	id: 10,
+		// 	text: 'CardiovascularSystemicExamination',
+		// 	status: ''
+		// }, {
+		// 	id: 10,
+		// 	text: 'SnellenChart',
+		// 	status: ''
+		// }, {
+		// 	id: 10,
+		// 	text: 'Audiometry',
+		// 	status: ''
+		// }, {
+		// 	id: 10,
+		// 	text: 'Dermascope',
+		// 	status: ''
+		// }, {
+		// 	id: 10,
+		// 	text: 'Otoscope',
+		// 	status: ''
+		// }
 	])
-	
+
 	const emit = defineEmits(['change'])
 	const handleClickStep = (item, index) => {
-		activeIndex.value = index
-		// stepArr.value[index - 1]['status'] = 'pass'
-		// stepArr.value[index]['status'] = 'activeSetp'
-		emit('change', stepArr.value[index])
+		emit('change', stepArr.value[index], index)
 	}
 </script>
 
@@ -130,6 +146,20 @@
 				// width: 300rpx;
 				// display: flex;
 				margin-right: 20rpx;
+
+				&.activeSetp {
+					.statusBox {
+						.name {
+							color: #04FF00;
+						}
+					}
+
+					.bar {
+						background: #04FF00;
+					}
+
+
+				}
 
 				.bar {
 					width: 120rpx;
@@ -155,89 +185,20 @@
 							border-radius: 100%;
 							border: 2rpx solid #fff;
 						}
-						
+
 						.activeSetp {
-							border: 4rpx solid green;
+							border: 4rpx solid #04FF00 !important;
 						}
 
 
 					}
 
 					.name {
+						width: 100rpx;
+						overflow: hidden;
 						color: #fff;
 					}
 				}
-
-				// &::after {
-				//   content: '';
-				//   position: absolute;
-				//   right: -10px;
-				//   top: 50%;
-				//   transform: translateY(-50%);
-				//   border-left: 10px solid #a0a5ff;
-				//   border-top: 10px solid transparent;
-				//   border-bottom: 10px solid transparent;
-				// }
-
-				// &.active {
-				//   background-color: #a0d5ff;
-				//   border-color: #1a73e8;
-				//   color: white;
-				// }
-
-
-				// .text {
-				// 	position: absolute;
-				// 	bottom: -40rpx;
-				// }
-
-				// .activeIcon {
-				// 	position: absolute;
-				// 	top: -70rpx;
-				// 	color: #fff;
-				// 	left: 50%;
-				// 	transform: translateX(-50%);
-				// 	z-index: 2;
-				// 	font-size: 20rpx;
-
-				// }
-
-				// &.activeSetp {
-				// 	.icon {
-				// 		width: 60px;
-				// 		height: 60px;
-				// 		border: 2px solid #fff;
-				// 		font-size: 28px;
-				// 		background-color: rgb(147, 197, 253);
-
-				// 		.fas {
-				// 			color: #fff !important;
-				// 		}
-				// 	}
-				// }
-
-
-
-				// &.doneStep {
-				// 	.icon {
-				// 		background-color: forestgreen;
-				// 		border: 2px solid #fff;
-				// 		color: #fff;
-
-				// 		.fas {
-				// 			color: #fff;
-				// 		}
-				// 	}
-				// }
-
-
-				// &:last-child {
-				// 	.icon {
-				// 		&::after {
-				// 			width: 0;
-				// 		}
-				// 	}
-				// }
 
 			}
 		}

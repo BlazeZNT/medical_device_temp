@@ -103,7 +103,7 @@
 		width: 500rpx;
 		height: 500rpx;
 		border-radius: 100%;
-		border: 4rpx solid green;
+		border: 4rpx solid #04FF00;
 		
 		background-image: linear-gradient(to right, rgba(#fff, 0.4), rgba(#fff, 0.2));
 		
@@ -119,11 +119,11 @@
 			font-weight: bold;
 			
 			.num {
-				color: green;
+				color: #04FF00;
 				font-size: 100rpx;
 			}
 			.tips {
-				color: green;
+				color: #04FF00;
 				font-size: 50rpx;
 			}
 		}
