@@ -1,11 +1,11 @@
 <template>
 	<view class="page">
 		<view class="steps">
-			<StepBox :active="active" :activeIndex="activeIndex" @change="stepChange"></StepBox>
+			<StepBox :active="active" :activeNum="activeIndex" @change="stepChange"></StepBox>
 		</view>
 
 		<view class="content">
-			<component :is="stepComponent"></component>
+			<component :initChange="init" :checkChange="check" :nextFun="nextFun" :is="stepComponent"></component>
 		</view>
 
 		<view class="footer">
@@ -14,6 +14,18 @@
 			</view>
 
 			<DeviceStatusBox></DeviceStatusBox>
+		</view>
+
+		<view class="loadingModal" v-if="showLoading">
+			<view class="mask"></view>
+			<view class="model">
+				<view class="loading">
+					<image src="@/static/loading.gif"></image>
+				</view>
+				<view class="text">
+					Detecting...
+				</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -31,6 +43,8 @@
 	import Lipid from "@/components/HealthStep/Lipid.vue";
 	import slibrary from '@/slibrary/index.js'
 
+	const showLoading = ref(false)
+
 	const stepComponent = shallowRef(Height)
 
 	const Components = {
@@ -42,15 +56,27 @@
 		HBA1C,
 		Lipid
 	}
-	
-	
+
+
 	const active = ref('Height')
 	const activeIndex = ref(0)
-	
+
 	const stepChange = (e, i) => {
-		active.value = e.text	
+		active.value = e.text
 		activeIndex.value = i
 		stepComponent.value = Components[e.text]
+	}
+	
+	const init = () => {
+		showLoading.value = true
+	}
+	
+	const check = () => {
+		showLoading.value = false
+	}
+	
+	const nextFun = () => {
+		activeIndex.value = activeIndex.value + 1
 	}
 </script>
 <style lang="scss" scoped>
@@ -99,5 +125,52 @@
 			overflow: hidden;
 			padding-bottom: 18rpx;
 		}
+	}
+
+	.loadingModal {
+		width: 100vw;
+		height: 100vh;
+		position: fixed;
+		left: 0;
+		top: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		.mask {
+			width: 100%;
+			height: 100%;
+			background: rgba(#000, 0.5);
+		}
+
+		.model {
+			width: 200rpx;
+			height: 200rpx;
+			border-radius: 20rpx;
+			background: #fff;
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+
+			.loading {
+				width: 130rpx;
+				height: 130rpx;
+
+				image {
+					width: 100%;
+					height: 100%;
+				}
+			}
+
+			.text {
+				font-size: 16rpx;
+			}
+		}
+
 	}
 </style>

@@ -1,7 +1,12 @@
 <template>
 	<ContentBox image="../../static/step/3.png">
-		<view class="charts-box">
-			<qiun-data-charts type="gauge" :opts="opts" :chartData="chartData" />
+		<view  style="display: flex; flex-direction: column; align-items: center">
+			<view class="charts-box">
+				<qiun-data-charts type="gauge" :opts="opts" :chartData="chartData" />
+			</view>
+			<view class="modelbtn" @click="nextFun">
+				Next
+			</view>
 		</view>
 	</ContentBox>
 </template>
@@ -12,6 +17,11 @@
 	export default {
 		components: {
 			ContentBox
+		},
+		props: {
+			initChange: Function,
+			checkChange: Function,
+			nextFun: Function
 		},
 		data() {
 			return {
@@ -59,7 +69,12 @@
 			};
 		},
 		mounted() {
-			this.getServerData();
+			this.initChange()
+						
+			setTimeout(() => {
+				this.getServerData();
+				this.checkChange()
+			}, 2000)
 		},
 		methods: {
 			getServerData() {
@@ -115,5 +130,16 @@
 		border-radius: 15rpx;
 		overflow: hidden;
 		padding: 20rpx;
+	}
+	.modelbtn {
+		width: 160rpx;
+		height: 40rpx;
+		color: #fff;
+		background: #56CCF2;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 20rpx;
+		margin-top: 40rpx;
 	}
 </style>

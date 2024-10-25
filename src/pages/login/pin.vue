@@ -68,6 +68,7 @@
 				captcha: code.value
 			})
 			loading.value = false
+			uni.removeStorage('regUserInfo')
 			slibrary.$router.go('/pages/health/index')
 		} catch {
 			loading.value = false

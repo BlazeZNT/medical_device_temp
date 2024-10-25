@@ -1,5 +1,6 @@
 <template>
-	<scroll-view scroll-x="true" class="scrollBox flex-shrink-0" :show-scrollbar="false" :scroll-into-view="'setp' + props.activeIndex" scroll-with-animation	>
+	<scroll-view scroll-x="true" class="scrollBox flex-shrink-0" :show-scrollbar="false"
+		:scroll-into-view="'setp' + props.activeIndex" scroll-with-animation>
 		<view class="stepBox  space-x-40">
 			<view class="stepBoxItem" :id="'setp' + index" v-for="(item, index) in stepArr"
 				:class="[props.active == item.text ? 'activeSetp' : '', item.status == 'pass' ? 'doneStep' : '']"
@@ -37,17 +38,14 @@
 			type: String,
 			default: ''
 		},
-		activeIndex: {
+		activeNum: {
 			type: Number,
 			default: 0
 		}
 	})
 
-	watch(() => props.active, (newVal) => {
 
-	})
-
-	// const activeIndex = ref(0)
+	const activeIndex = ref(0)
 
 	const stepArr = shallowRef([{
 			id: 1,
@@ -122,8 +120,17 @@
 		// }
 	])
 
+	watch(() => props.activeNum, (newVal) => {
+		console.log(newVal)
+		if (activeIndex.value != newVal) {
+			activeIndex.value = newVal
+			emit('change', stepArr.value[activeIndex.value], activeIndex.value)
+		}
+	})
+
 	const emit = defineEmits(['change'])
 	const handleClickStep = (item, index) => {
+		activeIndex.value = index
 		emit('change', stepArr.value[index], index)
 	}
 </script>
