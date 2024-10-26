@@ -12,7 +12,8 @@
 			<view class="content">
 				<view class="selectAll">
 					<up-button type="default" size="mini" text="Select All"
-						:customStyle="{ width: '100rpx', border: '1px solid #333'}" shape="circle"></up-button>
+						:customStyle="{ width: '100rpx', border: '1px solid #333', height: '30rpx'}"
+						@click="handleClickSelectAll" shape="circle"></up-button>
 				</view>
 				<view class="selectItemBox">
 					<view class="title">
@@ -23,7 +24,8 @@
 							<up-col span="3" v-for="(item, index) in generalHealthCheckupTags" :key="index">
 								<view class="item">
 									<up-button :type="selectTags.includes(item.label) ? 'primary' : 'default'"
-										size="mini" :text="item.label" :customStyle="{ border: '1px solid #333'}"
+										size="mini" :text="item.label"
+										:customStyle="{ border:selectTags.includes(item.label) ? '' : '1px solid #333', height: '30rpx' }"
 										shape="circle" @click="handleClickItem(item)"></up-button>
 								</view>
 							</up-col>
@@ -39,7 +41,8 @@
 							<up-col span="3" v-for="(item, index) in generalHealthCheckupTags" :key="index">
 								<view class="item">
 									<up-button :type="selectTags.includes(item.label) ? 'primary' : 'default'"
-										size="mini" :text="item.label" :customStyle="{ border: '1px solid #333'}"
+										size="mini" :text="item.label"
+										:customStyle="{ border: selectTags.includes(item.label)? '':'1px solid #333', height: '30rpx'}"
 										shape="circle" @click="handleClickItem(item)"></up-button>
 								</view>
 							</up-col>
@@ -139,6 +142,12 @@
 
 	const handleClickGotiRegister = () => {
 		slibrary.$router.go('/pages/health/detection')
+	}
+
+	const handleClickSelectAll = () => {
+		selectTags.value = generalHealthCheckupTags.value.map( item => {
+			return item.label
+		})
 	}
 </script>
 
