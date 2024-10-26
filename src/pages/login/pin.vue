@@ -4,7 +4,7 @@
 		<view class="content">
 			<CardBox title="M-Pin Verification" tip="Please type in your 6 digit M-Pin tp continue">
 				<view class="boxcenter">
-					<up-code-input v-model="code" :maxlength="6"></up-code-input>
+					<up-code-input :space="12" v-model="code" :maxlength="6"></up-code-input>
 
 					<view class="btn">
 						<up-button type="primary" size="small" text="Verify" :disabled="!code" @tap="handleTapVerify"
@@ -97,6 +97,10 @@
 
 			.boxcenter {
 				margin-top: 10rpx;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
 			}
 
 			.btn {
@@ -104,5 +108,8 @@
 			}
 
 		}
+	}
+	:deep() {
+		
 	}
 </style>

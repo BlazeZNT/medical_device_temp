@@ -40,7 +40,7 @@
 			this.initChange()
 
 			setTimeout(() => {
-				this.kedu = 175
+				this.kedu = this.getRandomNumber(155, 200);
 				this.checkChange()
 			}, 2000)
 		},
@@ -49,6 +49,9 @@
 			finishRuler(e) {
 				this.kedu = e
 			},
+			getRandomNumber(min, max) {
+				return Math.floor(Math.random() * (max - min + 1)) + min;
+			}
 		},
 	};
 </script>

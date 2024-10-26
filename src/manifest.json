@@ -1,5 +1,5 @@
 {
-    "name" : "uniapp_vue3_vite_ts",
+    "name" : "Medical-examination-machine",
     "appid" : "__UNI__E511C15",
     "description" : "",
     "versionName" : "1.2.1",
@@ -44,7 +44,8 @@
                 "minSdkVersion" : 21
             },
             "ios" : {
-                "dSYMs" : false
+                "dSYMs" : false,
+                "idfa" : false
             },
             "sdkConfigs" : {
                 "ad" : {}

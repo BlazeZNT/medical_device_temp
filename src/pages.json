@@ -8,23 +8,15 @@
 			"^u-([^-].*)": "@/uni_modules/uview-plus/components/u-$1/u-$1.vue"
 		}
 	},
-	"pages": [
-		{
-			"path": "pages/health/detection",
-			"style": {
-				"navigationBarTitleText": "uni-app",
-				"navigationStyle": "custom"
-			}
-		},{
+	"pages": [{
 			"path": "pages/home/index",
 			"style": {
 				"navigationBarTitleText": "uni-app",
 				"navigationStyle": "custom",
 				"disableScroll": true
 			}
-		},
-		{
-			"path": "pages/login/pin",
+		}, {
+			"path": "pages/health/detection",
 			"style": {
 				"navigationBarTitleText": "uni-app",
 				"navigationStyle": "custom"
@@ -44,21 +36,6 @@
 				"navigationStyle": "custom"
 			}
 		},
-		
-		{
-			"path": "pages/login/index",
-			"style": {
-				"navigationBarTitleText": "uni-app",
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/login/consentForm",
-			"style": {
-				"navigationBarTitleText": "uni-app",
-				"navigationStyle": "custom"
-			}
-		},
 		{
 			"path": "pages/report/index",
 			"style": {
@@ -66,17 +43,42 @@
 				"navigationStyle": "custom",
 				"disableScroll": true
 			}
-		},
-		{
-			"path": "pages/login/info",
-			"style": {
-				"navigationBarTitleText": "uni-app",
-				"navigationStyle": "custom"
-			}
 		}
-		
 	],
-	"subPackages": [],
+	"subPackages": [{
+		"root": "pages/login",
+		"pages": [{
+			"path": "index",
+			"style": {
+				"navigationBarTitleText": "登录页",
+				"navigationStyle": "custom"
+			} 
+		},{
+			"path": "pin",
+			"style": {
+				"navigationBarTitleText": "获取验证码",
+				"navigationStyle": "custom"
+			} 
+		},{
+			"path": "consentForm",
+			"style": {
+				"navigationBarTitleText": "协议确认",
+				"navigationStyle": "custom"
+			} 
+		},{
+			"path": "info",
+			"style": {
+				"navigationBarTitleText": "登录信息",
+				"navigationStyle": "custom"
+			} 
+		},{
+			"path": "selectLogin",
+			"style": {
+				"navigationBarTitleText": "登录或者注册",
+				"navigationStyle": "custom"
+			} 
+		}]
+	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
@@ -88,9 +90,8 @@
 		"rpxCalcBaseDeviceWidth": 375, // rpx 计算使用的基准设备宽度，设备实际宽度超出 rpx 计算所支持的最大设备宽度时将按基准宽度计算，单位 px，默认值为 375
 		"rpxCalcIncludeWidth": 750 // rpx 计算特殊处理的值，始终按实际的设备宽度计算，单位 rpx，默认值为 750
 	},
-	"condition" : { //模式配置，仅开发期间生效
+	"condition": { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式(list 的索引项)
-		"list": [
-		]
+		"list": []
 	}
 }

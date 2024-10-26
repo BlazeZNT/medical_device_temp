@@ -9,21 +9,24 @@
 					</view>
 					<view class="text">Health Checkup</view>
 				</view>
-				<view class="btns-item">
+				<view class="btns-item" @click="handleClickReport">
 					<view class="icon">
-						<image :src="slibrary.$url.static('/static/home/icon_ExamMultiple-Choice.png')" mode="heightFix"></image>
+						<image :src="slibrary.$url.static('/static/home/icon_ExamMultiple-Choice.png')"
+							mode="heightFix"></image>
 					</view>
 					<view class="text">Report</view>
 				</view>
 				<view class="btns-item">
 					<view class="icon">
-						<image :src="slibrary.$url.static('/static/home/icon_HealthWorkerForm.png')" mode="heightFix"></image>
+						<image :src="slibrary.$url.static('/static/home/icon_HealthWorkerForm.png')" mode="heightFix">
+						</image>
 					</view>
 					<view class="text">eHealth Record</view>
 				</view>
 				<view class="btns-item">
 					<view class="icon">
-						<image :src="slibrary.$url.static('/static/home/icon_MedicalAdvice.png')" mode="heightFix"></image>
+						<image :src="slibrary.$url.static('/static/home/icon_MedicalAdvice.png')" mode="heightFix">
+						</image>
 					</view>
 					<view class="text">Telemedicine</view>
 				</view>
@@ -35,9 +38,22 @@
 <script setup>
 	import FixedLogo from '@/components/Common/FixedLogo.vue'
 	import slibrary from '@/slibrary/index.js'
-	
+	import {
+		isLogin
+	} from '@/utils/auth';
+
 	const handleClickHealthCheckUp = () => {
-		slibrary.$router.go('/pages/login/consentForm')
+		console.log(isLogin())
+		if (!isLogin()) {
+			slibrary.$router.go('/pages/login/selectLogin')
+			return
+		}
+
+		slibrary.$router.go('/pages/health/index')
+	}
+	
+	const handleClickReport = () => {
+		slibrary.$router.go('/pages/report/index')
 	}
 </script>
 
