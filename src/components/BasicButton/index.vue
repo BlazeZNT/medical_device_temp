@@ -1,32 +1,42 @@
 <script lang="ts" setup>
-import { buttonProps } from '@/components/BasicButton/prpos';
+import { buttonProps } from "@/components/BasicButton/prpos";
 
 const props = defineProps(buttonProps);
-const emits = defineEmits(['click']);
+const emits = defineEmits(["click"]);
 function click() {
-  emits('click');
+  emits("click");
 }
 </script>
 
 <template>
-  <view class="default-btn" :disabled="props.disabled" @tap="click">
+  <view
+    class="default-btn"
+    :class="[{ borderBtn: props.borderBtn }]"
+    :disabled="props.disabled"
+    @tap="click"
+  >
     <slot />
   </view>
 </template>
 
 <style lang="scss" scoped>
 .default-btn {
-  color: #fff;
-  border-width: 4rpx;
-  border-color: #bfdbfe;
-  border-style: solid;
-  border-radius: 6rpx;
-  background-color: #60a5fa;
-  padding: 12rpx 26rpx;
+  width: 100%;
+  padding: 6rpx 0;
   display: inline-block;
-  font-size: 24rpx;
+  font-size: 14px;
+  background: #fff;
+  border-radius: 8px;
+  font-family: FB;
+  text-align: center;
+  &.borderBtn {
+    background: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+    font-family: FL;
+  }
   &:hover {
-    background-color: #3b82f6;
+    // background-color: #3b82f6;
   }
 }
 </style>

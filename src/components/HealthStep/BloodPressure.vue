@@ -1,164 +1,218 @@
 <template>
-	<ContentBox image="../../static/step/6.png" :showImg="showImg">
-		<view class="model" v-if="!showImg">
-			<view class="content">
-				<view class="title">
-					Steps to follow:
-				</view>
-				<view class="tips">
-					<text>1. Wear the cuff over your arm</text>
-					<text>2. Press the start button on the blood pressure device</text>
-				</view>
-			</view>
-			<view class="modelbtn" @click="handleClickStart">
-				Start
-			</view>
-		</view>
-		<view class="box" v-else>
-			<view class="data-item">
-				<view class="num">{{num1}}</view>
-				<view class="tip">SYS<br />mmHg</view>
-			</view>
-			<view class="data-item">
-				<view class="num">{{num2}}</view>
-				<view class="tip">DIA<br />mmHg</view>
-			</view>
-			<view class="data-item">
-				<view class="num">{{num3}}</view>
-				<view class="tip">PUL<br />bpm</view>
-			</view>
-		</view>
-	</ContentBox>
+  <ContentBox>
+    <view
+      style="
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      "
+    >
+      <view
+        style="
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        "
+        v-if="!showHeapler"
+      >
+        <div class="charsBox">
+          <div class="charsItem" v-for="(item, index) in dataList" :key="index">
+            <GaugePie
+              :title="item.title"
+              :subTitle="item.projectName"
+              :value="item.value"
+              :min="item.min"
+              :max="item.max"
+              :unit="item.unit"
+            ></GaugePie>
+          </div>
+          <div class="charsItem charsItem2">
+            <div
+              class="charsItem"
+              v-for="(item, index) in dataList2"
+              :key="index"
+            >
+              <GaugePie2
+                :title="item.title"
+                :subTitle="item.projectName"
+                :value="item.value"
+                :min="item.min"
+                :max="item.max"
+                :unit="item.unit"
+              ></GaugePie2>
+            </div>
+          </div>
+        </div>
+        <view class="btnsbox">
+          <BasicButton @click="handleClickStart">START</BasicButton>
+        </view>
+      </view>
+      <HelperBox
+        img="../../static/health/healper/5.png"
+        :tips="tips"
+        @next="handleClickNext"
+        v-if="showHeapler"
+      ></HelperBox>
+    </view>
+  </ContentBox>
 </template>
+	  
+	  <script setup>
+import ContentBox from "@/components/HealthStep/ContentBox.vue";
+import HelperBox from "./HelperBox.vue";
+import { onMounted, ref, nextTick, reactive, onBeforeUnmount } from "vue";
+import BasicButton from "@/components/BasicButton/index.vue";
+import GaugePie from "../Charts/GaugePie.vue";
+import GaugePie2 from "../Charts/GaugePie2.vue";
 
-<script>
-	import ContentBox from './ContentBox.vue'
+const props = defineProps({
+  initChange: Function,
+  checkChange: Function,
+  nextFun: Function,
+});
+const tips = `1.Stand on the height measurement device.<br>2.Press the start button  on the device`;
 
-	export default {
-		components: {
-			ContentBox
-		},
-		data() {
-			return {
-				num1: this.getRandomNumber(),
-				num2: this.getRandomNumber(),
-				num3: this.getRandomNumber(),
-				showImg: false
-			}
-		},
-		mounted() {
-			this.interval = setInterval(() => {
-				this.updateValues();
-			}, 1000); // 每隔1秒更新一次
-		},
-		unMounted() {
-			clearInterval(this.interval); // 组件销毁时清除定时器
-		},
-		methods: {
-			handleClickStart() {
-				this.showImg = true
-			},
-			getRandomNumber() {
-				return Math.floor(Math.random() * (200 - 20 + 1)) + 20;
-			},
-			updateValues() {
-				this.num1 = this.getRandomNumber();
-				this.num2 = this.getRandomNumber();
-				this.num3 = this.getRandomNumber();
-			},
-		}
-	};
+const dataList = ref([
+  {
+    title: "PULSE",
+    projectName: "pulse/min",
+    value: 0,
+    min: 0,
+    max: 100,
+    unit: "",
+  },
+]);
+
+const dataList2 = ref([
+  {
+    title: "SYSTOLIC",
+    projectName: "PRBPM",
+    value: 0,
+    min: 0,
+    max: 100,
+    unit: "mm Hg",
+  },
+  {
+    title: "DIASTOLIC",
+    projectName: "PRBPM",
+    value: 0,
+    min: 0,
+    max: 100,
+    unit: "mm Hg",
+  },
+]);
+
+const myChart = ref(null);
+
+const showHeapler = ref(true);
+const handleClickNext = () => {
+  showHeapler.value = false;
+};
+
+let timer = ref(null);
+const handleClickStart = () => {
+  timer.value = setInterval(() => {
+    dataList.value[0].value = generateRandomNumber(0, 100);
+	dataList2.value[0].value = generateRandomNumber(0, 100);
+    dataList2.value[1].value = generateRandomNumber(0, 100);
+    console.log(dataList.value);
+  }, 1000);
+};
+
+onMounted(() => {});
+
+onUnmounted(() => {
+  timer.value && clearInterval(timer.value);
+});
+
+function generateRandomNumber(min, max) {
+  // 生成一个介于 min 和 max 之间的随机数
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 </script>
+	  
+	  
+  <style lang="scss" scoped>
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
 
+  .num {
+    color: #fff;
+    font-size: 24rpx;
+    margin-bottom: 20rpx;
+  }
+}
 
-<style lang="scss" scoped>
-	.functional {
-		width: 100%;
-		height: 100%;
-		position: relative;
+.modelbtn {
+  width: 160rpx;
+  height: 40rpx;
+  color: #fff;
+  background: #56ccf2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20rpx;
+  margin-top: 40rpx;
+}
 
-		.btn {
-			padding: 20rpx;
-			background: #04FF00;
-			color: #fff;
-			border-radius: 20rpx;
-		}
-	}
+.btnsbox {
+  width: 155.21rpx;
+}
 
-	.box {
-		width: 200rpx;
-		height: 200rpx;
-		display: flex;
-		flex-direction: column;
-		background: #fff;
-		border-radius: 20rpx;
-		padding: 20rpx;
+.sitchBtn {
+  width: 91.15rpx;
+  height: 25rpx;
+  background: #303a45;
+  border-radius: 3rpx 3rpx 3rpx 3rpx;
+  padding: 3rpx 4rpx;
+  display: flex;
+  overflow: hidden;
+  margin-bottom: 20rpx;
 
-		.data-item {
-			display: flex;
-			justify-content: flex-end;
-			align-items: center;
-			color: #4880FF;
+  .sitchBtn-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    border-radius: 3rpx 3rpx 3rpx 3rpx;
+    font-family: FB;
+    font-weight: 800;
+    font-size: 8rpx;
+    color: #fff;
+    line-height: 10rpx;
+    text-align: left;
+    font-style: normal;
+    text-transform: none;
 
-			.num {
-				font-size: 40rpx;
-				margin-right: 10rpx;
-			}
+    &.active {
+      background: #12ffbb;
+      color: #000;
+    }
+  }
+}
 
-			.tip {
-				line-height: 15rpx;
-				color: #333;
-				width: 50rpx;
-			}
-		}
-	}
-
-	.model {
-		width: 70%;
-		height: 80%;
-		transform: translateY(-30rpx);
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-
-		.content {
-			background: #fff;
-			border-radius: 20rpx;
-			width: 100%;
-			height: 100%;
-			margin-bottom: 20rpx;
-			padding: 20rpx;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-
-			.title {
-				font-size: 28rpx;
-				color: #4880FF;
-				margin-bottom: 20rpx;
-			}
-
-			.tips {
-				font-size: 24rpx;
-				display: flex;
-				flex-direction: column;
-
-				text {
-					margin-bottom: 10rpx;
-				}
-			}
-		}
-
-		.modelbtn {
-			width: 160rpx;
-			height: 40rpx;
-			color: #fff;
-			background: #56CCF2;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			border-radius: 20rpx;
-		}
-	}
+.charsBox {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+  .charsItem {
+    flex: 1;
+    height: 100%;
+    &.charsItem2 {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
 </style>

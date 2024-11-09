@@ -1,98 +1,80 @@
 <template>
-	<view class="page">
-		<view class="logo">
-			<image src="@/static/logo.png"></image>
+	<LayoutContent showBack @back="handleClickBack">
+		<view class="pageView" v-if="state.step == 1">
+			<view class="pageView-title">Create Patient Account</view>
+			<view class="form">
+				<uni-forms label-position="top" label-width="120rpx" :border="false" :modelValue="state.userInfo">
+					<view class="column">
+						<uni-forms-item label="Name*" name="name" style="margin-right: 20rpx;">
+							<uni-easyinput type="text" v-model="state.userInfo.name" placeholder="Name" />
+						</uni-forms-item>
+						<uni-forms-item label="Email*" name="email">
+							<uni-easyinput type="text" v-model="state.userInfo.email" placeholder="Email" />
+						</uni-forms-item>
+					</view>
+					<view class="column">
+						<uni-forms-item label="Gender*" name="gender" style="margin-right: 20rpx;">
+							<uni-data-select v-model="state.userInfo.gender" :localdata="state.genders"
+								placeholder="Select Gender"></uni-data-select>
+						</uni-forms-item>
+						<uni-forms-item label="Blood Group" name="Blood">
+							<uni-data-select v-model="state.userInfo.gender" :localdata="state.genders"
+								placeholder="Select Gender"></uni-data-select>
+						</uni-forms-item>
+					</view>
+					<view class="column">
+						<uni-forms-item label="Date of birth" name="birth" style="margin-right: 20rpx;">
+							<uni-datetime-picker type="date" :value="state.userInfo.birth" start="1940-1-1" />
+						</uni-forms-item>
+						<uni-forms-item label="Aadhar Card Number" name="email">
+							<uni-easyinput type="text" v-model="state.userInfo.email" placeholder="Card Number" />
+						</uni-forms-item>
+					</view>
+					<view class="column">
+						<uni-forms-item label="Phone Number*" name="phone" style="margin-right: 20rpx;">
+							<uni-easyinput type="text" v-model="state.userInfo.name" placeholder="Phone Number" />
+						</uni-forms-item>
+						<uni-forms-item label="Unique ID" name="email">
+							<uni-easyinput type="email" v-model="state.userInfo.email" placeholder="ID Number" />
+						</uni-forms-item>
+					</view>
+				</uni-forms>
+				<BasicButton @click="handleClickRegister">
+					Register
+				</BasicButton>
+			</view>
 		</view>
-		<view class="card">
-			<view class="header">
-				<view class="pinBox_title">
-					Create an Account
+		<view class="pageView" v-else-if="state.step == 2">
+			<view class="pageView-title">Input <i>Pin Verification</i></view>
+			<view class="pinBox">
+				<CodeInput :digitboxcount="6"></CodeInput>
+				<view class="pinBtn">
+					<BasicButton @click="handleClickLoginCreate">
+						CREATE
+					</BasicButton>
 				</view>
 			</view>
-			<view class="content">
-				<up-form :labelWidth="100" labelPosition="top" :model="state.userInfo" :rules="state.rules"
-					ref="formRef">
-					<up-row :gutter="40">
-						<up-col span="6">
-							<up-form-item label="Name" prop="name" borderBottom ref="item1">
-								<up-input v-model="state.userInfo.name" placeholder="Name"></up-input>
-							</up-form-item>
-						</up-col>
-						<up-col span="6">
-							<up-form-item label="Email" prop="email" borderBottom ref="item1">
-								<up-input v-model="state.userInfo.email" placeholder="Email"></up-input>
-							</up-form-item>
-						</up-col>
-					</up-row>
-					<up-row :gutter="40">
-						<up-col span="6">
-							<up-form-item label="Gender" prop="gender" borderBottom ref="item1"
-								@click="state.showSex = true;">
-								<up-input v-model="state.userInfo.gender" disabled disabledColor="#ffffff"
-									placeholder="Please select gender">
-									<template #suffix>
-										<up-icon name="arrow-down"></up-icon>
-									</template>
-								</up-input>
-							</up-form-item>
-						</up-col>
-						<up-col span="6">
-							<up-form-item label="Date of Birth" prop="birth" borderBottom>
-								<up-datetime-picker style="width: 100%;" hasInput v-model="state.dateTime"
-									mode="date" :formatter="formatter" @change="dateChange"></up-datetime-picker>
-							</up-form-item>
-						</up-col>
-					</up-row>
-					<up-row :gutter="40">
-						<up-col span="6">
-							<up-form-item label="Phone Number" prop="phone" borderBottom ref="item1">
-								<up-input v-model="state.userInfo.phone" placeholder="Phone Number"></up-input>
-							</up-form-item>
-						</up-col>
-					</up-row>
-					<!-- <up-row :gutter="40">
-						<up-col span="6">
-							<up-form-item label="Phone Number" prop="userInfo.phone" borderBottom ref="item1">
-								<up-input v-model="state.model1.userInfo.phone" placeholder="Name"></up-input>
-							</up-form-item>
-						</up-col>
-						<up-col span="6">
-							<up-form-item label="Abha" prop="userInfo.name" borderBottom ref="item1">
-								<up-input v-model="state.model1.userInfo.name" placeholder="Email"></up-input>
-							</up-form-item>
-						</up-col>
-					</up-row> -->
-				</up-form>
-			</view>
-			<view class="footer">
-				<up-button type="primary" size="mini" text="Register" :customStyle="{ width: '240rpx'}"
-					@click="handleClickGotiRegister"></up-button>
-			</view>
 		</view>
-		<up-action-sheet :show="state.showSex" :actions="state.actions" title="Please select gender"
-			@close="state.showSex = false" @select="sexSelect">
-		</up-action-sheet>
-	</view>
+	</LayoutContent>
 </template>
 
 <script setup>
-	import slibrary from '@/slibrary/index.js'
+	import LayoutContent from "@/components/Layout/Content.vue";
+	import slibrary from "@/slibrary/index.js";
+	import BasicButton from "@/components/BasicButton/index.vue";
+	import CodeInput from "@/components/CodeInput/index.vue";
+
 	import {
 		ref,
 		reactive
-	} from 'vue';
-
+	} from "vue";
 	import {
 		sendCode
-	} from '@/services/api/auth';
-	import dayjs from 'dayjs/esm/index';
+	} from "@/services/api/auth";
 
-
-	// 使用 reactive 创建响应式状态  
+	// 使用 reactive 创建响应式状态
 	const state = reactive({
-		showSex: false,
-		showDate: false,
-		dateTime: '',
+		step: 1,
 		userInfo: {
 			name: '',
 			gender: '',
@@ -100,16 +82,16 @@
 			birth: '',
 			phone: ''
 		},
-		actions: [{
-				name: '男',
+		genders: [{
+				text: 'Male',
 				value: 'Man'
 			},
 			{
-				name: '女',
+				text: 'Female',
 				value: 'Woman'
 			},
 			{
-				name: '保密',
+				text: 'Secrecy',
 				value: 'null'
 			},
 		],
@@ -147,128 +129,165 @@
 		switchVal: false,
 	});
 
-	// 使用 ref 创建响应式引用  
-	const formRef = ref(null);
-
-	// 定义方法  
-	function sexSelect(e) {
-		state.userInfo.gender = e.value;
-		if (formRef.value) {
-			formRef.value.validateField('sex');
+	const loading = ref(false);
+	const handleClickBack = () => {
+		if (state.setp != 1) {
+			state.setp = state.setp - 1;
 		}
-	}
-	const loading = ref(false)
-	const handleClickGotiRegister = () => {
-		formRef.value.validate().then(async valid => {
-			if (valid) {
-				loading.value = true
-				try {
-					const res = await sendCode({
-						email: state.userInfo.email
-					})
-					loading.value = false
-					uni.setStorageSync('regUserInfo', {
-						...state.userInfo
-					})
-					slibrary.$router.go('/pages/login/pin')
-				} catch (err) {}
-
-			}
-		});
-
-	}
-	const dateChange = (e) => {
-		state.userInfo.birth = dayjs(e.value).format('YYYY-MM-DD')
-		console.log(state.userInfo.birth)
-		if (formRef.value) {
-			formRef.value.validateField('birth');
-		}
+	};
+	const handleClickRegister = () => {
+		state.step = 2
 	}
 
-	const formatter = (type, value) => {
-		if (type === 'year') {
-			return `${value}年`;
-		}
-		if (type === 'month') {
-			return `${value}月`;
-		}
-		if (type === 'day') {
-			return `${value}日`;
-		}
-		return value;
+	const handleClickLoginCreate = () => {
+		slibrary.$router.go("/pages/health/index");
+	}
+
+
+	const handleTapVerify = async () => {
+		loading.value = true;
+
+		setTimeout(() => {
+			slibrary.$helper.toast("Successfully sent！");
+			setTimeout(() => {
+				loading.value = false;
+				slibrary.$router.go("/pages/login/pin");
+			}, 1500);
+		}, 1000);
+		// try {
+		// 	const res = await sendCode({
+		// 		email: form.value.email
+		// 	})
+		// 	slibrary.$helper.toast('Successfully sent！')
+		// 	setTimeout(() => {
+		// 		loading.value = false
+		// 		slibrary.$router.go('/pages/login/pin')
+		// 	}, 1500)
+		// }catch(err) {
+		// }
 	};
 </script>
 
 <style lang="scss" scoped>
-	.page {
-		width: 100vw;
-		height: 100vh;
-		overflow: hidden;
-		padding: 20rpx auto;
-		position: relative;
+	.pageView {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
 
-		.logo {
-			width: 92rpx;
-			height: 77.5rpx;
-			position: fixed;
-			top: 20rpx;
-			left: 50%;
-			transform: translateX(-50%);
+		.pinBox {
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
 
-
-			image {
-				width: 100%;
-				height: 100%;
+			.pinBtn {
+				margin-top: 50rpx;
+				width: 436rpx;
+				display: flex;
+				justify-content: center;
 			}
 		}
 
-		.card {
-			background: #fff;
-			width: 80%;
-			height: 75%;
-			position: absolute;
-			bottom: 0;
-			left: 50%;
-			transform: translateX(-50%);
-			border-radius: 10rpx 10rpx 0 0;
+		&-title {
+			font-family: FB;
+			color: #fff;
+			font-size: 20px;
+			margin-bottom: 20px;
+
+			i {
+				color: #06ffb8;
+			}
+		}
+	}
+
+	.form {
+		width: 386.46rpx;
+
+		.column {
 			display: flex;
-			flex-direction: column;
-			padding: 10rpx;
+			width: 100%;
+		}
+	}
 
-			.header {
-				flex-shrink: 0;
-				padding: 5rpx;
+	:deep() {
+		.uni-forms-item {
+			flex: 1;
+		}
 
-				.pinBox_title {
-					text-align: center;
-					font-size: 14rpx;
-					color: #202224;
-					font-weight: bold;
-					margin-bottom: 10rpx;
-				}
+		.uni-forms-item__label {
+			font-family: FL;
 
-				.pinBox_tip {
-					text-align: center;
-					font-size: 10rpx;
-					color: #202224;
-				}
+			text {
+				color: #58FFCF;
+				font-size: 9rpx !important;
+				line-height: 10rpx;
+				text-align: left;
+				font-style: normal;
+				text-transform: none;
 			}
+		}
 
-			.footer {
-				flex-shrink: 0;
-				display: flex;
-				padding: 5rpx;
-			}
+		.uni-easyinput__content.is-input-border {
+			background-color: transparent !important;
+			border: 1px solid #D8D8D8 !important;
+			color: #fff !important;
+		}
 
-			.content {
-				flex: 1;
-				overflow: hidden;
-				overflow-y: auto;
-				padding: 10rpx;
-				font-size: 8rpx;
-				color: #333;
-				line-height: 14rpx;
+		.uni-select__input-text {
+			color: #fff !important;
+			font-size: 9rpx !important;
+			line-height: 10rpx;
+		}
+
+		.uni-select__selector {
+			background: #323D49 !important;
+			box-shadow: 0rpx 7rpx 7rpx 4rpx #1B2028 !important;
+			border-radius: 2rpx 2rpx 2rpx 2rpx !important;
+			border: none !important;
+		}
+
+		.uni-popper__arrow_bottom {
+			display: none !important;
+		}
+
+		.uni-select__selector-item {
+			padding: 4rpx 6rpx !important;
+
+			text {
+				color: #fff !important;
+				font-size: 9rpx;
+				color: #FFFFFF;
+				line-height: 13rpx;
 			}
+		}
+
+		.uni-date-x--border {
+			border: 1px solid #D8D8D8 !important;
+		}
+
+		.uni-date-x {
+			background: transparent !important;
+			color: #fff !important;
+
+		}
+
+		.uni-calendar__content {
+			background: #323D49 !important;
+		}
+
+		.uni-calendar-item--disable .uni-calendar-item__weeks-box-text-disable {
+			color: #666 !important;
+		}
+
+		.uni-calendar-item__weeks-box-text {
+			color: #fff !important;
+		}
+
+		.uni-datetime-picker--btn {
+			background-color: #58FFCF !important;
 		}
 	}
 </style>

@@ -1,92 +1,181 @@
 <template>
-	<ContentBox image="../../static/step/4.png">
-		<view class="charts-box">
-			<qiun-data-charts type="arcbar" :opts="opts" :chartData="chartData" />
-		</view>
-	</ContentBox>
+  <ContentBox>
+    <view
+      style="
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      "
+    >
+      <view
+        style="
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        "
+        v-if="!showHeapler"
+      >
+        <div class="charsBox">
+          <div class="charsItem" v-for="(item, index) in dataList" :key="index">
+            <GaugePie
+              :title="item.title"
+              :subTitle="item.projectName"
+              :value="item.value"
+              :min="item.min"
+              :max="item.max"
+              :unit="item.unit"
+            ></GaugePie>
+          </div>
+        </div>
+        <view class="btnsbox">
+          <BasicButton @click="handleClickStart">START</BasicButton>
+        </view>
+      </view>
+      <HelperBox  img="../../static/health/healper/4.png" :tips="tips" @next="handleClickNext" v-if="showHeapler"></HelperBox>
+    </view>
+  </ContentBox>
 </template>
+	
+	<script setup>
+import ContentBox from "@/components/HealthStep/ContentBox.vue";
+import HelperBox from "./HelperBox.vue";
+import { onMounted, ref, nextTick, reactive, onBeforeUnmount } from "vue";
+import BasicButton from "@/components/BasicButton/index.vue";
+import GaugePie from "../Charts/GaugePie.vue";
+const props = defineProps({
+  initChange: Function,
+  checkChange: Function,
+  nextFun: Function,
+});
+const tips = `1.Place your index finger into the<br> oximeter’s clip with the sensor.<br>2.Press the start button  on the device`
 
-<script>
-	import ContentBox from './ContentBox.vue'
+const dataList = ref([
+  {
+    title: "OXYGEN",
+    projectName: "SPO2",
+    value: 0,
+    min: 0,
+    max: 100,
+    unit: "%",
+  },
+  {
+    title: "PULSE",
+    projectName: "PRBPM",
+    value: 0,
+    min: 0,
+    max: 500,
+    unit: "bpm",
+  },
+])
 
-	export default {
-		components: {
-			ContentBox
-		},
-		data() {
-			return {
-				chartData: {},
-				//您可以通过修改 config-ucharts.js 文件中下标为 ['gauge'] 的节点来配置全局默认参数，如都是默认参数，此处可以不传 opts 。实际应用过程中 opts 只需传入与全局默认参数中不一致的【某一个属性】即可实现同类型的图表显示不同的样式，达到页面简洁的需求。
-				opts: {
-					padding: undefined,
-					title: {
-						name: "80%",
-						fontSize: 40,
-						color: "#2fc25b"
-					},
-					subtitle: {
-						name: "",
-						fontSize: 50,
-						color: "#666666"
-					},
-					extra: {
-						arcbar: {
-							type: "default",
-							width: 20,
-							backgroundColor: "#E9E9E9",
-							startAngle: 0.75,
-							endAngle: 0.25,
-							gap: 2,
-							linearType: "custom"
-						}
-					}
-				}
-			};
-		},
-		mounted() {
-			this.getServerData();
-		},
-		methods: {
-			getServerData() {
-				//模拟从服务器获取数据时的延时
-				//模拟从服务器获取数据时的延时
-				setTimeout(() => {
-					//模拟服务器返回数据，如果数据格式和标准格式不同，需自行按下面的格式拼接
-					let res = {
-						series: [{
-							name: "%",
-							color: "#2fc25b",
-							data: 0.8
-						}]
-					};
-					this.chartData = JSON.parse(JSON.stringify(res));
-				}, 500);
-			},
-		}
-	};
+const myChart = ref(null);
+
+const showHeapler = ref(true);
+const handleClickNext = () => {
+  showHeapler.value = false;
+};
+
+let timer = ref(null)
+const handleClickStart = () => {
+	timer.value = setInterval( () => {
+		dataList.value[0].value = generateRandomNumber(0, 100)
+		dataList.value[1].value = generateRandomNumber(0, 500)
+		console.log(dataList.value)
+	}, 1000)
+};
+
+onMounted(() => {
+	
+});
+
+onUnmounted( () => {
+	timer.value && clearInterval(timer.value)
+})
+
+function generateRandomNumber(min, max) {
+  // 生成一个介于 min 和 max 之间的随机数
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 </script>
-
-
+	
+	
 <style lang="scss" scoped>
-	.functional {
-		width: 100%;
-		height: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
-		position: relative;
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
 
-		.btn {
-			padding: 10rpx;
-			background: green;
-			color: #fff;
-			border-radius: 20rpx;
-		}
-	}
+  .num {
+    color: #fff;
+    font-size: 24rpx;
+    margin-bottom: 20rpx;
+  }
+}
 
-	.charts-box {
-		width: 200rpx;
-		height: 200rpx;
-	}
+.modelbtn {
+  width: 160rpx;
+  height: 40rpx;
+  color: #fff;
+  background: #56ccf2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20rpx;
+  margin-top: 40rpx;
+}
+
+.btnsbox {
+  width: 155.21rpx;
+}
+
+.sitchBtn {
+  width: 91.15rpx;
+  height: 25rpx;
+  background: #303a45;
+  border-radius: 3rpx 3rpx 3rpx 3rpx;
+  padding: 3rpx 4rpx;
+  display: flex;
+  overflow: hidden;
+  margin-bottom: 20rpx;
+
+  .sitchBtn-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    border-radius: 3rpx 3rpx 3rpx 3rpx;
+    font-family: FB;
+    font-weight: 800;
+    font-size: 8rpx;
+    color: #fff;
+    line-height: 10rpx;
+    text-align: left;
+    font-style: normal;
+    text-transform: none;
+
+    &.active {
+      background: #12ffbb;
+      color: #000;
+    }
+  }
+}
+
+.charsBox {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+  .charsItem {
+    flex: 1;
+    height: 100%;
+  }
+}
 </style>

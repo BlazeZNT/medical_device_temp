@@ -1,41 +1,10 @@
 <template>
-	<view class="page">
-		<FixedLogo />
-		<view class="content">
-			<view class="btns">
-				<view class="btns-item" @click="handleClickHealthCheckUp">
-					<view class="icon">
-						<image :src="slibrary.$url.static('/static/home/icon_Outpatient.png')" mode="heightFix"></image>
-					</view>
-					<view class="text">Health Checkup</view>
-				</view>
-				<view class="btns-item" @click="handleClickReport">
-					<view class="icon">
-						<image :src="slibrary.$url.static('/static/home/icon_ExamMultiple-Choice.png')"
-							mode="heightFix"></image>
-					</view>
-					<view class="text">Report</view>
-				</view>
-				<view class="btns-item">
-					<view class="icon">
-						<image :src="slibrary.$url.static('/static/home/icon_HealthWorkerForm.png')" mode="heightFix">
-						</image>
-					</view>
-					<view class="text">eHealth Record</view>
-				</view>
-				<view class="btns-item">
-					<view class="icon">
-						<image :src="slibrary.$url.static('/static/home/icon_MedicalAdvice.png')" mode="heightFix">
-						</image>
-					</view>
-					<view class="text">Telemedicine</view>
-				</view>
-			</view>
-		</view>
-	</view>
+	<LayoutContent></LayoutContent>
 </template>
 
 <script setup>
+	import LayoutContent from '@/components/Layout/Content.vue'
+	
 	import FixedLogo from '@/components/Common/FixedLogo.vue'
 	import slibrary from '@/slibrary/index.js'
 	import {
@@ -43,13 +12,15 @@
 	} from '@/utils/auth';
 
 	const handleClickHealthCheckUp = () => {
-		console.log(isLogin())
-		if (!isLogin()) {
-			slibrary.$router.go('/pages/login/selectLogin')
-			return
-		}
+		// console.log(isLogin())
+		// if (!isLogin()) {
+		// 	slibrary.$router.go('/pages/login/selectLogin')
+		// 	return
+		// }
 
-		slibrary.$router.go('/pages/health/index')
+		// slibrary.$router.go('/pages/health/index')
+		slibrary.$router.go('/pages/login/selectLogin')
+		
 	}
 	
 	const handleClickReport = () => {
@@ -58,49 +29,53 @@
 </script>
 
 <style lang="scss" scoped>
-	.page {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		width: 100vw;
-		height: 100vh;
+	// .page {
+	// 	display: flex;
+	// 	flex-direction: column;
+	// 	justify-content: center;
+	// 	align-items: center;
+	// 	// width: 100vw;
+	// 	// height: 100vh;
 
-		.content {
-			display: flex;
-			justify-content: space-evenly;
+	// 	.content {
+	// 		display: flex;
+	// 		justify-content: space-evenly;
 
-			.btns {
-				display: flex;
+	// 		.btns {
+	// 			display: flex;
 
-				.btns-item {
-					width: 150rpx;
-					height: 150rpx;
-					background-color: #fff;
-					border-radius: 10rpx;
-					margin-right: 20rpx;
-					display: flex;
-					justify-content: center;
-					align-items: center;
-					box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
-					flex-direction: column;
+	// 			.btns-item {
+	// 				width: 150px;
+	// 				height: 150px;
+	// 				background-color: #fff;
+	// 				border-radius: 10px;
+	// 				margin-right: 20px;
+	// 				display: flex;
+	// 				justify-content: center;
+	// 				align-items: center;
+	// 				box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+	// 				flex-direction: column;
 
-					.icon {
-						// width: 50rpx;
-						height: 50rpx;
-						margin-bottom: 20rpx;
-					}
+	// 				.icon {
+	// 					// width: 50px;
+	// 					height: 50px;
+	// 					margin-bottom: 20px;
+	// 					image {
+	// 						width: 100%;
+	// 						height: 100%;
+	// 					}
+	// 				}
 
-					.text {
-						font-size: 14rpx;
-					}
+	// 				.text {
+	// 					font-size: 14px;
+	// 				}
 
-					&:last-child {
-						margin-right: 0;
-					}
+	// 				&:last-child {
+	// 					margin-right: 0;
+	// 				}
 
-				}
-			}
-		}
-	}
+	// 			}
+	// 		}
+	// 	}
+	// }
 </style>

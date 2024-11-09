@@ -48,32 +48,38 @@
 		if (!code.value) {
 			uni.showToast({
 				icon: 'none',
-				title: '请输入验证码'
+				title: 'Please enter the verification code'
 			})
 			return
 		}
 		if (code.value.length < 6) {
 			uni.showToast({
 				icon: 'none',
-				title: '请输入6位验证码'
+				title: 'Please enter a 6-digit verification code'
 			})
 			return
 		}
 
 		loading.value = true
 
-		try {
-			await userStore.login({
-				...userInfo.value,
-				captcha: code.value
-			})
-			loading.value = false
-			uni.removeStorage('regUserInfo')
+		setTimeout(() => {
+			slibrary.$helper.toast('Successfully！')
 			slibrary.$router.go('/pages/health/index')
-		} catch {
 			loading.value = false
-			
-		}
+		}, 1500)
+
+		// try {
+		// 	await userStore.login({
+		// 		...userInfo.value,
+		// 		captcha: code.value
+		// 	})
+		// 	loading.value = false
+		// 	uni.removeStorage('regUserInfo')
+		// 	slibrary.$router.go('/pages/health/index')
+		// } catch {
+		// 	loading.value = false
+
+		// }
 	}
 </script>
 
@@ -109,7 +115,6 @@
 
 		}
 	}
-	:deep() {
-		
-	}
+
+	:deep() {}
 </style>

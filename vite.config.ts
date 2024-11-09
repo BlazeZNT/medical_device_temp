@@ -13,6 +13,14 @@ import { createVitePlugins, currentPlatform, resolveProxy } from './build';
 
 import { uniReadPagesV3Plugin }  from './src/slibrary/router/utils/uni-read-pages-v3.js';
 // import mpliveMainfestPlugin from './sheep/libs/mplive-manifest-plugin';
+
+
+const define = {}
+if(!["mp-weixin", "h5", "web"].includes(process.env.UNI_PLATFORM)) {
+    define['global'] =  null
+    define['wx'] =  'uni'
+}
+
 export default defineConfig(async ({ mode }) => {
 	const root = process.cwd();
 	const env = loadEnv(mode, resolve(root, 'env'));
@@ -34,6 +42,7 @@ export default defineConfig(async ({ mode }) => {
 			'process.env': {},
 			'PLATFORM': JSON.stringify(currentPlatform),
 			'ROUTES': new TransformPages().routes,
+			...define
 		},
 		css: {
 			preprocessorOptions: {

@@ -13,7 +13,7 @@ const messages = {
 const i18n = createI18n({
   legacy: false,
   globalInjection: true,
-  locale: getLocalData('lang') == '' ? uni.getLocale() : getLocalData('lang'),
+  locale: getLocalData('lang') == '' ? 'en' : getLocalData('lang'),
   messages: messages
 })
 export default i18n

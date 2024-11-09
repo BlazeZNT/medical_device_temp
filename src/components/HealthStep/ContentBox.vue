@@ -1,10 +1,5 @@
 <template>
 	<view class="w-full h-full flex devicesSontent">
-		<view class="left" v-if="image && showImg">
-			<view class="img">
-				<image style="width: 100%;height: 100%;" :src="image"  ref="imgRef" alt="" mode="scaleToFill" />
-			</view>
-		</view>
 		<view class="right">
 			<slot></slot>
 		</view>

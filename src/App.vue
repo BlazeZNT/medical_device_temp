@@ -16,18 +16,14 @@
 </script>
 
 <style lang="scss">
-	@import "@/uni_modules/uview-plus/index.scss";
+	// @import "@/uni_modules/uview-plus/index.scss";
 	// @import 'tailwindcss/utilities';
 	// @import 'tailwindcss/base';
 	// @import 'tailwindcss/components';
+	@import '@/static/fonts/font.css';
 	@import '@/scss/main.scss';
 
 	page {
-		width: 100vw;
-		height: 100vh;
-		border-radius: 4rpx solid blue;
-		background-image: url('@/static/bgImage.png');
-		background-size: 100% 100%;
-		background-repeat: no-repeat;
+		
 	}
 </style>

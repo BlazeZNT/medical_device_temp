@@ -2,7 +2,7 @@
     <view class="u-datetime-picker">
         <view v-if="hasInput" class="u-datetime-picker__has-input"
             @click="showByClickInput = !showByClickInput"
-        >
+        > 
             <up-input
                 :placeholder="placeholder"
                 :readonly="!!showByClickInput"
@@ -320,8 +320,9 @@
 			updateColumns() {
 			    const formatter = this.formatter || this.innerFormatter
 				// 获取各列的值，并且map后，对各列的具体值进行补0操作
-			    const results = this.getOriginColumns().map((column) => column.values.map((value) => formatter(column.type, value)))
+			    const results = this.getOriginColumns().map((column) => column.values.map((value) => value))
 				this.columns = results
+				
 			},
 			getOriginColumns() {
 			    // 生成各列的值

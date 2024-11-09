@@ -1,176 +1,214 @@
 <template>
-	<view class="page">
-		<view class="steps">
-			<StepBox :active="active" :activeNum="activeIndex" @change="stepChange"></StepBox>
-		</view>
-
-		<view class="content">
-			<component :initChange="init" :checkChange="check" :nextFun="nextFun" :is="stepComponent"></component>
-		</view>
-
-		<view class="footer">
-			<view class="logo" @click="slibrary.$router.go('/pages/home/index')">
-				<image src="@/static/logo.png"></image>
-			</view>
-
-			<DeviceStatusBox></DeviceStatusBox>
-		</view>
-
-		<view class="loadingModal" v-if="showLoading">
-			<view class="mask"></view>
-			<view class="model">
-				<view class="loading">
-					<image src="@/static/loading.gif"></image>
-				</view>
-				<view class="text">
-					Detecting...
-				</view>
-			</view>
-		</view>
-	</view>
+  <LayoutContent>
+    <view class="pageView">
+      <view class="leftCard">
+        <view class="leftCardTitle">
+          <uni-icons type="home" color="#58FFCF" size="34"></uni-icons>
+          <view class="line">|</view>
+          <view class="title">General Checkup</view>
+        </view>
+        <scroll-view scroll-y="true" class="scrollMenu">
+          <view
+            class="menuItem"
+            :class="active == item.name ? 'active' : ''"
+            v-for="(item, key) in ProjectList"
+            :key="key"
+            @click="handleClickMenu(item, key)"
+          >
+            <view class="icon">
+              <image :src="getImg(item.icon)"></image>
+            </view>
+            {{ item.name }}
+          </view>
+        </scroll-view>
+      </view>
+      <view class="pageView-content">
+        <component :is="stepComponent"></component>
+      </view>
+    </view>
+  </LayoutContent>
 </template>
+
 <script setup>
-	import DeviceStatusBox from '@/components/DeviceStatusBox/index.vue'
-	import StepBox from '@/components/StepBox/index.vue'
-	import Height from "@/components/HealthStep/Height.vue";
-	import BodyFat from "@/components/HealthStep/BodyFat.vue";
-	import Erwen from "@/components/HealthStep/Erwen.vue";
-	import Oximeter from "@/components/HealthStep/Oximeter.vue";
-	import BloodPressure from "@/components/HealthStep/BloodPressure.vue";
-	import RandomBloodSugar from "@/components/HealthStep/RandomBloodSugar.vue";
-	import HBA1C from "@/components/HealthStep/HBA1C.vue";
-	import HemoglobinTest from "@/components/HealthStep/HemoglobinTest.vue";
-	import Lipid from "@/components/HealthStep/Lipid.vue";
-	import slibrary from '@/slibrary/index.js'
+import LayoutContent from "@/components/Layout/Content.vue";
+import slibrary from "@/slibrary/index.js";
+import BasicButton from "@/components/BasicButton/index.vue";
+import BtnCard from "@/components/Card/BtnCard.vue";
+import Height from "@/components/HealthStep/Height.vue";
+import Weight from "@/components/HealthStep/Weight.vue";
+import Temperature from "@/components/HealthStep/Temperature.vue";
+import Oximeter from "@/components/HealthStep/Oximeter.vue";
+import BloodPressure from "@/components/HealthStep/BloodPressure.vue";
+import Spirometer from "@/components/HealthStep/Spirometer.vue";
+import Egc from "@/components/HealthStep/Egc.vue";
 
-	const showLoading = ref(false)
+import { ref, reactive, shallowRef } from "vue"; 
 
-	const stepComponent = shallowRef(Height)
+const ProjectList = {
+  Weight: {
+    icon: "../../static/health/icons/1.png",
+    name: "WEIGHT",
+    component: Weight,
+  },
+  Height: {
+    icon: "../../static/health/icons/2.png",
+    name: "HEIGHT",
+    component: Height,
+  },
+  Temperature: {
+    icon: "../../static/health/icons/3.png",
+    name: "TEMPERATURE",
+    component: Temperature,
+  },
+  Oximeter: {
+    icon: "../../static/health/icons/4.png",
+    name: "OXIMETER",
+    component: Oximeter,
+  },
+  BloodPressure: {
+    icon: "../../static/health/icons/5.png",
+    name: "BLOOD PRESSURE",
+    component: BloodPressure,
+  },
+  Spirometer: {
+    icon: "../../static/health/icons/5.png",
+    name: "SPIROMETER",
+    component: Spirometer,
+  },
+  Egc: {
+    icon: "../../static/health/icons/5.png",
+    name: "Egc",
+    component: Egc,
+  },
+};
 
-	const Components = {
-		Height: Height,
-		BodyFat: BodyFat,
-		Erwen,
-		Oximeter,
-		BloodPressure,
-		HBA1C,
-		Lipid
-	}
+const stepComponent = shallowRef(Weight);
 
+const Components = {
+  Weight,
+};
 
-	const active = ref('Height')
-	const activeIndex = ref(0)
+const active = ref("HEIGHT");
 
-	const stepChange = (e, i) => {
-		active.value = e.text
-		activeIndex.value = i
-		stepComponent.value = Components[e.text]
-	}
-	
-	const init = () => {
-		showLoading.value = true
-	}
-	
-	const check = () => {
-		showLoading.value = false
-	}
-	
-	const nextFun = () => {
-		activeIndex.value = activeIndex.value + 1
-	}
+// 使用 reactive 创建响应式状态
+const state = reactive({
+  step: 1,
+});
+
+const handleClickMenu = (item, key) => {
+  stepComponent.value = item.component;
+  active.value = item.name;
+};
+
+const handleClickCard = () => {
+  slibrary.$router.go("/pages/health/detection");
+};
+
+const getImg = (url) => {
+  //正确方法
+  return new URL(url, import.meta.url).href;
+};
 </script>
+
 <style lang="scss" scoped>
-	.page {
-		width: 100vw;
-		height: 100vh;
-		display: flex;
-		flex-direction: column;
-		overflow: hidden;
+.pageView {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  overflow: hidden;
 
-		.steps {
-			flex-shrink: 0;
-			overflow: hidden;
-			width: 100vw;
-			padding: 20rpx;
-		}
+  .leftCard {
+    width: 197.4rpx;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, #2b3138 0%, #2b3138 100%, #1f252c 100%);
+    // opacity: 0.6;
+    flex-shrink: 0;
 
-		.footer {
-			flex-shrink: 0;
-			display: flex;
-			justify-content: space-between;
-			padding-bottom: 20rpx;
-			padding-left: 20rpx;
-			padding-right: 20rpx;
-			position: fixed;
-			bottom: 10rpx;
-			left: 0;
-			right: 0;
+    .leftCardTitle {
+      flex-shrink: 0;
+      padding: 15rpx;
+      display: flex;
+      align-items: center;
+      color: #fff;
+      font-size: 11rpx;
+      color: #ffffff;
+      line-height: 14rpx;
 
-			.logo {
-				width: 70rpx;
-				height: 50rpx;
+      .line {
+        margin: 0 6rpx;
+        color: #58ffcf;
+      }
+    }
 
+    .scrollMenu {
+      width: 100%;
+      flex: 1;
+      overflow: hidden;
+      padding: 0 15rpx;
 
-				image {
-					width: 100%;
-					height: 100%;
-				}
-			}
+      .menuItem {
+        display: flex;
+        align-items: center;
+        background: linear-gradient(
+          270deg,
+          rgba(40, 46, 53, 0.8) 0%,
+          rgba(50, 61, 73, 0.8) 100%
+        );
+        border-radius: 10rpx 10rpx 10rpx 10rpx;
+        padding: 15rpx 15rpx;
+        color: #fff;
+        font-size: 8rpx;
+        color: #ffffff;
+        line-height: 11rpx;
+        margin-bottom: 11rpx;
 
+        .icon {
+          width: 16.67rpx;
+          height: 16.67rpx;
+          background: #fff;
+          border-radius: 100%;
+          padding: 4rpx;
+          margin-right: 10rpx;
 
-		}
+          image {
+            width: 100%;
+            height: 100%;
+          }
+        }
 
-		.content {
-			flex: 1;
-			overflow: hidden;
-			padding-bottom: 18rpx;
-		}
-	}
+        &.active {
+          background: linear-gradient(
+            270deg,
+            rgba(88, 255, 207, 0.9) 0%,
+            rgba(60, 110, 255, 0.9) 43%,
+            rgba(42, 48, 55, 0.9) 100%
+          );
+          border-radius: 10rpx 10rpx 10rpx 10rpx;
 
-	.loadingModal {
-		width: 100vw;
-		height: 100vh;
-		position: fixed;
-		left: 0;
-		top: 0;
-		display: flex;
-		justify-content: center;
-		align-items: center;
+          .icon {
+            background: linear-gradient(180deg, #5beaff 0%, #58ffcf 100%);
+          }
+        }
+      }
+    }
+  }
 
-		.mask {
-			width: 100%;
-			height: 100%;
-			background: rgba(#000, 0.5);
-		}
+  .pageView-content {
+    flex: 1;
+    overflow: hidden;
+  }
+}
 
-		.model {
-			width: 200rpx;
-			height: 200rpx;
-			border-radius: 20rpx;
-			background: #fff;
-			position: absolute;
-			left: 50%;
-			top: 50%;
-			transform: translate(-50%, -50%);
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			flex-direction: column;
+:deep() {
+  .content-box {
+    padding: 0 !important;
+  }
 
-			.loading {
-				width: 130rpx;
-				height: 130rpx;
-
-				image {
-					width: 100%;
-					height: 100%;
-				}
-			}
-
-			.text {
-				font-size: 16rpx;
-			}
-		}
-
-	}
+  .menuItem .uni-icons {
+    line-height: 13px;
+  }
+}
 </style>
