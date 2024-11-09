@@ -48,8 +48,8 @@ const _go = (
     }
   }
 
+  console.log(ROUTES_MAP)
   const nextRoute = ROUTES_MAP[page];
-console.log(ROUTES_MAP)
   // 未找到指定跳转页面
   // mark: 跳转404页
   if (!nextRoute) {
