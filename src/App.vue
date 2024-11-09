@@ -3,7 +3,9 @@
 	import { useUserStore } from '@/stores/modules/user';
 
 	onLaunch(() => {
+		// #ifdef APP-PLUS
 		plus.navigator.setFullscreen(true);
+		// #endif
 	});
 	onShow(() => {
 		const userStore = useUserStore();
@@ -23,7 +25,5 @@
 	@import '@/static/fonts/font.css';
 	@import '@/scss/main.scss';
 
-	page {
-		
-	}
+	page {}
 </style>

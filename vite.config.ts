@@ -11,14 +11,14 @@ import TransformPages from 'uni-read-pages-vite';
 import postcssPlugins from './postcss.config';
 import { createVitePlugins, currentPlatform, resolveProxy } from './build';
 
-import { uniReadPagesV3Plugin }  from './src/slibrary/router/utils/uni-read-pages-v3.js';
+import { uniReadPagesV3Plugin } from './src/slibrary/router/utils/uni-read-pages-v3.js';
 // import mpliveMainfestPlugin from './sheep/libs/mplive-manifest-plugin';
 
 
 const define = {}
-if(!["mp-weixin", "h5", "web"].includes(process.env.UNI_PLATFORM)) {
-    define['global'] =  null
-    define['wx'] =  'uni'
+if (!["mp-weixin", "h5", "web"].includes(process.env.UNI_PLATFORM)) {
+	define['global'] = null
+	define['wx'] = 'uni'
 }
 
 export default defineConfig(async ({ mode }) => {
@@ -47,6 +47,7 @@ export default defineConfig(async ({ mode }) => {
 		css: {
 			preprocessorOptions: {
 				scss: {
+					silenceDeprecations: ["legacy-js-api"],
 					additionalData: '@import "./src/uni.scss";',
 				},
 			},

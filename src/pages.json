@@ -15,12 +15,20 @@
 				"navigationStyle": "custom",
 				"disableScroll": true,
 				"topWindow": true
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
 			}
 		}, {
 			"path": "pages/health/detection",
 			"style": {
 				"navigationBarTitleText": "uni-app",
 				"navigationStyle": "custom"
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
 			}
 		},
 		{
@@ -28,6 +36,10 @@
 			"style": {
 				"navigationBarTitleText": "uni-app",
 				"navigationStyle": "custom"
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
 			}
 		},
 		{
@@ -35,6 +47,10 @@
 			"style": {
 				"navigationBarTitleText": "uni-app",
 				"navigationStyle": "custom"
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
 			}
 		},
 		{
@@ -43,6 +59,10 @@
 				"navigationBarTitleText": "uni-app",
 				"navigationStyle": "custom",
 				"disableScroll": true
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
 			}
 		}
 	],
@@ -53,30 +73,50 @@
 			"style": {
 				"navigationBarTitleText": "登录页",
 				"navigationStyle": "custom"
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
 			}
 		}, {
 			"path": "pin",
 			"style": {
 				"navigationBarTitleText": "获取验证码",
 				"navigationStyle": "custom"
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
 			}
 		}, {
 			"path": "consentForm",
 			"style": {
 				"navigationBarTitleText": "协议确认",
 				"navigationStyle": "custom"
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
 			}
 		}, {
 			"path": "info",
 			"style": {
 				"navigationBarTitleText": "登录信息",
 				"navigationStyle": "custom"
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
 			}
 		}, {
 			"path": "selectLogin",
 			"style": {
 				"navigationBarTitleText": "登录或者注册",
 				"navigationStyle": "custom"
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
 			}
 		}]
 	}],
