@@ -92,6 +92,13 @@ const handleClickNext = () => {
 };
 const handleClickStart = () => {};
 
+
+onBeforeUnmount( () => {
+	if (myChart.value) {
+		myChart.value.dispose()
+	}
+})
+
 const option = computed(() => {
   return {
     tooltip: {

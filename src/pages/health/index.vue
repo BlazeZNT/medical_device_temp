@@ -89,8 +89,15 @@
 		scrollRightFlag: false
 	});
 
-	const handleClickCard = () => {
-		slibrary.$router.go("/pages/health/detection");
+	const handleClickCard = (type) => {
+		switch (type) {
+			case 1:
+				slibrary.$router.go("/pages/health/detection");
+				break;
+			case 3:
+				slibrary.$router.go("/pages/report/report");
+
+		}
 	}
 
 	const scroll = (e) => {

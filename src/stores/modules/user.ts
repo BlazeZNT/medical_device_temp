@@ -3,7 +3,7 @@ import { getUserInfoApi } from '@/services/api/user';
 import type { UserInfoModel } from '@/services/model/userModel';
 import { login as loginApi, checkCode } from '@/services/api/auth';
 import { getToken, isLogin, setToken } from '@/utils/auth';
-import { removeCache } from '@/utils/cache';
+// import { removeCache } from '@/utils/cache';
 import { TOKEN_KEY } from '@/enums/cacheEnum';
 
 export const useUserStore = defineStore('UserStore', () => {
@@ -25,7 +25,7 @@ export const useUserStore = defineStore('UserStore', () => {
 	const { send: sendLogin } = useRequest(checkCode, { immediate: false });
 	async function login(params : LoginParams) {
 		try {
-			const res = await sendLogin(params);
+			const res = await sendLogin(params); 
 			token.value = res;
 			setToken(res);
 			// await getUserInfo();

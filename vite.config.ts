@@ -47,7 +47,6 @@ export default defineConfig(async ({ mode }) => {
 		css: {
 			preprocessorOptions: {
 				scss: {
-					silenceDeprecations: ["legacy-js-api"],
 					additionalData: '@import "./src/uni.scss";',
 				},
 			},

@@ -87,106 +87,10 @@ onMounted(() => {
   // 组件能被调用必须是组件的节点已经被渲染到页面上
 });
 
-const myChart = ref(null);
+const handleClickStart = () => {
+	
+}
 
-const showHeapler = ref(true);
-const handleClickNext = () => {
-  showHeapler.value = false;
-  setTimeout(async () => {
-    if (!chartRef.value) return;
-    myChart.value = await chartRef.value.init(echarts);
-    myChart.value.setOption(option.value);
-  }, 300);
-};
-const handleClickStart = () => {};
-
-const option = computed(() => {
-  return {
-    tooltip: {
-      trigger: "axis",
-    },
-    xAxis: {
-      type: "category",
-      boundaryGap: false,
-      data: Array.from({ length: 13 }, (_, i) => i),
-      axisLabel: {
-        show: false, // 隐藏 X 轴的刻度标签
-      },
-      splitLine: {
-        show: true,
-        lineStyle: {
-          color: "#333",
-        },
-      },
-    },
-    yAxis: {
-      type: "value",
-      max: 12,
-      axisLabel: {
-        show: false, // 隐藏 Y 轴的数值
-      },
-      splitLine: {
-        show: false,
-        lineStyle: {
-          color: function (params) {
-            return params.value === 0 ? "#333" : "transparent"; // 仅显示 0 刻度线
-          },
-        },
-      },
-      axisLine: {
-        show: false,
-        lineStyle: {
-          color: "#333",
-        },
-      },
-      axisTick: {
-        show: false, // 隐藏刻度
-      },
-    },
-    series: [
-      {
-        name: "Flow",
-        type: "line",
-        smooth: true,
-        data: [0, 2, 5, 8, 10, 12, 10, 8, 5, 2, 1, 0, 0],
-        lineStyle: {
-          width: 3,
-          color: {
-            type: "linear",
-            x: 0,
-            y: 0,
-            x2: 1,
-            y2: 0,
-            colorStops: [
-              { offset: 0, color: "#33CCFF" },
-              { offset: 1, color: "#66FF66" },
-            ],
-          },
-        },
-      },
-      {
-        name: "Volume",
-        type: "line",
-        smooth: true,
-        data: [0, -1, -3, -5, -8, -10, -8, -5, -3, -1, 0, 0, 0],
-        lineStyle: {
-          width: 3,
-          color: {
-            type: "linear",
-            x: 0,
-            y: 0,
-            x2: 1,
-            y2: 0,
-            colorStops: [
-              { offset: 0, color: "#9933FF" },
-              { offset: 1, color: "#FF6633" },
-            ],
-          },
-        },
-      },
-    ],
-  };
-});
 </script>
 
 <style lang="scss" scoped>

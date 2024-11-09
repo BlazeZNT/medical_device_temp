@@ -88,7 +88,7 @@ const Components = {
   Weight,
 };
 
-const active = ref("HEIGHT");
+const active = ref("WEIGHT");
 
 // 使用 reactive 创建响应式状态
 const state = reactive({

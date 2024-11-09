@@ -64,6 +64,12 @@ onMounted(() => {
   }, 300);
 });
 
+onBeforeUnmount( () => {
+	if(myChart.value) {
+		myChart.value.dispose()
+	}
+})
+
 const option = computed(() => {
   return {
     title: {

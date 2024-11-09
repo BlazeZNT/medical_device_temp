@@ -64,6 +64,18 @@
 				"tabBar": true,
 				"ignoreAuth": true
 			}
+		},
+		{
+			"path": "pages/report/report",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom",
+				"disableScroll": true
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
+			}
 		}
 	],
 	"subPackages": [{

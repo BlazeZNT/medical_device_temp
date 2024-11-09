@@ -69,6 +69,12 @@ onMounted(() => {
   }, 300);
 });
 
+onBeforeUnmount( () => {
+	if(myChart.value) {
+		myChart.value.dispose()
+	}
+})
+
 function updateData() {
   // 新增数据（这里是随机数作为示例，可以替换为实际数据）
   var newData = Math.round(Math.random() * 500);
