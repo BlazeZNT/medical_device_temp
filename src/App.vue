@@ -4,7 +4,7 @@
 
 	onLaunch(() => {
 		// #ifdef APP-PLUS
-		plus.navigator.setFullscreen(true);
+		// plus.navigator.setFullscreen(true);
 		// #endif
 	});
 	onShow(() => {

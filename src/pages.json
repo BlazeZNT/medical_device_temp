@@ -137,7 +137,7 @@
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#0B0D2E",
-		"pageOrientation": "landscape",
+		// "pageOrientation": "landscape",
 		"navigationStyle": "custom",
 		"rpxCalcMaxDeviceWidth": 1440, // rpx 计算所支持的最大设备宽度，单位 px，默认值为 960
 		"rpxCalcBaseDeviceWidth": 375, // rpx 计算使用的基准设备宽度，设备实际宽度超出 rpx 计算所支持的最大设备宽度时将按基准宽度计算，单位 px，默认值为 375
