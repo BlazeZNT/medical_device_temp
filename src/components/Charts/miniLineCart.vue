@@ -107,7 +107,7 @@ const option = computed(() => {
     title: {
       text: props.title,
       left: "5%",
-      top: "9%",
+      top: "5%",
       textStyle: {
         fontSize: 12,
         color: "#06FFB8",

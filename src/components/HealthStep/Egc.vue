@@ -162,8 +162,8 @@ const handleClickStart = () => {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  grid-column-gap: 20rpx;
-  grid-row-gap: 20rpx;
+  grid-column-gap: 10rpx;
+  grid-row-gap: 10rpx;
 
   .charts-item {
     width: 100%;

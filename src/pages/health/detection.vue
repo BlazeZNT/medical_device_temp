@@ -106,7 +106,7 @@ const handleClickCard = () => {
 
 const getImg = (url) => {
   //正确方法
-  return new URL(url, import.meta.url).href;
+  return url
 };
 </script>
 

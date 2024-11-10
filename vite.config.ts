@@ -15,11 +15,11 @@ import { uniReadPagesV3Plugin } from './src/slibrary/router/utils/uni-read-pages
 // import mpliveMainfestPlugin from './sheep/libs/mplive-manifest-plugin';
 
 
-const define = {}
-if (!["mp-weixin", "h5", "web"].includes(process.env.UNI_PLATFORM)) {
-	define['global'] = null
-	define['wx'] = 'uni'
-}
+// const define = {}
+// if(!["mp-weixin", "h5", "web"].includes(process.env.UNI_PLATFORM)) {
+// 	define['global'] =  null
+// 	define['wx'] =  'uni'
+// }
 
 export default defineConfig(async ({ mode }) => {
 	const root = process.cwd();
@@ -42,7 +42,7 @@ export default defineConfig(async ({ mode }) => {
 			'process.env': {},
 			'PLATFORM': JSON.stringify(currentPlatform),
 			'ROUTES': new TransformPages().routes,
-			...define
+			// ...define
 		},
 		css: {
 			preprocessorOptions: {

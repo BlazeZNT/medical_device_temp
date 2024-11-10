@@ -31,7 +31,7 @@
 								<view class="icon">
 									<image src="@/static/health/3.png" mode="heightFix"></image>
 								</view>
-								<view class="text">REPORTP<br />&nbsp;</view>
+								<view class="text">REPORT<br />&nbsp;</view>
 							</BtnCard>
 						</view>
 					</view>

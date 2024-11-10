@@ -7,7 +7,6 @@ import { mockAdapter } from '@/mock';
 import { ContentTypeEnum, ResultEnum } from '@/enums/httpEnum';
 import type { API } from '@/services/model/baseModel';
 import { getAuthorization } from '@/utils/auth';
-import slibrary from '@/slibrary/index.js'
 
 const BASE_URL = getBaseUrl();
 

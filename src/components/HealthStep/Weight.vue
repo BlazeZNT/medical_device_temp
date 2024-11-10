@@ -80,7 +80,7 @@
 	};
 	const handleClickStart = () => {
 		weightValue.value = Math.floor(Math.random() * 301);
-		startDynamicUpdate();
+		updateChartData(weightValue.value);
 	};
 
 	let interval = null; // 定时器
@@ -103,7 +103,6 @@
 		if (interval) {
 			clearInterval(interval); // 清理定时器
 		}
-
 		if (myChart.value) { //销毁图表原来的实例,避免重复
 			myChart.value.dispose()
 		}
@@ -207,12 +206,32 @@
 						show: 0,
 					},
 					pointer: {
-						icon: "image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAB0CAYAAACfQfLZAAABP2lDQ1BzUDMAAHicY2BgfJCTnFvMosDAkJtXUhTk7qQQERmlwP6IgZlBhIGTgY9BNjG5uMA32C2EAQiKE8uLk0uKchhQwLdrDIwg+rJuRmJeSuBGvvA5PAySFjsnd7Al7qhhwA+4UlKLk4H0HyBWSi4oKmFgYFQAsctLCkBsFyBbJDkjMQXIjgCydYqADgSyW0Di6RD2DBA7CcJeA2IXhQQ5A9kHgGyFdCR2EhI7N6c0GeoGkOt5UvNCg4E0GxDLMBQzBDAYA8MEnxpnIDRgUASFF3o4FKcZG0F08TgxMLDe+///syoDA/tkBoa/E/7//73w//+/ixgYmO8wMBzIQ+hvvs/AYLv/////uxFiXvsZGDaaA4NpJ0JMw4KBQZCLgeHEzoLEokSwEDMQM6VlMjB8Ws7AwBvJwCB8AagnGgDgnl/JCHJJ9gAAAARzQklUCAgICHwIZIgAAAHzSURBVGiB7Zo9bhsxEIXfkDShYgvXqpRmAUGNj2DfwI3OkeQE5g3knEONb5BcQliAjX0CwcUCVnZJTooogiAjlg1pZNDmNIOFVu/D/EHDXRF2rGmakdb6hpkvAIwAnO/es2OPAB6J6C7G+GM8Hj9sf0jbF977GTN/2yP4ohHRbV3X358BvPc/mfnyEPEtyK+6rq8AQK3FZ8cSBwBmvvTezwCAmqYZKaXujyW+bSmlL0pr/VVCHAC01jeKma+lAMx8obC/DQ+xkTTgXAmKA1i3aQEUQAEUQAEUQAEUQAHAAGBRQEopigKYWRYgHgEA8RQFUcBJikxEYGZIeMPMkfnvKEj4DzAH+Q/aKVIkO2ilBu8PKCl6DSDzOShd9AkAp6hBEF1bAJS15WWAeAT5pwjlAPLuAEjXIP8IYoyiALVOUZTyZn0BAJDwKqUUiChIeQNgUwYJn38XfYC9KP8UEVHmBxBIz0Hf95kXOf/VMf85yH/xEgdorTOPQPz3QBwQQpAFDAYD2UETj6Bt22Ctpf23vt26rmNjjOmttVoCYK1NJoTQrVYrKwFYLpe/TVVVTwBEIhgOhysCAOecbdv27JjiVVX1zrluU1znnMXx3i8n51wH7PyhdTqd6slkclBHLRYLns/nm9b/nxj9e2r1FiOiZ1/6A6VUptoFTzbAAAAAAElFTkSuQmCC",
+						icon: "image:https://img.picgo.net/2024/11/10/1f2b876bd31ce6c6d.png",
 						length: 120,
-						width: 14,
+						width: 12,
 						offsetCenter: [0, "-45%"],
 						itemStyle: {
-							color: "auto",
+							color: {
+								type: "linear",
+								x: 0,
+								y: 0,
+								x2: 0,
+								y2: 1,
+								colorStops: [{
+										offset: 0,
+										color: "rgba(255,255,255,0.5)",
+									},
+									{
+										offset: 0.7,
+										color: "rgba(255,255,255,0.2)",
+									},
+									{
+										offset: 1,
+										color: "rgba(255,255,255,0)",
+									},
+								],
+								// global: false // 缺省为 false
+							}
 						},
 					},
 					title: {

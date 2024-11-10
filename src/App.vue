@@ -25,5 +25,4 @@
 	@import '@/static/fonts/font.css';
 	@import '@/scss/main.scss';
 
-	page {}
 </style>
