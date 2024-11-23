@@ -1,69 +1,43 @@
 <template>
 	<LayoutContent>
 		<view class="pageView">
-			<view class="pageView-title"><i>Welcome, Debra.</i> What do you need today?</view>
+			<view class="pageView-title">
+				<i>Welcome, Debra.</i> What do you need today?
+			</view>
+
 			<view class="btns">
-				<scroll-view class="scroll-view" scroll-x="true" scroll-left="0" @scroll="scroll"
-					@scrolltoupper="scrolltoupper" @scrolltolower="scrolltolower">
-					<view id="demo1" class="scroll-view-item">
-						<view class="card" @click="handleClickCard(1)">
-							<BtnCard>
-								<view class="icon">
-									<image src="@/static/health/1.png" mode="heightFix"></image>
-								</view>
-								<view class="text">GENERAL<br />CHECKUP</view>
-							</BtnCard>
-						</view>
-					</view>
-					<view id="demo1" class="scroll-view-item">
-						<view class="card" @click="handleClickCard(2)">
-							<BtnCard>
-								<view class="icon">
-									<image src="@/static/health/2.png" mode="heightFix"></image>
-								</view>
-								<view class="text">ADVANCE TEST<br />&nbsp;</view>
-							</BtnCard>
-						</view>
-					</view>
-					<view id="demo1" class="scroll-view-item">
-						<view class="card" @click="handleClickCard(3)">
-							<BtnCard>
-								<view class="icon">
-									<image src="@/static/health/3.png" mode="heightFix"></image>
-								</view>
-								<view class="text">REPORT<br />&nbsp;</view>
-							</BtnCard>
-						</view>
-					</view>
-					<view id="demo1" class="scroll-view-item">
-						<view class="card" @click="handleClickCard(4)">
-							<BtnCard>
-								<view class="icon">
-									<image src="@/static/health/4.png" mode="heightFix"></image>
-								</view>
-								<view class="text">E-HEALTH<br />RECORD</view>
-							</BtnCard>
-						</view>
-					</view>
-					<view id="demo1" class="scroll-view-item">
-						<view class="card" @click="handleClickCard(5)">
-							<BtnCard>
-								<view class="icon">
-									<image src="@/static/health/5.png" mode="heightFix"></image>
-								</view>
-								<view class="text">TELE MEDICINE<br />&nbsp;</view>
-							</BtnCard>
-						</view>
+				<!-- Left Arrow -->
+				<view
+					class="leftback"
+					v-if="state.currentIndex > 0"
+					@click="clickArrow(1)"
+				>
+					<image src="@/static/back.png" alt="Left Arrow"></image>
+				</view>
+
+				<!-- Visible Cards -->
+				<scroll-view class="scroll-view" scroll-x="true" ref="scrollView">
+					<view
+						class="scroll-view-item"
+						v-for="item in visibleCards"
+						:key="item.id"
+					>
+						<BtnCard>
+							<view class="icon">
+								<image :src="item.icon" mode="heightFix" @click = "handleClickCard(item.id)"></image>
+							</view>
+							<view class="text">{{ item.name }}</view>
+						</BtnCard>
 					</view>
 				</scroll-view>
-				<view class="leftback" v-if="state.scrollLeft > 0">
-					<image src="@/static/back.png"></image>
-				</view>
-				<view class="rightback" v-if="state.scrollLeft > 0 && !state.scrollRightFlag">
-					<image src="@/static/back.png"></image>
-				</view>
-				<view class="rightback" v-if="state.scrollLeft == 0">
-					<image src="@/static/back.png"></image>
+
+				<!-- Right Arrow -->
+				<view
+					class="rightback"
+					v-if="state.currentIndex + 3 < btnCards.length"
+					@click="clickArrow(2)"
+				>
+					<image src="@/static/back.png" alt="Right Arrow"></image>
 				</view>
 			</view>
 		</view>
@@ -76,30 +50,48 @@
 	import BasicButton from "@/components/BasicButton/index.vue";
 	import BtnCard from "@/components/Card/BtnCard.vue";
 
-	import {
-		ref,
-		reactive
-	} from "vue";
-
-	// 使用 reactive 创建响应式状态
+	import { ref, reactive, computed } from "vue";
+	
+	const btnCards = [
+		{ id: 1, icon: "/static/health/1.png", name: "GENERAL CHECKUP" },
+		{ id: 2, icon: "/static/health/2.png", name: "ADVANCE TEST" },
+		{ id: 3, icon: "/static/health/3.png", name: "REPORT" },
+		{ id: 4, icon: "/static/health/4.png", name: "E-HEALTH RECORD" },
+		{ id: 5, icon: "/static/health/5.png", name: "TELE MEDICINE" },
+	];
+	
 	const state = reactive({
-		step: 1,
-		scrollLeft: 0,
-		scrollLeftFlag: true,
-		scrollRightFlag: false
+		currentIndex: 0, // Tracks the starting index of visible cards
 	});
-
+	
+	// Dynamically compute visible cards (3 at a time)
+	const visibleCards = computed(() => {
+		return btnCards.slice(state.currentIndex, state.currentIndex + 3);
+	});
 	const handleClickCard = (type) => {
-		switch (type) {
-			case 1:
-				slibrary.$router.go("/pages/health/detection");
-				break;
-			case 3:
-				slibrary.$router.go("/pages/report/report");
-
+			switch (type) {
+				case 1:
+					slibrary.$router.go("/pages/health/detection");
+					break;
+				case 3:
+					slibrary.$router.go("/pages/report/report");
+				case 5:
+					slibrary.$router.go("/pages/telemedicine/index");
+			}
 		}
-	}
-
+	
+	// Handle arrow clicks
+	const clickArrow = (type) => {
+		if (type === 1 && state.currentIndex > 0) {
+			// Move left
+			state.currentIndex -= 3;
+		} else if (type === 2 && state.currentIndex + 3 < btnCards.length) {
+			// Move right
+			state.currentIndex += 3;
+		}
+	};
+	
+	
 	const scroll = (e) => {
 		state.scrollLeft = e.detail.scrollLeft
 		if (state.scrollLeft == 0) {
@@ -112,7 +104,6 @@
 	const scrolltoupper = (e) => {
 		state.scrollLeftFlag = true
 	}
-
 	const scrolltolower = (e) => {
 		state.scrollRightFlag = true
 	}
@@ -147,6 +138,7 @@
 		position: relative;
 
 		.scroll-view {
+			scroll-behavior: smooth; /* Enables smooth scrolling */
 			white-space: nowrap;
 			height: 100%;
 
@@ -166,7 +158,9 @@
 						margin-bottom: 47px;
 
 						image {
+							width: 100%;
 							height: 100%;
+							object-fit: contain;
 						}
 					}
 
@@ -188,6 +182,7 @@
 		position: absolute;
 		width: 29.17rpx;
 		height: 29.17rpx;
+		z-index: 10;
 
 		image {
 			width: 100%;

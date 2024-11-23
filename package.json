@@ -51,6 +51,7 @@
         "@dcloudio/uni-mp-weixin": "3.0.0-alpha-4020520240808001",
         "@dcloudio/uni-quickapp-webview": "3.0.0-alpha-4020520240808001",
         "@multiavatar/multiavatar": "^1.0.7",
+        "@vuepic/vue-datepicker": "^10.0.0",
         "alova": "^3.0.9",
         "crypto-js": "^4.2.0",
         "dayjs": "^1.11.13",
@@ -60,7 +61,9 @@
         "rollup": "^4.25.0",
         "tslib": "^2.8.1",
         "vue": "^3.4.38",
+        "vue-date-pick": "^1.5.1",
         "vue-i18n": "^9.14.1",
+        "vue3-datepicker": "^0.4.0",
         "zrender": "^5.6.0"
     },
     "devDependencies": {

@@ -1,50 +1,50 @@
 <template>
-	<LayoutContent showBack @back="handleClickBack">
-		<view class="pageView" v-if="state.step == 1">
-			<view class="pageView-title">Create Patient Account</view>
+	<LayoutContent showBack @back="handleClickHome">
+		<view class="pageView">
+			<view class="pageView-title">Patient Detail</view>
 			<view class="form">
 				<uni-forms label-position="top" label-width="120rpx" :border="false" :modelValue="state.userInfo">
 					<view class="column">
 						<uni-forms-item label="Name*" name="name" style="margin-right: 20rpx;">
 							<uni-easyinput type="text" v-model="state.userInfo.name" placeholder="Name" />
 						</uni-forms-item>
-						<uni-forms-item label="Email*" name="email">
-							<uni-easyinput type="text" v-model="state.userInfo.email" placeholder="Email" />
+						<uni-forms-item label="Date of birth*" name="birth" >
+							<uni-datetime-picker type="date" direction="top" :value="state.userInfo.birth" start="1940-1-1" placeholder="mm/dd/yy"/>
 						</uni-forms-item>
 					</view>
 					<view class="column">
 						<uni-forms-item label="Gender*" name="gender" style="margin-right: 20rpx;">
-							<uni-data-select v-model="state.userInfo.gender" :localdata="state.genders"
-								placeholder="Select Gender"></uni-data-select>
+							<uni-data-select v-model="state.userInfo.gender" placement="top" :localdata="state.genders"
+								placeholder="Select Gender" ></uni-data-select>
 						</uni-forms-item>
-						<uni-forms-item label="Blood Group" name="Blood">
-							<uni-data-select v-model="state.userInfo.blood" :localdata="state.blood"
-								placeholder="Select Gender"></uni-data-select>
+						<uni-forms-item label="Phone Number*" name="phone" >
+							<view class="phone-input">
+								<!-- <view class="phone-prefix">+62</view> -->
+								<uni-easyinput
+									type="text"
+									v-model="state.userInfo.phone"
+									placeholder="xxxxxxxxx"
+									class="input-field"
+									
+								/>
+							</view>
 						</uni-forms-item>
 					</view>
 					<view class="column">
-						<uni-forms-item label="Date of birth" name="birth" style="margin-right: 20rpx;">
-							<uni-datetime-picker type="date" :value="state.userInfo.birth" start="1940-1-1" />
+						<uni-forms-item label="Email*" name="email" style="margin-right: 20rpx;">
+							<uni-easyinput type="text" v-model="state.userInfo.email" placeholder="Email" />
 						</uni-forms-item>
-						<uni-forms-item label="Aadhar Card Number" name="email">
-							<uni-easyinput type="text" v-model="state.userInfo.email" placeholder="Card Number" />
-						</uni-forms-item>
-					</view>
-					<view class="column">
-						<uni-forms-item label="Phone Number*" name="phone" style="margin-right: 20rpx;">
-							<uni-easyinput type="text" v-model="state.userInfo.name" placeholder="Phone Number" />
-						</uni-forms-item>
-						<uni-forms-item label="Unique ID" name="email">
-							<uni-easyinput type="email" v-model="state.userInfo.email" placeholder="ID Number" />
+						<uni-forms-item label="Blood Group" name="blood" >
+							<uni-data-select v-model="state.userInfo.blood" :localdata="state.blood" placement="top" placeholder="Select Blood Group"></uni-data-select>
 						</uni-forms-item>
 					</view>
 				</uni-forms>
-				<BasicButton @click="handleClickRegister">
-					Register
+				<BasicButton @click="handleClickSubmit">
+					Submit
 				</BasicButton>
 			</view>
 		</view>
-		<view class="pageView" v-else-if="state.step == 2">
+		<!-- <view class="pageView" v-else-if="state.step == 2">
 			<view class="pageView-title">Input <i>Pin Verification</i></view>
 			<view class="pinBox">
 				<CodeInput :digitboxcount="6"></CodeInput>
@@ -54,7 +54,7 @@
 					</BasicButton>
 				</view>
 			</view>
-		</view>
+		</view> -->
 	</LayoutContent>
 </template>
 
@@ -68,11 +68,12 @@
 		ref,
 		reactive
 	} from "vue";
+	
 	import {
 		sendCode
 	} from "@/services/api/auth";
 
-	// 使用 reactive 创建响应式状态
+
 	const state = reactive({
 		step: 1,
 		userInfo: {
@@ -80,7 +81,8 @@
 			gender: '',
 			email: '',
 			birth: '',
-			phone: ''
+			phone: '',
+			blood: '',
 		},
 		genders: [{
 				text: 'Male',
@@ -94,78 +96,58 @@
 				text: 'Secrecy',
 				value: 'null'
 			},
-		],
-		rules: {
-			'name': {
-				type: 'string',
-				required: true,
-				message: 'Name',
-				trigger: ['blur', 'change'],
-			},
-			'gender': {
-				required: true,
-				message: 'gender',
-				trigger: ['blur', 'change'],
-			},
-			'email': {
-				type: 'string',
-				required: true,
-				message: 'email',
-				trigger: ['blur', 'change'],
-			},
-			'birth': {
-				required: true,
-				message: 'birth',
-				trigger: ['blur', 'change'],
-			},
-			'phone': {
-				type: 'string',
-				required: true,
-				message: 'phone',
-				trigger: ['blur', 'change'],
-			},
-		},
-		radio: '',
-		switchVal: false,
+		],blood: [
+			{ text: 'A+', value: 'A+' },
+			{ text: 'A-', value: 'A-' },
+			{ text: 'B+', value: 'B+' },
+			{ text: 'B-', value: 'B-' },
+			{ text: 'AB+', value: 'AB+' },
+			{ text: 'AB-', value: 'AB-' },
+			{ text: 'O+', value: 'O+' },
+			{ text: 'O-', value: 'O-' }
+		]
 	});
 
-	const loading = ref(false);
-	const handleClickBack = () => {
-		if (state.setp != 1) {
-			state.setp = state.setp - 1;
-		}
-	};
-	const handleClickRegister = () => {
-		state.step = 2
-	}
+	// const loading = ref(false);
+	// const handleClickBack = () => {
+	// 	if (state.setp != 1) {
+	// 		state.setp = state.setp - 1;
+	// 	}
+	// };
+	// const handleClickRegister = () => {
+	// 	state.step = 2
+	// }
 
-	const handleClickLoginCreate = () => {
+	const handleClickHome = () => {
 		slibrary.$router.go("/pages/health/index");
 	}
+	const handleClickSubmit = () => {
+		slibrary.$router.go("/pages/telemedicine/current");
+	}
 
 
-	const handleTapVerify = async () => {
-		loading.value = true;
+	// const handleTapVerify = async () => {
+	// 	loading.value = true;
 
-		setTimeout(() => {
-			slibrary.$helper.toast("Successfully sent！");
-			setTimeout(() => {
-				loading.value = false;
-				slibrary.$router.go("/pages/login/pin");
-			}, 1500);
-		}, 1000);
-		// try {
-		// 	const res = await sendCode({
-		// 		email: form.value.email
-		// 	})
-		// 	slibrary.$helper.toast('Successfully sent！')
-		// 	setTimeout(() => {
-		// 		loading.value = false
-		// 		slibrary.$router.go('/pages/login/pin')
-		// 	}, 1500)
-		// }catch(err) {
-		// }
-	};
+	// 	setTimeout(() => {
+	// 		slibrary.$helper.toast("Successfully sent！");
+	// 		setTimeout(() => {
+	// 			loading.value = false;
+	// 			slibrary.$router.go("/pages/login/pin");
+	// 		}, 1500);
+	// 	}, 1000);
+	// 	// try {
+	// 	// 	const res = await sendCode({
+	// 	// 		email: form.value.email
+	// 	// 	})
+	// 	// 	slibrary.$helper.toast('Successfully sent！')
+	// 	// 	setTimeout(() => {
+	// 	// 		loading.value = false
+	// 	// 		slibrary.$router.go('/pages/login/pin')
+	// 	// 	}, 1500)
+	// 	// }catch(err) {
+	// 	// }
+	// };
 </script>
 
 <style lang="scss" scoped>
@@ -202,7 +184,6 @@
 			}
 		}
 	}
-
 	.form {
 		width: 386.46rpx;
 
