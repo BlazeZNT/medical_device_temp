@@ -6,7 +6,7 @@
 				<uni-forms label-position="top" label-width="120rpx" :border="false" :modelValue="state.userInfo">
 					<view class="column">
 						<uni-forms-item label="Tell your health compliaints" name="healthComplaints">
-							<uni-easyinput type="textarea" v-model="state.userInfo.name" placeholder="Name" />
+							<uni-easyinput type="textarea" v-model="state.userInfo.name" placeholder="Enter Details" />
 						</uni-forms-item>
 					</view>
 					<view class="column" >
@@ -38,7 +38,7 @@
 					        <CustomCalendar @update-date="updateDate" />
 					    </div>
 						<BasicButton @click="handleClickSubmit">
-							Submit
+							SUBMIT
 						</BasicButton>
 					</div>
 				</uni-forms>
@@ -105,6 +105,7 @@ onLoad((options) => {
     date: decodeURIComponent(options.date || "No date provided"),
 	image: decodeURIComponent(options.image || '/static/doctordemo.png')
   });
+  
 });
 
 // const test = () => {
@@ -234,7 +235,10 @@ const handleClickSubmit = () => {
 		  border: 1px solid #58FFCF;
 		  color: #58FFCF;
 		  transition: background-color 0.3s ease, color 0.3s ease;
+		  padding-top: 18px;
 		}
+		
+
 		
 		.calendarButton-clicked {
 		  background: #58FFCF;

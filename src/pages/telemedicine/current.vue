@@ -48,7 +48,7 @@
 		
       </view>
 	  <view class="appointment-button-container" >
-	    <button class="appointment-button" @click="handleItemClick(2)">Book an Appointment</button>
+	    <button class="appointment-button" @click="handleItemClick(2)">BOOK AN APPOINTMENT</button>
 	  </view>
     </view>
   </view>
@@ -144,6 +144,22 @@ const handleItemClick = (type) => {
     padding: 1.6rem;
     padding-top: 0;
 	
+	// .default-btn {
+	//   width: 100%;
+	//   padding: 6rpx 0;
+	//   display: inline-block;
+	//   font-size: 14px;
+	//   background: #fff;
+	//   border-radius: 8px;
+	//   font-family: FB;
+	//   text-align: center;
+	//   &.borderBtn {
+	//     background: transparent;
+	//     border: 1px solid #fff;
+	//     color: #fff;
+	//     font-family: FL;
+	//   }
+	
 	.appointment-button-container{
 		width: 80%;
 		margin-top: 12px;
@@ -152,6 +168,10 @@ const handleItemClick = (type) => {
 		button{
 			width: 70%
 		}
+	}
+	.appointment-button{
+		font-size: 14px;
+		font-family: FB;
 	}
 
     .content-border-box {
