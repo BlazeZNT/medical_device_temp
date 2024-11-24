@@ -199,7 +199,7 @@ const handleDoctorClick = (doctor) => {
           width: 48%;
 		  height: 2.2rem;
           display: flex;
-          justify-content: space-around;
+          // justify-content: space-around;
           align-items: center;
           background: #232a31;
           border-radius: 16px;
@@ -211,36 +211,57 @@ const handleDoctorClick = (doctor) => {
             height: 60px;
             border-radius: 20%;
             object-fit: cover;
-            margin-bottom: 8px;
+			margin-left: 15px;
           }
 		  
 		  .doc-details{
-			  display:flex;
+			  display: flex;
 			  flex-direction: column;
 			  text-overflow: ellipsis;
+			  justify-content: center;
+			  align-items: baseline;
+			  margin-right: 20px;
+			  width: 3rem;
+			  margin-left: 15px;
+	
 		  }
+		  // .doctor-name {
+		  //   max-width: 3rem;
+		  //   font-weight: bold;
+		  //   margin-bottom: 4px;
+		  //   display:flex;
+		  //   font-size: 0.3rem;
+		  //   text-align: left;
+		  //   margin-bottom: 4px;
+		  // }
+		  // .doctor-specialization {
+		  //   color: #a0a0a0;
+		  //   margin-bottom: 4px;
+		  //   text-align: left;
+		  //   font-size: 0.2rem;
+		  // }
 
           .doctor-info {
 		    display: flex;
 			min-width: 3rem;
             color: #fff;
-			gap: 8rpx;
+			// gap: 8rpx;
 
             .doctor-name {
-			  max-width: 2.3rem;
               font-weight: bold;
               margin-bottom: 4px;
+			  font-size: 0.3rem;
             }
 
             .doctor-specialization {
               color: #a0a0a0;
               margin-bottom: 4px;
+			  font-size: 0.25rem;
             }
 
             .doctor-review {
 			  max-width: 1rem;
-			  min-height: 1.7rem;
-              color: #10e2f5;
+              color: white;
 			  flex-shrink: 0; /* Prevent shrinking of the review */
 
             }
