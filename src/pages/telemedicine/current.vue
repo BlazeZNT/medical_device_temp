@@ -37,7 +37,7 @@
                   </div>
 				</view>
 			
-			<button class="status-btn" :class="{ 'join-now-btn': doctor.status === 'upcoming', 'reschedule-btn': doctor.status === 'past' }">
+			<button class="status-btn" :class="{ 'join-now-btn': doctor.status === 'upcoming', 'reschedule-btn': doctor.status === 'past' }" @click="handleItemClick(3)">
 				{{ doctor.status === 'upcoming' ? "JOIN NOW" : "RESCHEDULE" }}
 			</button>
 			
@@ -119,6 +119,10 @@ const handleItemClick = (type) => {
     case 2:
       slibrary.$router.go("/pages/telemedicine/appointmentList");
       break;
+	case 3:
+		slibrary.$router.go("/pages/telemedicine/videoCall");
+		break;
+		
   }
 };
 </script>
