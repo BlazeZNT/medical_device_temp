@@ -136,6 +136,22 @@ const handleItemClick = (type) => {
     padding: 1.6rem;
     padding-top: 0;
 	
+	// .default-btn {
+	//   width: 100%;
+	//   padding: 6rpx 0;
+	//   display: inline-block;
+	//   font-size: 14px;
+	//   background: #fff;
+	//   border-radius: 8px;
+	//   font-family: FB;
+	//   text-align: center;
+	//   &.borderBtn {
+	//     background: transparent;
+	//     border: 1px solid #fff;
+	//     color: #fff;
+	//     font-family: FL;
+	//   }
+	
 	.appointment-button-container{
 		width: 80%;
 		margin-top: 12px;
@@ -144,6 +160,10 @@ const handleItemClick = (type) => {
 		button{
 			width: 70%
 		}
+	}
+	.appointment-button{
+		font-size: 14px;
+		font-family: FB;
 	}
 
     .content-border-box {
@@ -170,7 +190,11 @@ const handleItemClick = (type) => {
           height: 100%;
         }
       }
-	  	
+	  
+	  .image-link{
+		  cursor: pointer;
+	  }
+
       .leftback {
         top: 0.1rem;
         width: 1.3rem;
@@ -203,31 +227,31 @@ const handleItemClick = (type) => {
 	    text-transform: uppercase;
 	    transition: all 0.3s ease-in-out;
 	  }
-	  	
+	  
 	  .join-now-btn {
 	    background-color: #ffffff;
 	    color: #1f252c;
 	    border: 1px solid #ffffff;
 	  }
-	  	
+	  
 	  .join-now-btn:hover {
 	    background-color: #58ffcf;
 	    color: #1f252c;
 	    box-shadow: 0 0 10px rgba(88, 255, 207, 0.8);
 	  }
-	  	
+	  
 	  .reschedule-btn {
 	    background-color: transparent;
 	    color: #ffffff;
 	    border: 1px solid #ffffff;
 	  }
-	  	
+	  
 	  .reschedule-btn:hover {
 	    background-color: rgba(255, 255, 255, 0.2);
 	    color: #ffffff;
 	    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
 	  }
-	  	
+	  
 	  .leftItems{
 	    display: flex;
 		align-items: center;
@@ -257,7 +281,6 @@ const handleItemClick = (type) => {
           height: 1.8rem;
           display: flex;
           justify-content: space-between;
-		  gap:0.5rem;
           align-items: center;
           background: #232a31;
           border-radius: 16px;
@@ -275,40 +298,59 @@ const handleItemClick = (type) => {
           .doc-details {
             display: flex;
             flex-direction: column;
-			justify-content: center;
-			align-items: center;
             text-overflow: ellipsis;
           }
 
-          .doctor-name {
-            font-size: 0.35rem;
-            font-weight: bold;
-            color: white;
-          }
+          .doctor-info {
+            display: flex;
+            min-width: 3rem;
+			margin-left: 0.4rem;
+            color: #fff;
+            gap: 8rpx;
 
-          .doctor-specialization {
-            font-size: 0.3rem;
-            color: #8a8a8a;
-          }
-
-          .doctor-date {
-            font-size: 0.3rem;
-            color: #8a8a8a;
-          }
-
-		  .day-time{
-			max-width: 3rem;
-			font-weight: bold;
-			margin-bottom: 4px;
-			display:flex;
-			font-size: 0.3rem;
-			color: #58FFCF;
-			text-align: left;
-			margin-bottom: 4px;
+            .doctor-name {
+              max-width: 3rem;
+              font-weight: bold;
+              margin-bottom: 4px;
+			  display:flex;
+			  font-size: 0.3rem;
+			  text-align: left;
+			  margin-bottom: 4px;
+            }
+			
+			.day-time{
+				max-width: 3rem;
+				font-weight: bold;
+				margin-bottom: 4px;
+				display:flex;
+				font-size: 0.3rem;
+				color: #58FFCF;
+				text-align: left;
+				margin-bottom: 4px;
 			}
+
+            .doctor-specialization {
+              color: #a0a0a0;
+              margin-bottom: 4px;
+			  text-align: left;
+			  font-size: 0.2rem;
+            }
+			
+			.doctor-date{
+				font-size: 0.2rem;
+				text-transform: uppercase;
+			}
+
+            .doctor-review {
+              max-width: 1rem;
+              min-height: 1.7rem;
+              color: #10e2f5;
+              flex-shrink: 0;
+            }
+          }
         }
       }
     }
   }
-  }
+}
 </style>

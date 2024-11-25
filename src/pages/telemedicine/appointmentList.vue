@@ -143,6 +143,8 @@ const handleDoctorClick = (doctor) => {
     flex-direction: column;
     padding: 1.6rem;
     padding-top: 0;
+	
+
     .content-border-box {
       padding: 1px;
       width: 80%;
@@ -150,60 +152,73 @@ const handleDoctorClick = (doctor) => {
       height: 100%;
       margin-top: 0.2rem;
       overflow: hidden;
-      background: linear-gradient(238deg, rgba(88, 255, 207, 1), rgba(27, 48, 42, 1));
+      background: linear-gradient(
+        238deg,
+        rgba(88, 255, 207, 1),
+        rgba(27, 48, 42, 1)
+      );
       border-radius: 24px;
 
       .swiper {
         width: 100%;
         height: 100%;
       }
+	  
+	  .leftback,
+	  .rightback {
+	  	position: absolute;
+	  	
 
-      .leftback,
-      .rightback {
-        position: absolute;
-        image {
-          width: 100%;
-          height: 100%;
-        }
-      }
+	  
+	  	image {
+	  		width: 100%;
+	  		height: 100%;
+	  	}
+	  }
+	  
+	  .leftback {
+		top: 0.1rem;
+		width: 1.3rem;
+		height: 1.3rem;  
+	  	left: 1.3rem;
+	  }
+	  
+	  .rightback {
+	    top: 0.4rem;
+		width: 0.8rem;
+		height: 0.8rem;
+	  	right: 1.8rem;
+	  }
+	  
+	  .centertext{
+		position: absolute;
+		top: 0.5rem;
+		left: 6rem;
+		color: white;
 
-      .leftback {
-        top: 0.1rem;
-        width: 1.3rem;
-        height: 1.3rem;
-        left: 1.3rem;
-      }
-
-      .rightback {
-        top: 0.4rem;
-        width: 0.8rem;
-        height: 0.8rem;
-        right: 1.8rem;
-      }
-
-      .centertext {
-        position: absolute;
-        top: 0.5rem;
-        left: 6rem;
-        color: white;
-      }
+	  }
 
       .content-box {
         width: 100%;
-        height: 100%;
+		height: 100%;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
+		
         gap: 16px;
         padding: 1.5rem;
-        background: linear-gradient(181deg, rgba(35, 42, 49, 1) 0%, rgba(27, 32, 40, 1) 100%);
+        background: linear-gradient(
+          181deg,
+          rgba(35, 42, 49, 1) 0%,
+          rgba(27, 32, 40, 1) 100%
+        );
         border-radius: 24px;
 
         .doctor-card {
           width: 48%;
-          height: 2.2rem;
+		  height: 2.2rem;
           display: flex;
-          justify-content: space-around;
+          // justify-content: space-around;
           align-items: center;
           background: #232a31;
           border-radius: 16px;
@@ -211,42 +226,67 @@ const handleDoctorClick = (doctor) => {
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
           .doctor-image {
-            width: 1.25rem;
-            height: 1.25rem;
+            width: 60px;
+            height: 60px;
             border-radius: 20%;
             object-fit: cover;
-            margin-bottom: 8px;
+			margin-left: 15px;
           }
-
-          .doc-details {
-            display: flex;
-            flex-direction: column;
-            text-overflow: ellipsis;
-          }
+		  
+		  .doc-details{
+			  display: flex;
+			  flex-direction: column;
+			  text-overflow: ellipsis;
+			  justify-content: center;
+			  align-items: baseline;
+			  margin-right: 20px;
+			  width: 3rem;
+			  margin-left: 15px;
+	
+		  }
+		  // .doctor-name {
+		  //   max-width: 3rem;
+		  //   font-weight: bold;
+		  //   margin-bottom: 4px;
+		  //   display:flex;
+		  //   font-size: 0.3rem;
+		  //   text-align: left;
+		  //   margin-bottom: 4px;
+		  // }
+		  // .doctor-specialization {
+		  //   color: #a0a0a0;
+		  //   margin-bottom: 4px;
+		  //   text-align: left;
+		  //   font-size: 0.2rem;
+		  // }
 
           .doctor-info {
-            display: flex;
-            min-width: 3rem;
+		    display: flex;
+			min-width: 3rem;
             color: #fff;
-            gap: 8rpx;
+			// gap: 8rpx;
 
             .doctor-name {
-              max-width: 2.3rem;
               font-weight: bold;
               margin-bottom: 4px;
+			  font-size: 0.3rem;
             }
 
             .doctor-specialization {
               color: #a0a0a0;
               margin-bottom: 4px;
+			  font-size: 0.25rem;
             }
 
             .doctor-review {
-              max-width: 1rem;
-              min-height: 1.7rem;
-              color: #10e2f5;
-              flex-shrink: 0;
+			  max-width: 1rem;
+              color: white;
+			  flex-shrink: 0; /* Prevent shrinking of the review */
+
             }
+			.doctor-review .star {
+			  color: #58ffcf; /* Color of the star */
+			}
           }
         }
       }
