@@ -258,7 +258,7 @@ const handleItemClick = (type) => {
 	  .leftItems{
 	    display: flex;
 		align-items: center;
-		padding-left: 1rem;
+		padding-left: 0.5rem;
 		gap: 12px;
 	  }
 
