@@ -43,11 +43,13 @@
           <view class="inputBox">
             <view class="qianzhui">+86</view>
             <view class="input">
-              <input type="text" />
+              <input type="text" v-model="phoneNumber" /> <!-- Bind phoneNumber to input -->
             </view>
           </view>
         </view>
-        <BasicButton @click="handleClickLogin"> SUBMIT </BasicButton>
+        <BasicButton @click="handleClickLogin" :disabled="loading"> 
+          {{ loading ? 'Submitting...' : 'SUBMIT' }} 
+        </BasicButton>
       </view>
     </view>
     <view class="login" v-else-if="state.setp == 3">
@@ -63,20 +65,22 @@
     </view>
   </LayoutContent>
 </template>
-  
-  <script setup>
+
+<script setup>
 import LayoutContent from "@/components/Layout/Content.vue";
 import BtnCard from "@/components/Card/BtnCard.vue";
 import slibrary from "@/slibrary/index.js";
 import CodeInput from "@/components/CodeInput/index.vue";
-
 import BasicButton from "@/components/BasicButton/index.vue";
 import { ref, reactive } from "vue";
-import { sendCode } from "@/services/api/auth";
+import {sendLoginRequest} from "@/utils/auth.ts"; // Import the API function
 
 const state = reactive({
   setp: 1,
 });
+
+const phoneNumber = ref("");  // Use this to bind the phone number input
+const loading = ref(false);   // This will manage the loading state for the API request
 
 const handleClickBack = () => {
   if (state.setp != 1) {
@@ -88,14 +92,32 @@ const handleClickCard = () => {
   state.setp = 2;
 };
 
-const form = ref({
-  email: "",
-});
+const handleClickLogin = async () => {
+  // Check if phone number is entered
+  if (!phoneNumber.value) {
+    alert("Please enter a phone number.");
+    return;
+  }
 
-const loading = ref(false);
+  loading.value = true;  // Set loading to true while waiting for the API response
 
-const handleClickLogin = () => {
-  state.setp = 3;
+  try {
+    // Call the API to verify the phone number
+    const response = await sendLoginRequest(phoneNumber.value);
+    console.log(response);  // Handle the response
+
+    // If the response is successful, go to the next step
+    if (response.data) {
+      state.setp = 3;  // Move to the next step (PIN verification)
+    } else {
+      alert("Login failed. Please try again.");
+    }
+  } catch (error) {
+    console.error("Login request failed:", error);
+     alert("Login failed. Please try again.");
+  } finally {
+    loading.value = false;  // Turn off loading after the request finishes
+  }
 };
 
 const handleClickRegister = () => {
@@ -103,11 +125,11 @@ const handleClickRegister = () => {
 };
 
 const handleClickLoginCreate = () => {
-	slibrary.$router.go("/pages/health/index");
+  slibrary.$router.go("/pages/health/index");
 }
 </script>
-  
-  <style lang="scss" scoped>
+
+<style lang="scss" scoped>
 .login {
   width: 100%;
   height: 100%;
@@ -143,7 +165,6 @@ const handleClickLoginCreate = () => {
 
       .inputBox {
         width: 100%;
-        // height: 29rpx;
         border-radius: 2rpx 2rpx 2rpx 2rpx;
         border: 1rpx solid #d8d8d8;
         display: flex;
@@ -155,10 +176,6 @@ const handleClickLoginCreate = () => {
           margin-right: 10rpx;
           font-size: 12rpx;
           color: #ffffff;
-          line-height: 12rpx;
-          text-align: left;
-          font-style: normal;
-          text-transform: none;
         }
         .input {
           width: 100%;
@@ -167,7 +184,6 @@ const handleClickLoginCreate = () => {
             background: transparent;
             font-size: 12rpx;
             color: #ffffff;
-            line-height: 12rpx;
           }
         }
       }

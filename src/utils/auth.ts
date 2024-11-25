@@ -1,26 +1,13 @@
-// import { getCache, setCache } from '@/utils/cache';
-import { TOKEN_KEY } from '@/enums/cacheEnum';
+import axios from '@/utils/axios';
 
-const authenticationScheme = 'Bearer';
+const sendLoginRequest = (phoneNumber: string) => {
+  return axios.post('/login', { phoneNumber });
+};
 
-export function getToken() {
-  return getCache<string>(TOKEN_KEY) || null;
-}
+const getDoctors  = () => {
+  return axios.get('/doctors/list');
+};
 
-export function getAuthorization() {
-  const token = getToken();
-  return token ? `${authenticationScheme} ${token}` : null;
-}
 
-export function setToken(token: string) {
-  return setCache(TOKEN_KEY, token);
-}
 
-export function removeToken() {
-  return setCache(TOKEN_KEY, null);
-}
-
-// 是否登录
-export function isLogin() {
-  return !!getToken();
-}
+export { sendLoginRequest, getDoctors };

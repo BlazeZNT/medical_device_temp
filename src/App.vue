@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	import { onHide, onLaunch, onShow } from '@dcloudio/uni-app';
-	import { useUserStore } from '@/stores/modules/user';
+	// import { useUserStore } from '@/stores/modules/user';
 
 	onLaunch(() => {
 		// #ifdef APP-PLUS
@@ -8,8 +8,8 @@
 		// #endif
 	});
 	onShow(() => {
-		const userStore = useUserStore();
-		userStore.initUserInfo();
+		// const userStore = useUserStore();
+		// userStore.initUserInfo();
 		console.log('App Show');
 	});
 	onHide(() => {
