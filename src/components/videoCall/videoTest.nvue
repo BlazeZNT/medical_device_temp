@@ -1,0 +1,128 @@
+<template>
+	<view class="pageView">
+		<!-- Step 1: Display Call -->
+		<view class="pageView-title" v-if="state.step === 1">Call</view>
+		<zego-local-view v-if="state.step === 1"></zego-local-view>
+
+		<!-- Step 2: Input Pin Verification -->
+		<view class="pageView" v-else-if="state.step === 2">
+			<view class="pageView-title">Input <i>Pin Verification</i></view>
+			<view class="pinBox">
+				<CodeInput :digitboxcount="6"></CodeInput>
+				<view class="pinBtn">
+					<BasicButton @click="handleClickLoginCreate">CREATE</BasicButton>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+import ZegoExpressEngine from 'zego-express-video-uniapp/lib/ZegoExpressEngine';
+import { ZegoScenario } from 'zego-express-video-uniapp/lib/impl/ZegoExpressDefines';
+import BasicButton from "@/components/BasicButton/index.vue";
+import CodeInput from "@/components/CodeInput/index.vue";
+
+export default {
+	name: "VideoCallComponent",
+	components: {
+		BasicButton,
+		CodeInput,
+	},
+	data() {
+		return {
+			state: {
+				step: 1, // Default step
+			},
+			profile: {
+				appID: __UNI__4CA4DFA, // Replace with your AppID
+				appSign: 'YOUR_APP_SIGN', // Replace with your AppSign
+				scenario: ZegoScenario.General, // Choose the appropriate scenario
+			},
+			roomID: "room1",
+			userID: "user_id",
+			userName: "user_name",
+			streamID: "stream123",
+		};
+	},
+	mounted() {
+		this.initializeZegoEngine();
+	},
+	methods: {
+		initializeZegoEngine() {
+			ZegoExpressEngine.createEngineWithProfile(this.profile);
+
+			// Login to the room
+			ZegoExpressEngine.instance().loginRoom(this.roomID, {
+				userID: this.userID,
+				userName: this.userName,
+			});
+
+			// Start preview
+			ZegoExpressEngine.instance().startPreview();
+
+			// Start publishing stream
+			ZegoExpressEngine.instance().startPublishingStream(this.streamID);
+
+			// Listen for roomStreamUpdate events
+			ZegoExpressEngine.instance().on(
+				"roomStreamUpdate",
+				(roomID, updateType, streamList) => {
+					if (updateType === "ADD" && streamList.length > 0) {
+						ZegoExpressEngine.instance().startPlayingStream(
+							streamList[0].streamID
+						);
+					}
+				}
+			);
+		},
+		handleClickLoginCreate() {
+			console.log("Pin verification triggered.");
+			// Implement your logic here
+		},
+		cleanupZegoEngine() {
+			ZegoExpressEngine.instance().logoutRoom(this.roomID);
+			ZegoExpressEngine.destroyEngine();
+		},
+	},
+	beforeUnmount() {
+		this.cleanupZegoEngine();
+	},
+};
+</script>
+
+<style lang="scss" scoped>
+.pageView {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	.pinBox {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		.pinBtn {
+			margin-top: 50rpx;
+			width: 436rpx;
+			display: flex;
+			justify-content: center;
+		}
+	}
+
+	&-title {
+		font-family: FB;
+		color: #fff;
+		font-size: 20px;
+		margin-bottom: 20px;
+
+		i {
+			color: #06ffb8;
+		}
+	}
+}
+</style>

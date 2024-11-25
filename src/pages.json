@@ -92,6 +92,17 @@
 				"ignoreAuth": true
 			}
 		},
+		// {
+		// 	"path": "pages/telemedicine/videoTest",
+		// 	"style": {
+		// 		"navigationBarTitleText": "Video Call",
+		// 		"navigationStyle": "custom"
+		// 	},
+		// 	"meta": {
+		// 		"tabBar": true,
+		// 		"ignoreAuth": true
+		// 	}
+		// },
         {
             "path" : "pages/health/detection",
             "style" : {
