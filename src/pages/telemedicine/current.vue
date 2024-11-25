@@ -79,7 +79,7 @@ const fetchDoctors = async () => {
       date: doctor.date || 'No date provided',
       year: doctor.year || 'No year',
       time: doctor.time || 'No time',
-      status: doctor.status || 'upcoming',
+      status: doctor.status || 'past',
     }));
 
     // Recalculate pages for pagination

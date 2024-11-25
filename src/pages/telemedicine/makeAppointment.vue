@@ -55,10 +55,12 @@ import slibrary from "@/slibrary/index.js";
 import BasicButton from "@/components/BasicButton/index.vue";
 import CodeInput from "@/components/CodeInput/index.vue";
 import CustomCalendar from "@/components/customCalendar/index.vue";
+import { createAppointment } from "@/utils/auth.ts"; // Import the API function
+
 
 import { ref, reactive } from "vue";
 
-const times = ["08:00 AM", "10:00 AM", "12:00 PM", "14:00 PM"]; // Button labels
+const times = ["08:00 AM", "10:00 AM", "12:00 PM", "02:00 PM"]; // Button labels
 const clickedButton = ref(null);
 
 const handleClick = (index, time) => {
@@ -97,11 +99,14 @@ const updateDate = (formattedDate) => {
 const potato = [];
 onLoad((options) => {
   console.log("Routed Data:", options);
+  // const imageFile = decodeURIComponent(options.image)
+  
 
   // Use the routed data
   potato.push({
     name: decodeURIComponent(options.name || "Unknown"),
     specialization: decodeURIComponent(options.specialization || "Unknown"),
+	year: "2024",
     date: decodeURIComponent(options.date || "No date provided"),
 	image: decodeURIComponent(options.image || '/static/doctordemo.png')
   });
@@ -117,15 +122,69 @@ onLoad((options) => {
 //   );
 // };
 
-const handleClickSubmit = () => {
-	potato[0].time = state.userInfo.time;
-	potato[0].date = state.userInfo.date;
-	potato[0].year = state.userInfo.year;
-	uni.navigateTo({
-	  url: `/pages/telemedicine/completeAppointment?${Object.entries(potato[0])
-	    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
-	    .join("&")}`,
-	});
+// const handleClickSubmit = () => {
+
+// 	uni.navigateTo({
+// 	  url: `/pages/telemedicine/completeAppointment?${Object.entries(potato[0])
+// 	    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+// 	    .join("&")}`,
+// 	});
+// };
+
+const handleClickSubmit = async () => {
+		potato[0].time = state.userInfo.time;
+		potato[0].date = state.userInfo.date;
+		potato[0].year = state.userInfo.year;
+
+  // Call createAppointment with the form data
+  try {
+	  
+	if (!potato[0].image.startsWith('data:image/png;base64,')) {
+		potato[0].image = 'data:image/png;base64,' + potato[0].image;
+	
+	}
+	const base64ToFile = (base64Data, fileName) => {
+     const byteCharacters = atob(base64Data.split(',')[1]); // Decode base64 string
+     const byteArrays = [];
+     
+     // Convert the base64 string to a byte array
+     for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
+       const slice = byteCharacters.slice(offset, offset + 1024);
+       const byteNumbers = new Array(slice.length);
+       for (let i = 0; i < slice.length; i++) {
+         byteNumbers[i] = slice.charCodeAt(i);
+       }
+       byteArrays.push(new Uint8Array(byteNumbers));
+     }
+ 
+     // Create a Blob from the byte arrays and then a File object
+     const blob = new Blob(byteArrays, { type: 'image/png' });
+     return new File([blob], fileName, { type: 'image/png' });
+	 };
+	
+	const imageFile = base64ToFile(potato[0].image);
+
+    // Call the API function to create the appointment
+    await createAppointment(
+      potato[0]?.name,
+      potato[0]?.specialization,
+      state.userInfo.date,
+      state.userInfo.time,
+      potato[0]?.year,
+      imageFile
+    );
+
+    // Navigate to the confirmation page after successful submission
+    uni.navigateTo({
+      url: `/pages/telemedicine/completeAppointment?${Object.entries(potato[0])
+        .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+        .join("&")}`,
+    });
+
+  } catch (error) {
+    console.error("Failed to create appointment:", error);
+    // Optionally, show an error message
+  }
 };
 
 

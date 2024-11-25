@@ -59,7 +59,7 @@ const fetchDoctors = async () => {
   try {
     // Simulating a backend call with a timeout
     const response = await getDoctors(); // Fetch the doctors data
-    console.log(response);  // Handle the response
+    // console.log(response);  // Handle the response
 
     // Example of how data might be structured
     const doctors = response.data;
