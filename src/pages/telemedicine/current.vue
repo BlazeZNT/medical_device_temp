@@ -21,7 +21,7 @@
             <view class="content-box" :class="{ 'fewer-items': page.length < 3 }">
               <view v-for="(doctor, idx) in page" :key="idx" class="doctor-card">
 				<div class="leftItems">
-					<image :src="doctor.image" class="doctor-image" />
+				<image :src="'data:image/jpeg;base64,' + doctor.image" class="doctor-image" />
 					<view class="doctor-info">
 					  <div class="doc-details">
 							<view class="doctor-name">{{ doctor.name }}</view>
@@ -60,10 +60,10 @@ import slibrary from "@/slibrary/index.js";
 
 // Initialize the doctors array
 const doctors = ref([
-  { image: "/static/doctordemo.png", name: "Dr. Robert Lee", specialization: "Dermatologist", date: "7 December ", year: "2024",time: "10:00am", status: "upcoming" },
-  { image: "/static/doctor2.png", name: "Dr. Richardson Jones", specialization: "Surgeon", date: "7 December ", year: "2024",time: "10:00am", status: "past" },
-  { image: "/static/doctor3.png", name: "Dr. Prasnan Meni", specialization: "Family Medicine", date: "7 December ", year: "2024",time: "10:00am", status: "upcoming" },
-  { image: "/static/doctor4.png", name: "Dr. Dhanang Prast", specialization: "Neurologist", date: "7 December ", year: "2024",time: "10:00am", status: "past" },
+  // { image: "/static/doctordemo.png", name: "Dr. Robert Lee", specialization: "Dermatologist", date: "7 December ", year: "2024",time: "10:00am", status: "upcoming" },
+  // { image: "/static/doctor2.png", name: "Dr. Richardson Jones", specialization: "Surgeon", date: "7 December ", year: "2024",time: "10:00am", status: "past" },
+  // { image: "/static/doctor3.png", name: "Dr. Prasnan Meni", specialization: "Family Medicine", date: "7 December ", year: "2024",time: "10:00am", status: "upcoming" },
+  // { image: "/static/doctor4.png", name: "Dr. Dhanang Prast", specialization: "Neurologist", date: "7 December ", year: "2024",time: "10:00am", status: "past" },
   // { image: "/static/doctor5.png", name: "Dr. Adnan Satya", specialization: "Surgeon", date: "7 December ", year: "2024",time: "10:00am", status: "past" },
 ]);
 
