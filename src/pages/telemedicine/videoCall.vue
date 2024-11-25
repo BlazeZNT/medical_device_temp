@@ -1,12 +1,12 @@
 <template>
 	<LayoutContent showBack @back="handleClickHome">
 		<view class="pageView">
-			<view class="pageView-title">Patient Detail</view>
-			<view class="form">
+			<view class="pageView-title"></view>
+<!-- 			<view class="form">
 				<BasicButton @click="handleClickSubmit">
 					Submit
 				</BasicButton>
-			</view>
+			</view> -->
 		</view>
 		<!-- <view class="pageView" v-else-if="state.step == 2">
 			<view class="pageView-title">Input <i>Pin Verification</i></view>

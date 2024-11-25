@@ -29,7 +29,9 @@
                     <view class="doctor-name">{{ doctor.name }}</view>
                     <view class="doctor-specialization">{{ doctor.specialization }}</view>
                   </div>
-                  <view class="doctor-review">⭐ {{ doctor.review }}</view>
+                  <view class="doctor-review">
+                    <span class="star">⭐</span> {{ doctor.review }}
+                  </view>
                 </view>
               </view>
             </view>
@@ -265,6 +267,9 @@ const handleDoctorClick = (doctor) => {
 			  flex-shrink: 0; /* Prevent shrinking of the review */
 
             }
+			.doctor-review .star {
+			  color: #58ffcf; /* Color of the star */
+			}
           }
         }
       }
