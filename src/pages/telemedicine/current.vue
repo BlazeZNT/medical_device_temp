@@ -37,7 +37,7 @@
                   </div>
                 </view>
             
-                <button class="status-btn" :class="{ 'join-now-btn': doctor.status === 'upcoming', 'reschedule-btn': doctor.status === 'past' }">
+                <button class="status-btn" :class="{ 'join-now-btn': doctor.status === 'upcoming', 'reschedule-btn': doctor.status === 'past' } " @click="handleItemClick(3)">
                   {{ doctor.status === 'upcoming' ? "JOIN NOW" : "RESCHEDULE" }}
                 </button>
             
@@ -111,6 +111,9 @@ const handleItemClick = (type) => {
     case 2:
       slibrary.$router.go("/pages/telemedicine/appointmentList");
       break;
+	case 3:
+		slibrary.$router.go("/pages/telemedicine/videoCall");
+		break;
   }
 };
 </script>
@@ -292,7 +295,6 @@ const handleItemClick = (type) => {
             height: 70px;
             border-radius: 20%;
             object-fit: cover;
-            margin-bottom: 8px;
           }
 
           .doc-details {
@@ -333,7 +335,7 @@ const handleItemClick = (type) => {
               color: #a0a0a0;
               margin-bottom: 4px;
 			  text-align: left;
-			  font-size: 0.2rem;
+			  font-size: 0.23rem;
             }
 			
 			.doctor-date{
@@ -342,7 +344,7 @@ const handleItemClick = (type) => {
 			}
 
             .doctor-review {
-              max-width: 1rem;
+              max-width: 0.8rem;
               min-height: 1.7rem;
               color: #10e2f5;
               flex-shrink: 0;
