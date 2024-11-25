@@ -8,6 +8,11 @@ const getDoctors  = () => {
   return axios.get('/doctors/list');
 };
 
+const getAppointments  = () => {
+  return axios.get('/appointments/list');
+};
 
 
-export { sendLoginRequest, getDoctors };
+
+
+export { sendLoginRequest, getDoctors, getAppointments};
