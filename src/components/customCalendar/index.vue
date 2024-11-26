@@ -150,7 +150,8 @@ const isPastDate = (date) =>
 .calendar-container {
 	width: auto;
 	margin: auto;
-	margin-bottom: 200px;
+	margin-bottom: 110px;
+	/* margin-top: 34px; */
 	padding: 20px;
 	background: #1a1d21;
 	color: white;

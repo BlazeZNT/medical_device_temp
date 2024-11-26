@@ -19,16 +19,6 @@
 							  {{buttonLabel}}
 							</BasicButton>
 						</uni-forms-item>
-						<uni-forms-item label="Time" class="timeButtons">
-						  <BasicButton
-						    v-for="(time, index) in times"
-						    :key="index"
-						    @click="handleClick(index, time)"
-						    :class="['custom-button', { 'button-clicked': clickedButton === index }]"
-						  >
-						    {{ time }}
-						  </BasicButton>
-						</uni-forms-item>
 					</view>
 					<div>
 						<!-- <BasicButton @click="logging">
@@ -37,10 +27,25 @@
 					    <div v-if="showCalendar">
 					        <CustomCalendar @update-date="updateDate" />
 					    </div>
-						<BasicButton @click="handleClickSubmit">
-							Submit
-						</BasicButton>
+						
 					</div>
+					<view class="column" >
+						<uni-forms-item label="Time" class="timeButtons">
+						  <view class="timeButtons">
+						      <BasicButton
+						          v-for="(time, index) in times"
+						          :key="index"
+						          @click="handleClick(index, time)"
+						          :class="['custom-button', { 'button-clicked': clickedButton === index }]"
+						      >
+						          {{ time }}
+						      </BasicButton>
+						  </view>
+						</uni-forms-item>
+					</view>
+					<BasicButton @click="handleClickSubmit">
+						Submit
+					</BasicButton>
 				</uni-forms>
 				
 			</view>
@@ -60,7 +65,7 @@ import { createAppointment } from "@/utils/auth.ts"; // Import the API function
 
 import { ref, reactive } from "vue";
 
-const times = ["08:00 AM", "10:00 AM", "12:00 PM", "02:00 PM"]; // Button labels
+const times = ["08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00", "21:00", "22:00", "22:30", "23:00", "23:30"]; // Button labels
 const clickedButton = ref(null);
 
 const handleClick = (index, time) => {
@@ -229,6 +234,7 @@ const handleClickSubmit = async () => {
 
 		.column {
 			display: flex;
+			flex-wrap: wrap; /* Optional: This allows the entire column to wrap */
 			width: 100%;
 		}
 	}
@@ -285,15 +291,13 @@ const handleClickSubmit = async () => {
 		.uni-datetime-picker--btn {
 			background-color: #58FFCF !important;
 		}
-		.timeButtons{
-			margin-left: 60px;
-		}
+		
 		.calendarButton {
 		  background: transparent;
 		  border: 1px solid #58FFCF;
 		  color: #58FFCF;
 		  transition: background-color 0.3s ease, color 0.3s ease;
-		  padding-top: 18px;
+		  // padding-top: 18px;
 		}
 		
 
@@ -331,21 +335,32 @@ const handleClickSubmit = async () => {
 			}
 		}
 		.custom-button {
-		  padding: 8px 12px;
-		  margin-right: 10px;
-		  font-size: 14px;
-		  border: solid 1px white;
-		  border-radius: 5px;
-		  background-color: transparent;
-		  color: #58FFCF;
-		  cursor: pointer;
-		  text-align: center;
-		  transition: background-color 0.3s ease, color 0.3s ease;
+			flex: 1 1 auto;
+			max-width: 100px;
+			min-width: 79px;
+			margin: 5px;
+			font-size: 14px;
+			border: 1px solid white;
+			border-radius: 5px;
+			background-color: transparent;
+			color: #58FFCF;
+			cursor: pointer;
+			text-align: center;
+			transition: background-color 0.3s ease, color 0.3s ease;
+			width: 0px;
 		}
 		
 		.button-clicked {
 		  color: black;
 		  background-color: #58FFCF; /* Persistent color for clicked button */
+		}
+		.timeButtons{
+			// margin-left: 60px;
+			display: flex;
+			flex-wrap: wrap; /* Allow wrapping to the next line */
+			gap: 10px; /* Add spacing between buttons */
+			justify-content: center; /* Center the buttons horizontally */
+			// margin-top: 5px; /* Add some spacing from the top */
 		}
 	}
 	
