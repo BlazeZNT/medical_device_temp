@@ -358,7 +358,6 @@ const handleClickSubmit = async () => {
 			// margin-left: 60px;
 			display: flex;
 			flex-wrap: wrap; /* Allow wrapping to the next line */
-			gap: 10px; /* Add spacing between buttons */
 			justify-content: center; /* Center the buttons horizontally */
 			// margin-top: 5px; /* Add some spacing from the top */
 		}
