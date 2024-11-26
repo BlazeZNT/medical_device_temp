@@ -151,7 +151,7 @@ const isPastDate = (date) =>
 	width: auto;
 	margin: auto;
 	margin-bottom: 110px;
-	/* margin-top: 34px; */
+	margin-top: 20px;
 	padding: 20px;
 	background: #1a1d21;
 	color: white;

@@ -279,7 +279,7 @@ const handleDoctorClick = (doctor) => {
             }
 
             .doctor-review {
-			  max-width: 1rem;
+			  max-width: 0.8rem;
               color: white;
 			  flex-shrink: 0; /* Prevent shrinking of the review */
 
