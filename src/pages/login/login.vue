@@ -17,7 +17,7 @@
               <image src="@/static/login/Vector1.png" mode="heightFix"></image>
             </view>
             <view class="text">
-              Health card<br />
+              HEALTH <br />CARD
               &nbsp;
             </view>
           </BtnCard>
@@ -28,7 +28,7 @@
               <image src="@/static/login/Vector3.png" mode="heightFix"></image>
             </view>
             <view class="text">
-              unique code<br />
+              UNIQUE<br />CODE
               &nbsp;
             </view>
           </BtnCard>
