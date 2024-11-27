@@ -1,0 +1,155 @@
+<template>
+  <view>
+    <zego-remote-view v-if="playStreamID" :streamID="playStreamID"></zego-remote-view>
+    <text v-else>No remote video stream available</text>
+  </view>
+</template>
+
+<script>
+import ZegoExpressEngine from '@/uni_modules/zego-ZegoExpressUniApp-JS/components/zego-ZegoExpressUniApp-JS/lib/ZegoExpressEngine';
+
+export default {
+  data() {
+    return {
+      appID: 399794242, // Replace with your AppID
+      appSign: '05e4152d23e1181166291d71f570a1436352b2085ca1441ea5c1278aed55a416', // Replace with your AppSign
+      scenario: 0,
+      roomID: 'room1',
+      userID: 'id1',
+      userName: 'user1',
+      playStreamID: null, // Stream ID to play remote video
+      publishStreamID: '123456', // Stream ID to publish local video
+    };
+  },
+  mounted() {
+    console.log('Component mounted.');
+    this.initializeEngine(); // Initialize the engine
+    console.log('Engine initialized with appID:', this.appID);
+    this.loginRoom(); // Log into the room
+  },
+  beforeDestroy() {
+    console.log('Component is being destroyed. Cleaning up resources...');
+    this.logoutRoom(); // Log out of the room
+    this.destroyEngine(); // Destroy the engine
+  },
+  methods: {
+    // Initialize the Zego engine
+    initializeEngine() {
+      const profile = {
+        appID: this.appID,
+        appSign: this.appSign,
+        scenario: this.scenario,
+      };
+      console.log('Initializing engine with profile:', profile);
+      ZegoExpressEngine.createEngineWithProfile(profile);
+    },
+
+    // Log into the room
+    loginRoom() {
+      const roomConfig = {
+        isUserStatusNotify: true,
+      };
+      console.log(`Attempting to log into room: ${this.roomID}`);
+
+      ZegoExpressEngine.instance()
+        .loginRoom(this.roomID, { userID: this.userID, userName: this.userName }, roomConfig)
+        .then(() => {
+          console.log('Successfully logged into the room');
+          this.startPreview(); // Start local preview
+          this.startPublishingStream(); // Publish local stream
+          this.handleRoomStreamUpdates(); // Handle remote stream updates
+        })
+        .catch((err) => {
+          console.error('Failed to log into the room:', err);
+        });
+    },
+
+    // Start local video preview
+    startPreview() {
+      console.log('Starting local video preview...');
+      ZegoExpressEngine.instance()
+        .startPreview()
+        .then(() => {
+          console.log('Local preview started successfully.');
+        })
+        .catch((err) => {
+          console.error('Failed to start local preview:', err);
+        });
+    },
+
+    // Start publishing the local stream
+    startPublishingStream() {
+      console.log('Starting to publish local stream...');
+      ZegoExpressEngine.instance()
+        .startPublishingStream(this.publishStreamID)
+        .then(() => {
+          console.log(`Successfully started publishing stream with ID: ${this.publishStreamID}`);
+        })
+        .catch((err) => {
+          console.error('Failed to publish stream:', err);
+        });
+    },
+
+    // Handle remote stream updates
+    handleRoomStreamUpdates() {
+      console.log('Setting up room stream update listener...');
+      ZegoExpressEngine.instance().on('roomStreamUpdate', (roomID, updateType, streamList) => {
+        console.log('Room stream update detected:', updateType, streamList);
+        if (updateType === 'ADD' && streamList.length > 0) {
+          this.playStreamID = streamList[0].streamID; // Set the playStreamID for remote video
+          console.log('Playing remote stream with ID:', this.playStreamID);
+          ZegoExpressEngine.instance()
+            .startPlayingStream(this.playStreamID)
+            .then(() => {
+              console.log('Started playing remote stream successfully.');
+            })
+            .catch((err) => {
+              console.error('Failed to play remote stream:', err);
+            });
+        } else if (updateType === 'DELETE') {
+          this.playStreamID = null;
+          console.log('Remote stream removed.');
+        }
+      });
+    },
+
+    // Log out of the room
+    logoutRoom() {
+      console.log(`Logging out of room: ${this.roomID}`);
+      ZegoExpressEngine.instance()
+        .logoutRoom(this.roomID)
+        .then(() => {
+          console.log('Successfully logged out of the room.');
+        })
+        .catch((err) => {
+          console.error('Failed to log out of the room:', err);
+        });
+    },
+
+    // Destroy the Zego engine
+    destroyEngine() {
+      console.log('Destroying Zego engine...');
+      ZegoExpressEngine.destroyEngine();
+      console.log('Engine destroyed.');
+    },
+  },
+};
+</script>
+
+<style scoped>
+view {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: #f5f5f5;
+}
+zego-remote-view {
+  width: 100%;
+  height: 100%;
+}
+text {
+  font-size: 16px;
+  color: #888;
+}
+</style>

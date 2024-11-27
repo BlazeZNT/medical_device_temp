@@ -1,0 +1,6 @@
+framework module ZegoExpressUniAppSDK {
+  umbrella header "ZegoExpressUniAppSDK.h"
+  export *
+
+  module * { export * }
+}

@@ -68,6 +68,20 @@
                     "pid" : "",
                     "parameters" : {}
                 }
+            },
+            "zego-ZegoExpressUniAppSDK" : {
+                "__plugin_info__" : {
+                    "name" : "ZegoExpress音视频SDK",
+                    "description" : "ZegoExpressUniApp插件，进入即构官网了解更多（https://doc-zh.zego.im/article/7775?source=dcloud）",
+                    "platforms" : "Android,iOS",
+                    "url" : "",
+                    "android_package_name" : "",
+                    "ios_bundle_id" : "",
+                    "isCloud" : false,
+                    "bought" : -1,
+                    "pid" : "",
+                    "parameters" : {}
+                }
             }
         }
     },

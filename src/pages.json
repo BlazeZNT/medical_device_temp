@@ -82,7 +82,7 @@
 			}
 		},
 		{
-			"path": "pages/telemedicine/videoCall",
+			"path": "pages/telemedicine/videoCode",
 			"style": {
 				"navigationBarTitleText": "uni-app",
 				"navigationStyle": "custom"
