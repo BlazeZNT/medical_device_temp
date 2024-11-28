@@ -1,34 +1,85 @@
-import axios from '@/utils/axios';
+// src/utils/auth.js
+
+// Base URL for all API requests
+const BASE_URL = 'http://192.168.2.38:8080/api'; // Replace with your actual base URL
+
+// Helper function for making a request
+const makeRequest = (method, url, data = {}, headers = {}) => {
+  return new Promise((resolve, reject) => {
+    uni.request({
+      url: `${BASE_URL}${url}`,
+      method,
+      data,
+      header: headers,
+      success: (res) => {
+        if (res.statusCode === 200) {
+          // If the response is a string, parse it to a JSON object
+          const responseData = typeof res.data === 'string' ? JSON.parse(res.data) : res.data;
+          resolve(responseData);
+        } else {
+          // Log error response for better debugging
+          console.error(`Error: ${res.statusCode} - ${JSON.stringify(res.data)}`);
+          reject(new Error(`API request failed with status code ${res.statusCode}`));
+        }
+      },
+      fail: (err) => {
+        console.error('Request failed:', err);
+        reject(new Error('Network request failed'));
+      },
+    });
+  });
+};
 
 // Send login request with phone number
-const sendLoginRequest = (phoneNumber: string) => {
-  return axios.post('/login', { phoneNumber });
+const sendLoginRequest = (phoneNumber) => {
+  return makeRequest('POST', '/login', { phoneNumber });
 };
 
 // Get list of doctors
 const getDoctors = () => {
-  return axios.get('/doctors/list');
+  return makeRequest('GET', '/doctors/list');
 };
 
 // Get list of appointments
 const getAppointments = () => {
-  return axios.get('/appointments/list');
+  return makeRequest('GET', '/appointments/list');
 };
 
 // Create a new appointment (including an image file upload)
-const createAppointment = (name: string, specialization: string, date: string, time: string, year: string, image: File) => {
-  const formData = new FormData();
-  formData.append('name', name);
-  formData.append('specialization', specialization);
-  formData.append('date', date);
-  formData.append('time', time);
-  formData.append('year', year);
-  formData.append('image', image); // This appends the image as a file
+const createAppointment = (name, specialization, date, time, year, image) => {
+  console.log('Uploading image:', image); // Log the image file path
   
-  return axios.post('/appointments/add', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',  // Ensure we send the request as form data
-    },
+  const formData = {
+    name,
+    specialization,
+    date,
+    time,
+    year,
+  };
+
+  return new Promise((resolve, reject) => {
+    uni.uploadFile({
+      url: `${BASE_URL}/appointments/add`,
+      filePath: image,
+      name: 'image', // The form field name for the file
+      formData,
+      header: {
+        'Content-Type': 'multipart/form-data',
+      },
+      success: (res) => {
+        if (res.statusCode === 200) {
+          const responseData = typeof res.data === 'string' ? JSON.parse(res.data) : res.data;
+          resolve(responseData);
+        } else {
+          console.error(`Error: ${res.statusCode} - ${JSON.stringify(res.data)}`);
+          reject(new Error(`Appointment creation failed with status code ${res.statusCode}`));
+        }
+      },
+      fail: (err) => {
+        console.error('Upload failed:', err);
+        reject(new Error('Image upload failed'));
+      },
+    });
   });
 };
 

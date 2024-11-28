@@ -93,32 +93,30 @@ const handleClickCard = () => {
 };
 
 const handleClickLogin = async () => {
-  // Check if phone number is entered
   if (!phoneNumber.value) {
-    alert("Please enter a phone number.");
+    console.log("Please enter a phone number.");
     return;
   }
 
-  loading.value = true;  // Set loading to true while waiting for the API response
+  loading.value = true;
 
   try {
-    // Call the API to verify the phone number
-    const response = await sendLoginRequest(phoneNumber.value);
-    console.log(response);  // Handle the response
-
-    // If the response is successful, go to the next step
-    if (response.data) {
-      state.setp = 3;  // Move to the next step (PIN verification)
+    console.log('Sending API request...');
+    const response = await sendLoginRequest(phoneNumber.value); // Check if this request is being sent correctly
+    console.log('API response:', response);
+	
+    if (response) {
+      state.setp = 3;  // Move to next step
     } else {
-      alert("Login failed. Please try again.");
+      console.log("Login failed: No valid data.");
     }
   } catch (error) {
-    console.error("Login request failed:", error);
-     alert("Login failed. Please try again.");
+    console.error("Error during login:", error);
   } finally {
-    loading.value = false;  // Turn off loading after the request finishes
+    loading.value = false;
   }
 };
+
 
 const handleClickRegister = () => {
   slibrary.$router.go("/pages/login/login");
