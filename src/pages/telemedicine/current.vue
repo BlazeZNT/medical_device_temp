@@ -69,7 +69,7 @@ const fetchDoctors = async () => {
   try {
     // Assuming your API returns an array of doctors
     const response = await getAppointments();
-    const data = await response.data;
+    const data = await response;
 
     // Assuming response contains the doctors list
     doctors.value = data.map(doctor => ({

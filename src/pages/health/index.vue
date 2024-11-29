@@ -76,7 +76,7 @@
 				case 3:
 					slibrary.$router.go("/pages/report/report");
 				case 5:
-					slibrary.$router.go("/pages/telemedicine/index");
+					slibrary.$router.go("/pages/telemedicine/current");
 			}
 		}
 	

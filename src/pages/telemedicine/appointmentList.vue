@@ -62,7 +62,7 @@ const fetchDoctors = async () => {
     // console.log(response);  // Handle the response
 
     // Example of how data might be structured
-    const doctors = response.data;
+    const doctors = response;
 
     // Ensure that doctor.imageBase64 is a valid base64 string
     doctors.forEach((doctor) => {
