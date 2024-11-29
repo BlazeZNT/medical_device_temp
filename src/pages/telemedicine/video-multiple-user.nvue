@@ -1,0 +1,498 @@
+<template>
+	<div>
+		<text style="font-size: 21.07rpx;">-
+			RoomID: {{ roomID }} 
+			RoomState: {{ roomState }} 
+			UserID: {{ userID }} UserName: {{ userName }} 
+			userList: {{ allUserViewObjectList.length }} 
+			streamList: {{ allStreamList.length }}
+		</text>
+		<view class="zego-row-area">
+			<text class="zego-title-text">Publish StreamID</text>
+			<input
+				class="zego-input"
+				style="width: 305.76rpx;border:1px solid"
+				auto-blur="true"
+				:value="publishStreamID"
+				@blur="bindPublishStreamIDChange"
+			/> 
+		</view>
+		<view class="video-config-row">
+			<!-- 本地预览视图 -->
+			<view class="zego-video-view" style="height: 520rpx">
+				<!-- #ifdef APP-PLUS -->
+				<zego-local-view :viewMode="publisherViewModeIndex" style="height: 403.84rpx; flex: 1">
+				</zego-local-view>
+				<!-- #endif -->
+				<!-- #ifdef H5 -->
+				<video id="local_video" class="video-view" autoplay playsinline :muted="pubVideoMuted"></video>
+				<view class="zego-row-area">
+					<text class="zego-title-text">禁止声音外放(muted)</text>
+					<switch :checked="pubVideoMuted" color="#67df74" @chang="changeMuted('pubVideoMuted')" />
+				</view>
+				<!-- #endif -->
+			</view>
+			<view class="zego-video-view" style="height: 520rpx">
+				<text style="
+                        font-size: 28.84rpx;
+                        text-align: center;
+                        color: #ff0000;
+                        background-color: #a3d0fd;
+                    ">{{ publisherName }}</text>
+				<text style="font-size: 19.23rpx; background-color: #e5e5e5">{{
+                    publisherResolutionText
+                }}</text>
+				<text style="font-size: 19.23rpx; background-color: #e5e5e5">{{
+                    publisherQualityText
+                }}</text>
+				<view class="video-config-row">
+					<text class="zego-title-text">View Mode</text>
+					<picker @change="bindPublihserViewModeChange" :value="publisherViewModeIndex"
+						:range="publisherViewModeArray" range-key="name">
+						<view style="background: #ff3; flex: 1; height: 42.3rpx">{{
+                                publisherViewModeArray[publisherViewModeIndex]
+                                    .name
+                            }}
+						</view>
+					</picker>
+				</view>
+				<view class="video-config-row">
+					<text class="zego-title-text">Mirror</text>
+					<picker @change="bindPublisherMirrorChange" :value="publisherMirrorIndex"
+						:range="publisherMirrorArray" range-key="name">
+						<view style="background: #ff3; flex: 1; height: 42.3rpx">{{
+                                publisherMirrorArray[publisherMirrorIndex].name
+                            }}
+						</view>
+					</picker>
+				</view>
+				<view class="video-config-row">
+					<text class="zego-title-text">Camera</text>
+					<switch checked="true" color="#67df74" @change="bindPublisherEnableCamera"
+						style="transform: scale(0.7)" />
+				</view>
+				<!-- #ifdef APP-PLUS -->
+				<view class="video-config-row">
+					<text class="zego-title-text">Camera Selection</text>
+					<uni-segmented-control :current="publisherCameraCurrentSelect" :values="publisherCameraSelections"
+						style-type="button" active-color="#007aff" @clickItem="bindPublisherCameraChange"
+						style="transform: scale(0.7); width: 192.3rpx" />
+				</view>
+				<!-- #endif -->
+				<view class="video-config-row">
+					<text class="zego-title-text">Microphone</text>
+					<switch checked="true" color="#67df74" @change="bindPublisherEnableMicrophone"
+						style="transform: scale(0.7)" />
+				</view>
+				<button class="zego-btn-mid" style="margin: 0rpx 38.46rpx"
+					:type="isPublishingStream ? 'warn' : 'primary'" @click="onPublish">
+					{{ publishBtnName }}
+				</button>
+			</view>
+		</view>
+
+		<view v-if="allUserViewObjectList.length > 0" v-for="(item, index) in allUserViewObjectList" :key="item.userID"
+			class="video-config-row">
+			<!-- 远端视图 -->
+			<view class="zego-video-view" style="height: 450rpx">
+				<!-- #ifdef APP-PLUS -->
+				<zego-remote-view v-if="item.streamID" :streamID="item.streamID" :viewMode="item.viewMode"
+					style="height: 394.23rpx; flex: 1">
+				</zego-remote-view>
+				<!-- #endif -->
+				<!-- #ifdef H5 -->
+				<video :id="'video_'+item.streamID" class="video-view" autoplay playsinline :muted="true"></video>
+				<!-- #endif -->
+			</view>
+			<view class="zego-video-view" style="height: 450rpx">
+				<text style="
+                        font-size: 28.84rpx;
+                        text-align: center;
+                        background-color: #a3d0fd;
+                    ">{{ item.userID }}</text>
+				<text style="font-size: 19.23rpx; background-color: #e5e5e5">{{
+                    item.resolutionText
+                }}</text>
+				<text style="font-size: 19.23rpx; background-color: #e5e5e5">{{
+                    item.qualityText
+                }}</text>
+				<view class="video-config-row">
+					<text class="zego-title-text">View Mode</text>
+					<picker @change="bindPlayViewModeChange($event, item)" :value="item.viewMode || 0"
+						:range="publisherViewModeArray" range-key="name">
+						<view style="background: #ff3; flex: 1; height: 42.3rpx">{{
+                                publisherViewModeArray[item.viewMode || 0].name
+                            }}
+						</view>
+					</picker>
+				</view>
+				<view class="video-config-row">
+					<text class="zego-title-text">Video</text>
+					<switch checked="true" color="#67df74" @change="bindRemoteEnableVideo(item)"
+						style="transform: scale(0.7)" />
+				</view>
+				<view class="video-config-row">
+					<text class="zego-title-text">Audio</text>
+					<switch checked="true" color="#67df74" @change="bindRemoteEnableAudio(item)"
+						style="transform: scale(0.7)" />
+				</view>
+				<button class="zego-btn-mid" style="margin: 0rpx 38.46rpx" type="primary" @click="onPlay(item)">
+					{{ item.buttonName || "Start Playing" }}
+				</button>
+			</view>
+		</view>
+	</div>
+</template>
+
+<script>
+	import permision from "@/pages/permission.js";
+	import ZegoExpressEngine from "@/uni_modules/zego-ZegoExpressUniApp-JS/components/zego-ZegoExpressUniApp-JS/lib/ZegoExpressEngine";
+	import {
+		ZegoScenario,
+		ZegoRoomState,
+		ZegoUpdateType,
+	} from "@/uni_modules/zego-ZegoExpressUniApp-JS/components/zego-ZegoExpressUniApp-JS/lib/ZegoExpressDefines";
+	import keyCenter from "@/pages/KeyCenter.js";
+
+	import ZegoLocalView from "@/uni_modules/zego-ZegoExpressUniApp-JS/components/zego-ZegoExpressUniApp-JS/zego-view/ZegoLocalView";
+	import ZegoRemoteView from "@/uni_modules/zego-ZegoExpressUniApp-JS/components/zego-ZegoExpressUniApp-JS/zego-view/ZegoRemoteView";
+	import main from "@/mixins";
+	import publish from "@/mixins/publish";
+	import {getLoginToken} from '@/pages/getToken'
+
+	let roomid = "00001";
+
+	export default {
+		mixins: [main, publish],
+		components: {
+			ZegoLocalView: ZegoLocalView,
+			ZegoRemoteView: ZegoRemoteView,
+		},
+		data() {
+			return {
+				roomState: "Not Connected 🔴",
+				publisherVideoConfig: {},
+				publisherViewModeIndex: 0,
+				publisherViewModeArray: [{
+						name: "AspectFit",
+					},
+					{
+						name: "AspectFill",
+					},
+					{
+						name: "ScaleToFill",
+					},
+				],
+				publisherMirrorIndex: 0,
+				publisherMirrorArray: [{
+						name: "OnlyPreview",
+					},
+					{
+						name: "Both",
+					},
+					{
+						name: "No",
+					},
+					{
+						name: "OnlyPublish",
+					},
+				],
+				publisherCameraSelections: ["Back", "Front"],
+				publisherCameraCurrentSelect: 1,
+				publisherQualityText: "",
+				publisherResolutionText: "",
+				publisherName: "我",
+
+				allStreamList: [],
+				allUserViewObjectList: [],
+			};
+		},
+		async onLoad(option) {
+			if (uni.getSystemInfoSync().platform === "android") {
+				await permision.requestAndroidPermission(
+					"android.permission.RECORD_AUDIO"
+				);
+				await permision.requestAndroidPermission(
+					"android.permission.CAMERA"
+				);
+			}
+			this.roomID = option.roomID;
+			this.userID = option.userID;
+			this.userName = option.userName;
+			this.publisherName = `我(${option.userID})\n roomid: ${this.roomID}`;
+			this.publisherVideoConfig = JSON.parse(option.config);
+			await this.setup();
+		},
+
+		methods: {
+			bindPublihserViewModeChange: function(e) {
+				this.publisherViewModeIndex = e.detail.value;
+			},
+			bindPublisherMirrorChange: function(e) {
+				this.publisherMirrorIndex = e.detail.value;
+				this.engine.setVideoMirrorMode(this.publisherMirrorIndex);
+			},
+			bindPublisherEnableCamera: function(e) {
+				this.engine.enableCamera(e.detail.value);
+			},
+			bindPublisherEnableMicrophone: function(e) {
+				this.engine.muteMicrophone(!e.detail.value);
+			},
+			// #ifdef APP-PLUS
+			bindPublisherCameraChange: function(e) {
+				this.engine.useFrontCamera(e.currentIndex == 1 ? true : false);
+			},
+			// #endif
+			bindPlayViewModeChange(e, item) {
+				this.$set(item, "viewMode", `${e.detail.value}`);
+			},
+			bindRemoteEnableAudio(item) {
+				item.muteAudio = !item.muteAudio;
+				this.engine.mutePlayStreamAudio(item.streamID, item.muteAudio);
+			},
+			bindRemoteEnableVideo(item) {
+				item.muteVideo = !item.muteVideo;
+				this.engine.mutePlayStreamVideo(item.streamID, item.muteVideo);
+			},
+			async onPlay(item) {
+				item.isPlaying = !(item.isPlaying || false);
+				if (item.isPlaying) {
+					this.$set(item, "buttonName", "Stop Playing");
+					const stream = await this.engine.startPlayingStream(
+						item.streamID
+					);
+					// #ifdef H5
+					document.querySelector("#video_"+item.streamID+" video").srcObject =
+						stream;
+					// #endif
+				} else {
+					this.$set(item, "buttonName", "Start Playing");
+					await this.engine.stopPlayingStream(item.streamID);
+					// #ifdef H5
+					document.querySelector("#video_"+item.streamID+" video").srcObject = null;
+					// #endif
+				}
+			},
+			onPublish: async function(e) {
+				if (this.isPublishingStream) {
+					this.engine.stopPreview();
+					await this.engine.stopPublishingStream();
+					// #ifdef H5
+					document.querySelector("#local_video video").srcObject = null;
+					// #endif
+					this.publishBtnName = "Start Publishing";
+				} else {
+					// #ifdef H5
+					this.engine.startPreview(
+						document.querySelector("#local_video video")
+					);
+					// #endif
+					// #ifdef APP-PLUS
+					this.engine.startPreview();
+					// #endif
+					const stream = await this.engine.startPublishingStream(
+						this.publishStreamID
+					);
+					this.publishBtnName = "Stop Publishing";
+				}
+				this.isPublishingStream = !this.isPublishingStream;
+			},
+
+			async setup() {
+				let profile = {
+					appID: keyCenter.getAppID(),
+					scenario: ZegoScenario.General
+				};
+				this.engine = await ZegoExpressEngine.createEngineWithProfile(
+					profile
+				);
+				this.addListeners();
+
+				this.engine.setVideoConfig(this.publisherVideoConfig);
+				const token = keyCenter.getToken() || await getLoginToken(this.userID, this.roomID);
+				this.engine.loginRoom(
+					this.roomID, {
+						userID: this.userID,
+						userName: this.userName,
+					}, {
+						isUserStatusNotify: true,
+						token: token,
+					}
+				);
+			},
+
+			addListeners() {
+				this.engine.on('roomUserUpdate', (roomID, updateType, userList) => {
+					if (updateType == ZegoUpdateType.Add) {
+						for (let user of userList) {
+							for (let stream of this.allStreamList) {
+								if (user.userID == stream.user.userID) {
+									user.streamID = stream.streamID;
+								}
+							}
+							this.allUserViewObjectList.push(user);
+						}
+					} else if (updateType == ZegoUpdateType.Delete) {
+						this.allUserViewObjectList =
+							this.allUserViewObjectList.filter((object) => {
+								for (let user of userList) {
+									if (user.userID == object.userID) {
+										return false;
+									}
+								}
+								return true;
+							});
+					}
+				});
+				this.engine.on(
+					"roomStateUpdate",
+					(roomID, state, errorCode, extendedData) => {
+						if (errorCode != 0) {
+							console.log(
+								`🚩 ❌ 🚪 Room state error, errorCode:${errorCode}`
+							);
+						} else {
+							if (state == ZegoRoomState.Connected) {
+								this.roomState = "Connected 🟢";
+							} else if (state == ZegoRoomState.Connecting) {
+								this.roomState = "Connecting 🟡";
+							} else if (state == ZegoRoomState.DisConnected) {
+								this.roomState = "Not Connected 🔴";
+							}
+						}
+					}
+				);
+
+				this.engine.on("roomStreamUpdate", (roomID, updateType, streamList) => {
+					if (updateType == ZegoUpdateType.Add) {
+						for (let object of this.allUserViewObjectList) {
+							for (let stream of streamList) {
+								if (object.userID == stream.user.userID) {
+									object.streamID = stream.streamID;
+								}
+							}
+						}
+						this.allStreamList =
+							this.allStreamList.concat(streamList);
+						console.warn(this.allStreamList)
+					} else if (updateType == ZegoUpdateType.Delete) {
+						for (let object of this.allUserViewObjectList) {
+							for (let stream of streamList) {
+								if (object.streamID == stream.streamID) {
+									object.streamID = undefined;
+								}
+							}
+						}
+						this.allStreamList = this.allStreamList.filter(
+							(object) => {
+								for (let stream of streamList) {
+									if (object.streamID == stream.streamID) {
+										return false;
+									}
+								}
+								return true;
+							}
+						);
+					}
+				});
+				this.engine.on("roomOnlineUserCountUpdate", (roomID, count) => {});
+				this.engine.on("playerQualityUpdate", (streamID, quality) => {
+					let networkQuality = "";
+					switch (quality.level) {
+						case 0:
+							networkQuality = "☀️";
+							break;
+						case 1:
+							networkQuality = "⛅️";
+							break;
+						case 2:
+							networkQuality = "☁️";
+							break;
+						case 3:
+							networkQuality = "🌧";
+							break;
+						case 4:
+							networkQuality = "❌";
+							break;
+						default:
+							break;
+					}
+					for (let object of this.allUserViewObjectList) {
+						if (object.streamID == streamID) {
+							this.$set(
+								object,
+								"qualityText",
+								`VideoBitrate: ${quality.videoKBPS.toFixed(
+                                2
+                            )}\nVideoRecvFPS: ${quality.videoRecvFPS.toFixed(
+                                1
+                            )}\nRTT: ${quality.rtt}\nDelay: ${
+                                quality.delay
+                            }\nPackageLostRate: ${(
+                                quality.packetLostRate * 100.0
+                            ).toFixed(1)}\nNetworkQuality: ${networkQuality}`
+							);
+						}
+					}
+				});
+				this.engine.on("publisherQualityUpdate", (streamID, quality) => {
+					let networkQuality = "";
+					switch (quality.level) {
+						case 0:
+							networkQuality = "☀️";
+							break;
+						case 1:
+							networkQuality = "⛅️";
+							break;
+						case 2:
+							networkQuality = "☁️";
+							break;
+						case 3:
+							networkQuality = "🌧";
+							break;
+						case 4:
+							networkQuality = "❌";
+							break;
+						default:
+							break;
+					}
+					this.publisherQualityText = `VideoBitrate: ${quality.videoKBPS.toFixed(
+                    2
+                )}\nVideoSendFPS: ${quality.videoSendFPS.toFixed(1)}\nRTT: ${
+                    quality.rtt
+                }\nPackageLostRate: ${(quality.packetLostRate * 100.0).toFixed(
+                    1
+                )}\nNetworkQuality: ${networkQuality}`;
+				});
+				this.engine.on(
+					"publisherVideoSizeChanged",
+					(width, height, channel) => {
+						this.publisherResolutionText = `${width}X${height}`;
+					}
+				);
+				this.engine.on(
+					"playerVideoSizeChanged",
+					(streamID, width, height) => {
+						for (let object of this.allUserViewObjectList) {
+							if (object.streamID == streamID) {
+								this.$set(
+									object,
+									"resolutionText",
+									`${width}X${height}`
+								);
+							}
+						}
+					}
+				);
+			},
+		},
+	};
+</script>
+
+<style>
+	.video-config-row {
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+</style>

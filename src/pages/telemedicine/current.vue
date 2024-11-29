@@ -112,7 +112,7 @@ const handleItemClick = (type) => {
       slibrary.$router.go("/pages/telemedicine/appointmentList");
       break;
 	case 3:
-		slibrary.$router.go("/pages/telemedicine/videoCode");
+		slibrary.$router.go("/pages/telemedicine/video-user-config");
 		break;
   }
 };

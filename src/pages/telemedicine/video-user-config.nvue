@@ -1,0 +1,258 @@
+<template>
+    <div class="zego-container">
+        <scroll-view
+            class="zego-log-view"
+            scroll-y="true"
+            :style="{ height: logHeight + 'rpx' }"
+        >
+            <button
+                class="zego-log-fold-btn"
+                type="warn"
+                size="mini"
+                @click="changeLogViewSize"
+            >
+				Change Log view
+            </button>
+            <text class="zego-log-text">{{ info }}</text>
+        </scroll-view>
+        <view class="zego-video-area">
+            <view class="zego-video-view">
+                <!-- #ifdef APP-PLUS -->
+                <zego-local-view class="video-view"></zego-local-view>
+                <!-- #endif -->
+                <!-- #ifdef H5 -->
+                <video
+                    id="local_video"
+                    class="video-view"
+                    autoplay
+                    playsinline
+                    crossorigin="anonymous"
+                    :muted="pubVideoMuted"
+                ></video>
+                <view class="zego-row-area">
+                    <text class="zego-title-text">Mute(muted)</text>
+                    <switch
+                        :checked="pubVideoMuted"
+                        color="#67df74"
+                        @change="changeMuted('pubVideoMuted')"
+                    />
+                </view>
+                <!-- #endif -->
+                <text class="zego-title-text" style="text-align: center"
+                    >Preview</text
+                >
+            </view>
+            <view class="zego-video-view">
+                <!-- #ifdef APP-PLUS -->
+                <zego-remote-view
+                    class="video-view"
+                    v-if="engine"
+                    :streamID="playStreamID"
+                >
+                </zego-remote-view>
+                <!-- #endif -->
+                <!-- #ifdef H5 -->
+                <video
+                    id="remote_video"
+                    class="video-view"
+                    autoplay
+                    playsinline
+                    crossorigin="anonymous"
+                    :muted="playVideoMuted"
+                ></video>
+                <view class="zego-row-area">
+                    <text class="zego-title-text">mute(muted)</text>
+                    <switch
+                        :checked="playVideoMuted"
+                        color="#67df74"
+                        @change="changeMuted('playVideoMuted')"
+                    />
+                </view>
+                <!-- #endif -->
+                <text class="zego-title-text" style="text-align: center"
+                    >Play Stream</text
+                >
+            </view>
+        </view>
+        <view class="zego-row-area">
+            <text class="zego-title-text">RoomID</text>
+            <input
+                class="zego-input"
+                style="width: 305.76rpx"
+                auto-blur="true"
+                v-model="roomID"
+            />
+        </view>
+        <view class="zego-row-area">
+            <text class="zego-title-text">Publish StreamID</text>
+            <input
+                class="zego-input"
+                style="width: 305.76rpx"
+                auto-blur="true"
+                v-model="publishStreamID"
+            />
+        </view>
+        <view class="zego-row-area">
+            <text class="zego-title-text">Play StreamID</text>
+            <input
+                class="zego-input"
+                style="width: 305.76rpx"
+                auto-blur="true"
+                v-model="playStreamID"
+            />
+        </view>
+        <view class="zego-line"></view>
+        <view class="zego-row-area">
+            <text class="zego-title-text">Step1</text>
+            <text class="zego-conent-text">Create ZegoExpressEngine</text>
+            <button class="zego-btn-mid" type="primary" @click="onClickCreate">
+                Create Engine
+            </button>
+        </view>
+        <view class="zego-row-area">
+            <text class="zego-title-text">Step2</text>
+            <text class="zego-conent-text">Login Room</text>
+            <button
+                class="zego-btn-mid"
+                :type="isLogin ? 'warn' : 'primary'"
+                @click="loginRoom(roomID, userID, userName)"
+            >
+                {{ isLogin ? "Logout" : "Login" }} Room
+            </button>
+        </view>
+        <view class="zego-row-area">
+            <text class="zego-title-text">Step3</text>
+            <text class="zego-conent-text">Start Publishing Stream</text>
+            <button
+                class="zego-btn-mid"
+                :type="isPublishingStream ? 'warn' : 'primary'"
+                @click="onClickPublish"
+            >
+                {{ publishBtnName }}
+            </button>
+        </view>
+        <view class="zego-row-area">
+            <text class="zego-title-text">Step4</text>
+            <text class="zego-conent-text">Start Playing Stream</text>
+
+            <button
+                class="zego-btn-mid"
+                :type="isPlayingStream ? 'warn' : 'primary'"
+                @click="onClickPlay"
+            >
+                {{ playBtnName }}
+            </button>
+        </view>
+        <button class="zego-btn-long" type="warn" @click="destroyEngine">
+            Destroy Engine
+        </button>
+    </div>
+</template>
+
+<script setup>
+import {onMounted} from 'vue'
+import {useZego} from "@/composables/useZego";
+import {usePublish} from "@/composables/usePublish";
+import {usePlay} from "@/composables/usePlay";
+import ZegoRemoteView from "@/uni_modules/zego-ZegoExpressUniApp-JS/components/zego-ZegoExpressUniApp-JS/zego-view/ZegoRemoteView";
+import ZegoLocalView from "@/uni_modules/zego-ZegoExpressUniApp-JS/components/zego-ZegoExpressUniApp-JS/zego-view/ZegoLocalView";
+
+const {
+	info,
+	logHeight,
+	roomID,
+	userID,
+	userName,
+	isLogin,
+	isRequest,
+	engine,
+	// 方法
+	createEngine, 
+	destroyEngine,
+	loginRoom,
+	logoutRoom,
+	changeLogViewSize,
+	appendActionInfo,
+	appendSuccessInfo,
+	appendFailureInfo,
+	appendCallbackInfo
+}  = useZego()
+const {
+	publishStreamID,
+	publishBtnName,
+	isPublishingStream,
+	localVideoElem,
+	pubVideoMuted,
+	startPublishingStream,
+	stopPublishingStream,
+	startPreview,
+	stopPreview,
+	onClickPublish,
+	addPublishListeners,
+} = usePublish({
+	engine,
+	appendActionInfo,
+	appendCallbackInfo,
+	appendSuccessInfo
+})
+const {
+	playStreamID,
+	playVideoElem,
+	isPlayingStream,
+	playBtnName,
+	playVideoMuted,
+	playStream,
+	onClickPlay,
+	startPlayingStream,
+	stopPlayingStream,
+	addPlayListeners,
+	playError
+} = usePlay({
+	engine,
+	appendActionInfo,
+	appendCallbackInfo,
+	appendSuccessInfo
+})
+onMounted(async () => {
+	// #ifdef APP-PLUS
+	if (uni.getSystemInfoSync().platform === "android") {
+		await permision.requestAndroidPermission(
+			"android.permission.RECORD_AUDIO"
+		);
+		await permision.requestAndroidPermission(
+			"android.permission.CAMERA"
+		);
+	}
+	// #endif
+	// #ifdef H5
+	localVideoElem.value = document.querySelector("#local_video video");
+	playVideoElem.value = document.querySelector("#remote_video video");
+	// #endif
+})
+
+
+async function onClickCreate () {
+	await createEngine();
+	addListeners();
+}
+	
+function addListeners() {
+	engine.value.on("apiCalledResult", (errorCode, funcName, info) => {
+		if (errorCode == 0) {
+			appendSuccessInfo(`[${funcName}]: ${info}`);
+		} else {
+			appendFailureInfo(
+				`[${errorCode}][${funcName}]: ${info}`
+			);
+		}
+	});
+	engine.value.on("roomStateChanged", (roomID, reason, errorCode, extendedData) => {
+		console.log(`roomStateChanged. roomID: ${roomID}, ${reason}, ${errorCode}`);
+	});
+	addPublishListeners();
+	addPlayListeners();
+}
+</script>
+
+<style scoped>
+</style>

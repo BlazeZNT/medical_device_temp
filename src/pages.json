@@ -91,6 +91,37 @@
 				"tabBar": true,
 				"ignoreAuth": true
 			}
+		},{
+			"path": "pages/telemedicine/video-user-config",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom"
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
+			}
+		},{
+			"path": "pages/telemedicine/video-multiple-user",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom"
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
+			}
+		},
+		{
+			"path": "pages/telemedicine/room",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom"
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
+			}
 		},
         {
             "path" : "pages/health/detection",
