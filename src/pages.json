@@ -82,6 +82,28 @@
 			}
 		},
 		{
+			"path": "pages/telemedicine/choicePage",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom"
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
+			}
+		},
+		{
+			"path": "pages/telemedicine/consultNow",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom"
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
+			}
+		},
+		{
 			"path": "pages/telemedicine/videoCall",
 			"style": {
 				"navigationBarTitleText": "uni-app",
