@@ -15,7 +15,7 @@
               </view>
               <view v-for="(doctor, idx) in page" :key="idx" class="doctor-card">
                 <div class="leftItems">
-				<image :src="doctor.image" class="doctor-image" />
+				<image :src="'data:image/jpeg;base64,' + doctor.image" class="doctor-image" />
                   <view class="doctor-info">
                     <div class="doc-details">
                       <view class="doctor-name">{{ doctor.name }}</view>
@@ -65,7 +65,7 @@
 	    date: decodeURIComponent(options.date || "No date provided"),
 	    time: decodeURIComponent(options.time || "No time"),
 		year: decodeURIComponent(options.year || "No time"),
-		image: decodeURIComponent(options.image || '/static/doctordemo.png')
+		image: decodeURIComponent(options.image )
 	  });
 	
 	  // Recalculate pages

@@ -18,8 +18,8 @@ const makeRequest = (method, url, data = {}, headers = {}) => {
           resolve(responseData);
         } else {
           // Log error response for better debugging
-          console.error(`Error: ${res.statusCode} - ${JSON.stringify(res.data)}`);
-          reject(new Error(`API request failed with status code ${res.statusCode}`));
+          // console.error(`Error: ${res.statusCode} - ${JSON.stringify(res.data)}`);
+          // reject(new Error(`API request failed with status code ${res.statusCode}`));
         }
       },
       fail: (err) => {
@@ -45,41 +45,11 @@ const getAppointments = () => {
   return makeRequest('GET', '/appointments/list');
 };
 
-// Create a new appointment (including an image file upload)
-const createAppointment = (name, specialization, date, time, year, image) => {
-  console.log('Uploading image:', image); // Log the image file path
-  
-  const formData = {
-    name,
-    specialization,
-    date,
-    time,
-    year,
-  };
+// Create a new appointment (using a Base64 image string)
+const createAppointment = (name, specialization, date, time, year, imageBase64) => {
 
-  return new Promise((resolve, reject) => {
-    uni.uploadFile({
-      url: `${BASE_URL}/appointments/add`,
-      filePath: image,
-      name: 'image', // The form field name for the file
-      formData,
-      header: {
-        'Content-Type': 'multipart/form-data',
-      },
-      success: (res) => {
-        if (res.statusCode === 200) {
-          const responseData = typeof res.data === 'string' ? JSON.parse(res.data) : res.data;
-          resolve(responseData);
-        } else {
-          console.error(`Error: ${res.statusCode} - ${JSON.stringify(res.data)}`);
-          reject(new Error(`Appointment creation failed with status code ${res.statusCode}`));
-        }
-      },
-      fail: (err) => {
-        console.error('Upload failed:', err);
-        reject(new Error('Image upload failed'));
-      },
-    });
+  return makeRequest('POST', '/appointments/add', {name, specialization, date, time, year, imageBase64}, {
+    'Content-Type': 'application/json', 
   });
 };
 
