@@ -51,12 +51,16 @@
 						<view class="uni-title">Prescriptions</view>
 						<view class="prescriptionsbox">
 						  <view class="prescriptionscontent">
-							<image src="@/static/back.png" class="image-responsive"></image>
-							<text class="image-text">Back to theasdf adslghalscnvlaoelkgnoasknbva</text>
+						    <image src="@/static/medi1.png" class="image-responsive"></image>
+						    <text class="image-text">
+						      <b>Simetichone</b><br>1 morning, 1 night (before food)
+						    </text>
 						  </view>
 						  <view class="prescriptionscontent">
-							<image src="@/static/back.png" class="image-responsive"></image>
-							<text class="image-text">Back asdfasdarhadcsvaweghascvsd</text>
+						    <image src="@/static/medi2.png" class="image-responsive"></image>
+						    <text class="image-text">
+						      <b>Antacids</b><br>1 morning, 1 night (before food)
+						    </text>
 						  </view>
 						</view>
 					</view>
@@ -89,8 +93,8 @@ const state = reactive({
     time: "",
     year: "2024",
   },
-  diagnosis: "Lorem Ipsum is simply dummy text of the printing and typesetting industry...askdfnasldfj'laskdjf;lakjgdlaa;lsdfkjasldfj;aslkdjv;lakj;olkrng.adfb;aldsncvaljehr;gojknclbjna;erojgbnal;ljcnvv;",
-  suggestions: "Lorem Ipsum is simply dummy text of the printing and typesetting industry...",
+  diagnosis: "Influenza (Flu) The viruses that cause flu spread at high levels during certain times of the year in the Northern and Southern hemispheres. These are called flu seasons. During times when flu is widespread, you may not need a flu test.",
+  suggestions: "Take a rest. Get discipline with taking medicine on prescription.",
 });
 
 const doctorDetails = reactive({
@@ -134,6 +138,7 @@ const handleClickHome = () => {
     font-family: FB;
     color: #fff;
     font-size: 20px;
+	margin-top: 25px;
 }
 .content-border-box{
     padding: 1px;
