@@ -115,7 +115,7 @@ const handleItemClick = (type, doctor = null) => {
   switch (type) {
     case 1:
       uni.navigateTo({
-        url: "/pages/health/index",
+        url: "/pages/telemedicine/choicePage",
       });
       break;
     case 2:

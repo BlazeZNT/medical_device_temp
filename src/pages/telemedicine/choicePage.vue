@@ -121,10 +121,10 @@ const handleClickCard = (type) => {
         color: #5beaff;
       }
 	  .live{
-		  background-image: linear-gradient(90deg, #06ffb8 0%, #EF6936 50%, #E92C74 100%);
+		  background-image: linear-gradient(90deg, #06ffb8 0%, #783AB6 100%);
 		  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 		.text{
-			color: black;
+			color: white;
 		}
 	  }
     }

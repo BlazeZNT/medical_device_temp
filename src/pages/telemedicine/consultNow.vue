@@ -7,7 +7,7 @@
         <swiper class="swiper" :circular="true" :interval="3000" :autoplay="false" indicator-dots>
           <swiper-item v-for="(page, pageIndex) in pages" :key="pageIndex">
             <view class="leftback">
-              <image src="@/static/back.png" class="image-link" @click="handleItemClick(1)"></image>
+              <image src="@/static/back.png" class="image-link" @click="handleItemClick(2)"></image>
             </view>
             <view class="centertext">
               CONSULT NOW
@@ -112,6 +112,9 @@ const handleItemClick = (type) => {
     case 1:
       slibrary.$router.go("/pages/telemedicine/videoCall");
       break;
+	case 2:
+	  slibrary.$router.go("/pages/telemedicine/choicePage");
+	  break;
   }
 };
 </script>

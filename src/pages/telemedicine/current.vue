@@ -129,7 +129,7 @@ onMounted(() => {
 const handleItemClick = (type) => {
   switch (type) {
     case 1:
-      slibrary.$router.go("/pages/health/index");
+      slibrary.$router.go("/pages/telemedicine/choicePage");
       break;
     case 2:
       slibrary.$router.go("/pages/telemedicine/appointmentList");
@@ -138,7 +138,8 @@ const handleItemClick = (type) => {
 		slibrary.$router.go("/pages/telemedicine/videoCall");
 		break;
 	case 4:
-		slibrary.$router.go("/pages/telemedicine/makeAppointment")
+		slibrary.$router.go("/pages/telemedicine/makeAppointment");
+		break;
   }
 };
 

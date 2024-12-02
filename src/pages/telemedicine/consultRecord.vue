@@ -64,11 +64,11 @@
 						  </view>
 						</view>
 					</view>
-					<view class="column">
+					<!-- <view class="column">
 					  <basicButton class="back">
 						  BACK TO PAGE
 					  </basicButton>
-					</view>
+					</view> -->
 			  </view>
 			  
 			</view>
@@ -121,7 +121,7 @@ onLoad((options) => {
 });
 
 const handleClickHome = () => {
-  slibrary.$router.go("/pages/telemedicine/index");
+  slibrary.$router.go("/pages/telemedicine/consultHistory");
 };
 </script>
 
@@ -138,7 +138,7 @@ const handleClickHome = () => {
     font-family: FB;
     color: #fff;
     font-size: 20px;
-	margin-top: 25px;
+	// margin-top: 25px;
 }
 .content-border-box{
     padding: 1px;

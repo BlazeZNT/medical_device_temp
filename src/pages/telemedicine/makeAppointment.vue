@@ -189,31 +189,6 @@ const handleClickSubmit = async () => {
 
   // Call createAppointment with the form data
   try {
-	  
-	if (!potato[0].image.startsWith('data:image/png;base64,')) {
-		potato[0].image = 'data:image/png;base64,' + potato[0].image;
-	
-	}
-	const base64ToFile = (base64Data, fileName) => {
-     const byteCharacters = atob(base64Data.split(',')[1]); // Decode base64 string
-     const byteArrays = [];
-     
-     // Convert the base64 string to a byte array
-     for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
-       const slice = byteCharacters.slice(offset, offset + 1024);
-       const byteNumbers = new Array(slice.length);
-       for (let i = 0; i < slice.length; i++) {
-         byteNumbers[i] = slice.charCodeAt(i);
-       }
-       byteArrays.push(new Uint8Array(byteNumbers));
-     }
- 
-     // Create a Blob from the byte arrays and then a File object
-     const blob = new Blob(byteArrays, { type: 'image/png' });
-     return new File([blob], fileName, { type: 'image/png' });
-	 };
-	
-	const imageFile = base64ToFile(potato[0].image);
 
     // Call the API function to create the appointment
     await createAppointment(
@@ -222,7 +197,7 @@ const handleClickSubmit = async () => {
       state.userInfo.date,
       state.userInfo.time,
       potato[0]?.year,
-      imageFile
+      potato[0]?.image,
     );
 
     // Navigate to the confirmation page after successful submission
