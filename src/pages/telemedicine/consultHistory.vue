@@ -10,7 +10,7 @@
               <image src="@/static/back.png" class="image-link" @click="handleItemClick(1)"></image>
             </view>
             <view class="centertext">
-              CONSULT NOW
+              My Appointments
             </view>
             <view>
               <view class="rightback">
@@ -21,10 +21,7 @@
             <view class="content-box" :class="{ 'fewer-items': page.length < 3 }">
               <view v-for="(doctor, idx) in page" :key="idx" class="doctor-card">
                 <div class="leftItems">
-					<div class="imageBox">
-						<image :src="'data:image/jpeg;base64,' + doctor.image" class="doctor-image" />
-						<div class="live-tag">LIVE</div>
-					</div>
+                  <image :src="'data:image/jpeg;base64,' + doctor.image" class="doctor-image" />
                   <view class="doctor-info">
                     <div class="doc-details">
                       <view class="doctor-name">{{ doctor.name }}</view>
@@ -35,16 +32,17 @@
             
                 <view class="doctor-info">
                   <div class="doc-details">
-                    <view class="doctor-review">⭐ {{ doctor.review }}</view>
+                    <view class="day-time">Date & Time</view>
+                    <view class="doctor-date">{{ `${doctor.date} ${doctor.year} ${doctor.time} ` }}</view>
                   </div>
                 </view>
-				
-				<view class="doctor-info">
-				  <button class="status-btn" @click="handleItemClick(1)">
-				  	JOIN
-				  </button>
-				</view>
-			
+            
+				<button
+				  class="status-btn"
+				  @click="handleItemClick(5, doctor)"
+				>
+				  VIEW DETAIL
+				</button>
             
               </view>
             </view>
@@ -63,18 +61,22 @@ import { ref, onMounted, watch } from 'vue';
 import Header from "@/components/Layout/Header.vue";
 import slibrary from "@/slibrary/index.js";
 import { getAppointments } from "@/utils/auth.ts"; // Import the API function
-import { getDoctors } from "@/utils/auth.ts"; // Import the API function
+
 
 
 // Initialize the doctors array
 const doctors = ref([]);
 const pages = ref([]);
+const showModal = ref(false);
+const selectedDoctor = ref({ pageIndex: null, doctorIndex: null });
+
+
 
 // API endpoint to fetch doctor data (replace with actual API URL)
 const fetchDoctors = async () => {
   try {
     // Assuming your API returns an array of doctors
-    const response = await getDoctors();
+    const response = await getAppointments();
     const data = await response;
 
     // Assuming response contains the doctors list
@@ -82,10 +84,12 @@ const fetchDoctors = async () => {
       image: doctor.imageBase64 || '/static/doctordemo.png',
       name: doctor.name || 'Unknown',
       specialization: doctor.specialization || 'Unknown',
+      date: doctor.date || 'No date provided',
+      year: doctor.year || 'No year',
+      time: doctor.time || 'No time',
       status: doctor.status || 'past',
-	  review: doctor.review || "no review"
-    }));
 
+    }));
     // Recalculate pages for pagination
     const itemsPerPage = 3;
     pages.value = [];
@@ -107,13 +111,34 @@ onMounted(() => {
 });
 
 // Handle navigation based on the button type
-const handleItemClick = (type) => {
+const handleItemClick = (type, doctor = null) => {
   switch (type) {
     case 1:
-      slibrary.$router.go("/pages/telemedicine/videoCall");
+      uni.navigateTo({
+        url: "/pages/health/index",
+      });
+      break;
+    case 2:
+      uni.navigateTo({
+        url: "/pages/telemedicine/appointmentList",
+      });
+      break;
+    case 5:
+      if (doctor) {
+        // Construct query parameters
+        const queryParams = Object.entries(doctor)
+          .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+          .join("&");
+
+        // Navigate to the detail page with doctor info
+        uni.navigateTo({
+          url: `/pages/telemedicine/consultRecord?${queryParams}`,
+        });
+      }
       break;
   }
 };
+
 </script>
 
 <style lang="scss" scoped>
@@ -136,21 +161,36 @@ const handleItemClick = (type) => {
     flex-direction: column;
     padding: 1.6rem;
     padding-top: 0;
-
-    .appointment-button-container {
-      width: 80%;
-      margin-top: 12px;
-      align-self: center;
-      text-align: center;
-      button {
-        width: 70%;
-      }
-    }
-
-    .appointment-button {
-      font-size: 14px;
-      font-family: FB;
-    }
+	
+	// .default-btn {
+	//   width: 100%;
+	//   padding: 6rpx 0;
+	//   display: inline-block;
+	//   font-size: 14px;
+	//   background: #fff;
+	//   border-radius: 8px;
+	//   font-family: FB;
+	//   text-align: center;
+	//   &.borderBtn {
+	//     background: transparent;
+	//     border: 1px solid #fff;
+	//     color: #fff;
+	//     font-family: FL;
+	//   }
+	
+	.appointment-button-container{
+		width: 80%;
+		margin-top: 12px;
+		align-self: center;
+		text-align: center;
+		button{
+			width: 70%
+		}
+	}
+	.appointment-button{
+		font-size: 14px;
+		font-family: FB;
+	}
 
     .content-border-box {
       padding: 1px;
@@ -176,10 +216,10 @@ const handleItemClick = (type) => {
           height: 100%;
         }
       }
-
-      .image-link {
-        cursor: pointer;
-      }
+	  
+	  .image-link{
+		  cursor: pointer;
+	  }
 
       .leftback {
         top: 0.1rem;
@@ -201,47 +241,50 @@ const handleItemClick = (type) => {
         left: 6.6rem;
         color: white;
       }
-
-      .status-btn {
-        font-size: 0.3rem;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: bold;
-        text-transform: uppercase;
-        transition: all 0.3s ease-in-out;
-      }
-
-      .join-now-btn {
-        background-color: #ffffff;
-        color: #1f252c;
-        border: 1px solid #ffffff;
-      }
-
-      .join-now-btn:hover {
-        background-color: #58ffcf;
-        color: #1f252c;
-        box-shadow: 0 0 10px rgba(88, 255, 207, 0.8);
-      }
-
-      .reschedule-btn {
-        background-color: transparent;
-        color: #ffffff;
-        border: 1px solid #ffffff;
-      }
-
-      .reschedule-btn:hover {
-        background-color: rgba(255, 255, 255, 0.2);
-        color: #ffffff;
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
-      }
-
-      .leftItems {
-        display: flex;
-        align-items: center;
-        padding-left: 0.5rem;
-        gap: 12px;
-      }
+	
+	  .status-btn {
+	    // padding: 8px 16px;
+	    font-size: 0.3rem;
+		// min-width: 156px;
+	    border: none;
+	    border-radius: 8px;
+	    cursor: pointer;
+	    font-weight: bold;
+	    text-transform: uppercase;
+	    transition: all 0.3s ease-in-out;
+	  }
+	  
+	  .join-now-btn {
+	    background-color: #ffffff;
+	    color: #1f252c;
+	    border: 1px solid #ffffff;
+	  }
+	  
+	  .join-now-btn:hover {
+	    background-color: #58ffcf;
+	    color: #1f252c;
+	    box-shadow: 0 0 10px rgba(88, 255, 207, 0.8);
+	  }
+	  
+	  .reschedule-btn {
+	    background-color: transparent;
+	    color: #ffffff;
+	    border: 1px solid #ffffff;
+		margin-left: 10px;
+	  }
+	  
+	  .reschedule-btn:hover {
+	    background-color: rgba(255, 255, 255, 0.2);
+	    color: #ffffff;
+	    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+	  }
+	  
+	  .leftItems{
+	    display: flex;
+		align-items: center;
+		padding-left: 0.2rem;
+		// gap: 12px;
+	  }
 
       .content-box {
         width: 100%;
@@ -271,30 +314,11 @@ const handleItemClick = (type) => {
           text-align: center;
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
-          .imageBox {
-            position: relative; /* Ensure the tag is positioned relative to the image box */
-
-            .doctor-image {
-              width: 70px;
-              height: 70px;
-              border-radius: 20%; /* Rounded corners for the image */
-              object-fit: cover; /* Ensures the image maintains aspect ratio */
-            }
-
-            .live-tag {
-              position: absolute;
-              bottom: 4px; /* Position the tag slightly above the bottom edge of the image */
-              left: 50%; /* Center the tag horizontally */
-              transform: translateX(-50%); /* Adjust for perfect horizontal centering */
-              background-color: red; /* Red background for the tag */
-              color: white; /* White text color */
-              font-size: 10px; /* Small font size for the tag */
-              padding: 2px 6px; /* Adds padding around the text */
-              border-radius: 4px; /* Rounded corners for the tag */
-              font-weight: bold; /* Makes the text bold */
-              text-transform: uppercase; /* Ensures the text is in uppercase */
-              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Adds a slight shadow for better visibility */
-            }
+          .doctor-image {
+            width: 70px;
+            height: 70px;
+            border-radius: 20%;
+            object-fit: cover;
           }
 
           .doc-details {
@@ -306,7 +330,7 @@ const handleItemClick = (type) => {
           .doctor-info {
             display: flex;
             min-width: 3rem;
-            margin-left: 0.4rem;
+			margin-left: 0.4rem;
             color: #fff;
             gap: 8rpx;
 
@@ -314,36 +338,38 @@ const handleItemClick = (type) => {
               max-width: 3rem;
               font-weight: bold;
               margin-bottom: 4px;
-              display: flex;
-              font-size: 0.3rem;
-              text-align: left;
-              margin-bottom: 4px;
+			  display:flex;
+			  font-size: 0.3rem;
+			  text-align: left;
+			  margin-bottom: 4px;
             }
-
-            .day-time {
-              max-width: 3rem;
-              font-weight: bold;
-              margin-bottom: 4px;
-              display: flex;
-              font-size: 0.3rem;
-              color: #58ffcf;
-              text-align: left;
-              margin-bottom: 4px;
-            }
+			
+			.day-time{
+				max-width: 3rem;
+				font-weight: bold;
+				margin-bottom: 4px;
+				display:flex;
+				font-size: 0.3rem;
+				color: #58FFCF;
+				text-align: left;
+				margin-bottom: 4px;
+			}
 
             .doctor-specialization {
               color: #a0a0a0;
               margin-bottom: 4px;
-              text-align: left;
-              font-size: 0.23rem;
+			  text-align: left;
+			  font-size: 0.23rem;
             }
-
-            .doctor-date {
-              font-size: 0.2rem;
-              text-transform: uppercase;
-            }
+			
+			.doctor-date{
+				font-size: 0.2rem;
+				text-transform: uppercase;
+			}
 
             .doctor-review {
+              max-width: 0.8rem;
+              min-height: 1.7rem;
               color: #10e2f5;
               flex-shrink: 0;
             }
@@ -352,5 +378,68 @@ const handleItemClick = (type) => {
       }
     }
   }
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  width: 400px;
+  background: linear-gradient(145deg, #1B262B, #29353D);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  color: white;
+}
+
+.modal-header {
+  font-size: 18px;
+  font-weight: bold;
+  padding: 16px;
+  border-bottom: 1px solid #ddd;
+  color: #58FFCF;
+}
+
+.modal-body {
+  padding: 16px;
+  font-size: 16px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-around;
+  padding: 16px;
+}
+
+.modal-btn {
+  padding: 0px 18px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-btn.cancel {
+  background-color: red;
+  color: white;
+}
+
+.modal-btn.close {
+  background-color: gray;
+  color: white;
+}
+
+.modal-btn:hover {
+  opacity: 0.9;
 }
 </style>
