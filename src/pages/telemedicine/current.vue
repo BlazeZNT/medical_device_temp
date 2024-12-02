@@ -37,9 +37,15 @@
                   </div>
                 </view>
             
-                <button class="status-btn" :class="{ 'join-now-btn': doctor.status === 'upcoming', 'reschedule-btn': doctor.status === 'past' } " @click="handleItemClick(3)">
-                  {{ doctor.status === 'upcoming' ? "JOIN NOW" : "RESCHEDULE" }}
+                <button
+                  class="status-btn"
+                  :class="{ 'reschedule-btn': doctor.status === 'past' }"
+                  v-if="doctor.status === 'past'"
+                  @click="handleReschedule(doctor)"
+                >
+                  RESCHEDULE
                 </button>
+				<button class="status-btn" @click="openModal(pageIndex, idx)">CANCEL</button>
             
               </view>
             </view>
@@ -49,6 +55,18 @@
       <view class="appointment-button-container">
         <button class="appointment-button" @click="handleItemClick(2)">Book an Appointment</button>
       </view>
+	  <view v-if="showModal" class="modal-overlay">
+	    <view class="modal">
+	      <view class="modal-header">Confirm Cancellation</view>
+	      <view class="modal-body">
+	        Are you sure you want to cancel this appointment?
+	      </view>
+	      <view class="modal-footer">
+	        <button class="modal-btn cancel" @click="confirmCancel">Yes</button>
+	        <button class="modal-btn close" @click="closeModal">No</button>
+	      </view>
+	    </view>
+	  </view>
     </view>
   </view>
 </template>
@@ -60,9 +78,14 @@ import slibrary from "@/slibrary/index.js";
 import { getAppointments } from "@/utils/auth.ts"; // Import the API function
 
 
+
 // Initialize the doctors array
 const doctors = ref([]);
 const pages = ref([]);
+const showModal = ref(false);
+const selectedDoctor = ref({ pageIndex: null, doctorIndex: null });
+
+
 
 // API endpoint to fetch doctor data (replace with actual API URL)
 const fetchDoctors = async () => {
@@ -80,8 +103,8 @@ const fetchDoctors = async () => {
       year: doctor.year || 'No year',
       time: doctor.time || 'No time',
       status: doctor.status || 'past',
-    }));
 
+    }));
     // Recalculate pages for pagination
     const itemsPerPage = 3;
     pages.value = [];
@@ -114,8 +137,71 @@ const handleItemClick = (type) => {
 	case 3:
 		slibrary.$router.go("/pages/telemedicine/videoCall");
 		break;
+	case 4:
+		slibrary.$router.go("/pages/telemedicine/makeAppointment")
   }
 };
+
+const removeDoctor = (pageIndex, doctorIndex) => {
+  // Find the actual index of the doctor in the `doctors` array
+  const doctorToRemove = pages.value[pageIndex][doctorIndex];
+  const actualIndex = doctors.value.findIndex(
+    (doctor) =>
+      doctor.name === doctorToRemove.name &&
+      doctor.specialization === doctorToRemove.specialization &&
+      doctor.date === doctorToRemove.date &&
+      doctor.year === doctorToRemove.year &&
+      doctor.time === doctorToRemove.time
+  );
+
+  // Remove the doctor from the `doctors` array
+  if (actualIndex !== -1) {
+    doctors.value.splice(actualIndex, 1);
+  }
+
+  // Recalculate pages for pagination
+  const itemsPerPage = 3;
+  pages.value = [];
+  for (let i = 0; i < doctors.value.length; i += itemsPerPage) {
+    pages.value.push(doctors.value.slice(i, i + itemsPerPage));
+  }
+
+  console.log("Updated Doctors Array:", doctors.value);
+  console.log("Updated Pages Array:", pages.value);
+};
+
+const openModal = (pageIndex, doctorIndex) => {
+  // Store the selected doctor indices and show the modal
+  selectedDoctor.value = { pageIndex, doctorIndex };
+  showModal.value = true;
+};
+
+const closeModal = () => {
+  // Close the modal without taking action
+  showModal.value = false;
+};
+
+const confirmCancel = () => {
+  // Perform the cancellation and close the modal
+  removeDoctor(selectedDoctor.value.pageIndex, selectedDoctor.value.doctorIndex);
+  closeModal();
+};
+
+const handleReschedule = (doctor) => {
+  // Add the source page information
+  const sourcePage = "current"; // Change this to the actual source page name if needed
+
+  // Encode the doctor's data and the source page as query parameters
+  const query = Object.entries({ ...doctor, sourcePage })
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+    .join("&");
+
+  // Navigate to the makeAppointment page with the doctor's data and source page
+  uni.navigateTo({
+    url: `/pages/telemedicine/makeAppointment?${query}`,
+  });
+};
+
 </script>
 
 <style lang="scss" scoped>
@@ -220,9 +306,9 @@ const handleItemClick = (type) => {
       }
 	
 	  .status-btn {
-	    padding: 8px 16px;
+	    // padding: 8px 16px;
 	    font-size: 0.3rem;
-		min-width: 156px;
+		// min-width: 156px;
 	    border: none;
 	    border-radius: 8px;
 	    cursor: pointer;
@@ -247,6 +333,7 @@ const handleItemClick = (type) => {
 	    background-color: transparent;
 	    color: #ffffff;
 	    border: 1px solid #ffffff;
+		margin-left: 10px;
 	  }
 	  
 	  .reschedule-btn:hover {
@@ -258,8 +345,8 @@ const handleItemClick = (type) => {
 	  .leftItems{
 	    display: flex;
 		align-items: center;
-		padding-left: 0.5rem;
-		gap: 12px;
+		padding-left: 0.2rem;
+		// gap: 12px;
 	  }
 
       .content-box {
@@ -354,5 +441,68 @@ const handleItemClick = (type) => {
       }
     }
   }
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  width: 400px;
+  background: linear-gradient(145deg, #1B262B, #29353D);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  color: white;
+}
+
+.modal-header {
+  font-size: 18px;
+  font-weight: bold;
+  padding: 16px;
+  border-bottom: 1px solid #ddd;
+  color: #58FFCF;
+}
+
+.modal-body {
+  padding: 16px;
+  font-size: 16px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-around;
+  padding: 16px;
+}
+
+.modal-btn {
+  padding: 0px 18px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-btn.cancel {
+  background-color: red;
+  color: white;
+}
+
+.modal-btn.close {
+  background-color: gray;
+  color: white;
+}
+
+.modal-btn:hover {
+  opacity: 0.9;
 }
 </style>

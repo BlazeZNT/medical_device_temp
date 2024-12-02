@@ -4,11 +4,24 @@
 			<view class="pageView-title">Patient Detail</view>
 			<view class="form">
 				<uni-forms label-position="top" label-width="120rpx" :border="false" :modelValue="state.userInfo">
-					<view class="column">
+					<view v-if="doctorDataAvailable" class="doctor-info-box">
+						<image :src="doctorInfo.image ? 'data:image/jpeg;base64,' + doctorInfo.image : '/static/doctordemo.png'" class="doctor-image" />
+						<view class="doctor-details">
+						  <view class="doctor-name">{{ doctorInfo.name }}</view>
+						  <view class="doctor-specialization">{{ doctorInfo.specialization }}</view>
+						  <view class="doctor-date">{{ `${doctorInfo.date} ${doctorInfo.year} ${doctorInfo.time}` }}</view>
+						</view>
+					  </view>
+					  <view v-else class="column">
+						<uni-forms-item label="Tell your health complaints" name="healthComplaints">
+						  <uni-easyinput type="textarea" v-model="state.userInfo.name" placeholder="Name" />
+						</uni-forms-item>
+					  </view>
+					<!-- <view class="column">
 						<uni-forms-item label="Tell your health compliaints" name="healthComplaints">
 							<uni-easyinput type="textarea" v-model="state.userInfo.name" placeholder="Name" />
 						</uni-forms-item>
-					</view>
+					</view> -->
 					<view class="column" >
 						
 						<uni-forms-item label="Select Date" name="date" >
@@ -101,20 +114,53 @@ const updateDate = (formattedDate) => {
   state.userInfo.date = formattedDate; // Save the formatted date in state
 };
 
-const potato = [];
-onLoad((options) => {
-  console.log("Routed Data:", options);
-  // const imageFile = decodeURIComponent(options.image)
-  
+const doctorInfo = reactive({
+  name: "",
+  specialization: "",
+  date: "",
+  year: "",
+  time: "",
+  image: "",
+});
 
-  // Use the routed data
-  potato.push({
-    name: decodeURIComponent(options.name || "Unknown"),
-    specialization: decodeURIComponent(options.specialization || "Unknown"),
-	year: "2024",
-    date: decodeURIComponent(options.date || "No date provided"),
-	image: decodeURIComponent(options.image || '/static/doctordemo.png')
-  });
+const doctorDataAvailable = ref(false);
+
+const potato = [];
+const reschedule = [];
+onLoad((options) => {
+  // Check if options exist and have values
+  if (options && Object.keys(options).length > 0) {
+    console.log("Routed Data:", options);
+
+    // Check the source of the route
+    if (options.sourcePage === "current") {
+      // console.log("This is from current !!!");
+	        doctorInfo.name = decodeURIComponent(options.name || "Unknown");
+	        doctorInfo.specialization = decodeURIComponent(options.specialization || "Unknown");
+	        doctorInfo.date = decodeURIComponent(options.date || "No date provided");
+	        doctorInfo.year = decodeURIComponent(options.year || "2024");
+	        doctorInfo.time = decodeURIComponent(options.time || "No time");
+	        doctorInfo.image = decodeURIComponent(options.image || "/static/doctordemo.png");
+	        doctorDataAvailable.value = true;
+	      
+    } else {
+      // Push the routed data into the potato array
+      potato.push({
+        name: decodeURIComponent(options.name || "Unknown"),
+        specialization: decodeURIComponent(options.specialization || "Unknown"),
+        year: decodeURIComponent(options.year || "2024"),
+        date: decodeURIComponent(options.date || "No date provided"),
+		time: decodeURIComponent(options.time) || "No time",
+        image: decodeURIComponent(options.image || "/static/doctordemo.png"),
+      });
+
+   //    console.log("Processed Data:", potato);
+	  // console.log("This is from appointmentlist")
+    }
+  } else {
+    console.log("No valid data found in options.");
+    // Handle the case where options are empty or invalid
+  }
 });
 
 // const test = () => {
@@ -361,6 +407,44 @@ const handleClickSubmit = async () => {
 			justify-content: center; /* Center the buttons horizontally */
 			// margin-top: 5px; /* Add some spacing from the top */
 		}
+	}
+	.doctor-info-box {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		background-color: #29353d;
+		border-radius: 8px;
+		padding: 16px;
+		color: white;
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+		margin-bottom: 40px;
+	}
+	
+	.doctor-image {
+	  width: 70px;
+	  height: 70px;
+	  border-radius: 20%;
+	  object-fit: cover;
+	}
+	
+	.doctor-details {
+	  display: flex;
+	  flex-direction: column;
+	}
+	
+	.doctor-name {
+	  font-size: 18px;
+	  font-weight: bold;
+	}
+	
+	.doctor-specialization {
+	  font-size: 14px;
+	  color: #a0a0a0;
+	}
+	
+	.doctor-date {
+	  font-size: 12px;
+	  color: #58ffcf;
 	}
 	
 

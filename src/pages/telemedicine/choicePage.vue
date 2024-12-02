@@ -22,6 +22,17 @@
             </view>
           </BtnCard>
         </view>
+		<view class="login-select-box-card" @click="handleClickCard(3)">
+		  <BtnCard>
+		    <view class="icon">
+		      <image src="@/static/login/Frame.png" mode="heightFix"></image>
+		    </view>
+		    <view class="text">
+		      CONSULTATION<br />HISTORY
+		      &nbsp;
+		    </view>
+		  </BtnCard>
+		</view>
       </view>
     </view>
   </LayoutContent>
@@ -57,6 +68,9 @@ const handleClickCard = (type) => {
     case 2:
       slibrary.$router.go("/pages/telemedicine/current");
       break;
+	case 3:
+		slibrary.$router.go("/pages/telemedicine/consultHistory");
+
   }
 };
 
@@ -90,7 +104,7 @@ const handleClickCard = (type) => {
     &-card {
       width: 167rpx;
       height: 219rpx;
-      margin-right: 29rpx;
+      margin-left: 0.9rem;
 	  
 
       .icon {
