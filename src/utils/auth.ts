@@ -19,7 +19,7 @@ const makeRequest = (method, url, data = {}, headers = {}) => {
         } else {
           // Log error response for better debugging
           // console.error(`Error: ${res.statusCode} - ${JSON.stringify(res.data)}`);
-          // reject(new Error(`API request failed with status code ${res.statusCode}`));
+          reject(new Error(`API request failed with status code ${res.statusCode}`));
         }
       },
       fail: (err) => {
