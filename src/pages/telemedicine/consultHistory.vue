@@ -37,15 +37,12 @@
                   </div>
                 </view>
             
-                <button
-                  class="status-btn"
-                  :class="{ 'reschedule-btn': doctor.status === 'past' }"
-                  v-if="doctor.status === 'past'"
-                  @click="handleReschedule(doctor)"
-                >
-                  RESCHEDULE
-                </button>
-				<button class="status-btn" @click="openModal(pageIndex, idx)">CANCEL</button>
+				<button
+				  class="status-btn"
+				  @click="handleItemClick(5, doctor)"
+				>
+				  VIEW DETAIL
+				</button>
             
               </view>
             </view>
@@ -55,18 +52,6 @@
       <view class="appointment-button-container">
         <button class="appointment-button" @click="handleItemClick(2)">Book an Appointment</button>
       </view>
-	  <view v-if="showModal" class="modal-overlay">
-	    <view class="modal">
-	      <view class="modal-header">Confirm Cancellation</view>
-	      <view class="modal-body">
-	        Are you sure you want to cancel this appointment?
-	      </view>
-	      <view class="modal-footer">
-	        <button class="modal-btn cancel" @click="confirmCancel">Yes</button>
-	        <button class="modal-btn close" @click="closeModal">No</button>
-	      </view>
-	    </view>
-	  </view>
     </view>
   </view>
 </template>
@@ -126,81 +111,32 @@ onMounted(() => {
 });
 
 // Handle navigation based on the button type
-const handleItemClick = (type) => {
+const handleItemClick = (type, doctor = null) => {
   switch (type) {
     case 1:
-      slibrary.$router.go("/pages/telemedicine/choicePage");
+      uni.navigateTo({
+        url: "/pages/telemedicine/choicePage",
+      });
       break;
     case 2:
-      slibrary.$router.go("/pages/telemedicine/appointmentList");
+      uni.navigateTo({
+        url: "/pages/telemedicine/appointmentList",
+      });
       break;
-	case 3:
-		slibrary.$router.go("/pages/telemedicine/videoCall");
-		break;
-	case 4:
-		slibrary.$router.go("/pages/telemedicine/makeAppointment");
-		break;
+    case 5:
+      if (doctor) {
+        // Construct query parameters
+        const queryParams = Object.entries(doctor)
+          .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+          .join("&");
+
+        // Navigate to the detail page with doctor info
+        uni.navigateTo({
+          url: `/pages/telemedicine/consultRecord?${queryParams}`,
+        });
+      }
+      break;
   }
-};
-
-const removeDoctor = (pageIndex, doctorIndex) => {
-  // Find the actual index of the doctor in the `doctors` array
-  const doctorToRemove = pages.value[pageIndex][doctorIndex];
-  const actualIndex = doctors.value.findIndex(
-    (doctor) =>
-      doctor.name === doctorToRemove.name &&
-      doctor.specialization === doctorToRemove.specialization &&
-      doctor.date === doctorToRemove.date &&
-      doctor.year === doctorToRemove.year &&
-      doctor.time === doctorToRemove.time
-  );
-
-  // Remove the doctor from the `doctors` array
-  if (actualIndex !== -1) {
-    doctors.value.splice(actualIndex, 1);
-  }
-
-  // Recalculate pages for pagination
-  const itemsPerPage = 3;
-  pages.value = [];
-  for (let i = 0; i < doctors.value.length; i += itemsPerPage) {
-    pages.value.push(doctors.value.slice(i, i + itemsPerPage));
-  }
-
-  console.log("Updated Doctors Array:", doctors.value);
-  console.log("Updated Pages Array:", pages.value);
-};
-
-const openModal = (pageIndex, doctorIndex) => {
-  // Store the selected doctor indices and show the modal
-  selectedDoctor.value = { pageIndex, doctorIndex };
-  showModal.value = true;
-};
-
-const closeModal = () => {
-  // Close the modal without taking action
-  showModal.value = false;
-};
-
-const confirmCancel = () => {
-  // Perform the cancellation and close the modal
-  removeDoctor(selectedDoctor.value.pageIndex, selectedDoctor.value.doctorIndex);
-  closeModal();
-};
-
-const handleReschedule = (doctor) => {
-  // Add the source page information
-  const sourcePage = "current"; // Change this to the actual source page name if needed
-
-  // Encode the doctor's data and the source page as query parameters
-  const query = Object.entries({ ...doctor, sourcePage })
-    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
-    .join("&");
-
-  // Navigate to the makeAppointment page with the doctor's data and source page
-  uni.navigateTo({
-    url: `/pages/telemedicine/makeAppointment?${query}`,
-  });
 };
 
 </script>
