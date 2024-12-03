@@ -128,11 +128,11 @@ onLoad((options) => {
   // });	
   // Check if options exist and have values
     if (options && Object.keys(options).length > 0) {
-      console.log("Routed Data:", options);
+      console.log("Routed Data:", options.pageIndex, options.doctorIndex);
   
       // Check the source of the route
       if (options.sourcePage === "current") {
-        // console.log("This is from current !!!");
+        console.log("This is from current !!!", options);
 			potato.push({
 			  name: decodeURIComponent(options.name || "Unknown"),
 			  specialization: decodeURIComponent(options.specialization || "Unknown"),
@@ -140,14 +140,10 @@ onLoad((options) => {
 			  date: decodeURIComponent(options.date || "No date provided"),
 			  time: decodeURIComponent(options.time) || "No time",
 			  image: decodeURIComponent(options.image || "/static/doctordemo.png"),
+			  
 			});
-  	        // doctorInfo.name = decodeURIComponent(options.name || "Unknown");
-  	        // doctorInfo.specialization = decodeURIComponent(options.specialization || "Unknown");
-  	        // doctorInfo.date = decodeURIComponent(options.date || "No date provided");
-  	        // doctorInfo.year = decodeURIComponent(options.year || "2024");
-  	        // doctorInfo.time = decodeURIComponent(options.time || "No time");
-  	        // doctorInfo.image = decodeURIComponent(options.image || "/static/doctordemo.png");
   	        doctorDataAvailable.value = true;
+			
   	      
       } else {
         // Push the routed data into the potato array
@@ -209,41 +205,6 @@ const handleClickSubmit = async () => {
 		});
 	  }
 };
-	// else {
-	//   doctorInfo.time = state.userInfo.time; 
-	//   doctorInfo.date = state.userInfo.date;
-	//   doctorInfo.year = state.userInfo.year;
-	  
-	//   try {
-	// 	// Show loading spinner
-	// 	isLoading.value = true;
-
-	// 	const response = await createAppointment(
-	// 	  doctorInfo.name,
-	// 	  doctorInfo.specialization,
-	// 	  doctorInfo.date, 
-	// 	  doctorInfo.time,
-	// 	  doctorInfo.year, 
-	// 	  doctorInfo.image,
-	// 	);
-
-	// 	if (response) {
-	// 	  console.log("Appointment created successfully!");
-	// 	  // Navigate to the confirmation page after successful submission
-	// 	}
-	//   } catch (error) {
-	// 	console.error("Failed to create appointment:", error);
-	//   } finally {
-	// 	// Hide loading spinner after the operation is complete
-	// 	isLoading.value = false;
-
-	// 	uni.navigateTo({
-	// 	  url: `/pages/telemedicine/completeAppointment?${Object.entries(doctorInfo)
-	// 		.map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
-	// 		.join("&")}`,
-	// 	});
-	//   }
-	// }
 
 </script>
 
