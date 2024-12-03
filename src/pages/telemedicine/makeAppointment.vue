@@ -206,8 +206,11 @@ const isLoading = ref(false); // Loading state
 		if(response){
 			console.log(response);
 			isLoading.value = false;
+			slibrary.$router.go("/pages/telemedicine/current");
 			
 		}
+		
+		
 		
     }catch(e){
 		console.error("Failed to update appointment:", e);
@@ -349,7 +352,7 @@ const handleClickSubmit = async () => {
   }
   .custom-button {
     flex: 1 1 auto;
-    max-width: 100px;
+    max-width: 82px;
     min-width: 79px;
     margin: 5px;
     font-size: 14px;

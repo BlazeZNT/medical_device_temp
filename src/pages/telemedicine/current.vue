@@ -307,6 +307,9 @@ const handleReschedule = (doctor) => {
 	    font-weight: bold;
 	    text-transform: uppercase;
 	    transition: all 0.3s ease-in-out;
+		margin-right: 10px;
+		display: flex;
+		justify-content: center;
 	  }
 	  
 	  .join-now-btn {
@@ -325,7 +328,9 @@ const handleReschedule = (doctor) => {
 	    background-color: transparent;
 	    color: #ffffff;
 	    border: 1px solid #ffffff;
-		margin-left: 10px;
+		margin-left: 5px;
+		display: flex;
+		justify-content: center;
 	  }
 	  
 	  .reschedule-btn:hover {
