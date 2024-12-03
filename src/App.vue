@@ -4,7 +4,8 @@
 
 	onLaunch(() => {
 		// #ifdef APP-PLUS
-		// plus.navigator.setFullscreen(true);
+		plus.navigator.setFullscreen(true);
+		plus.screen.lockOrientation('landscape');
 		// #endif
 	});
 	onShow(() => {

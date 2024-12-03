@@ -68,6 +68,34 @@
                     "pid" : "",
                     "parameters" : {}
                 }
+            },
+            "Leiye-UniSerialPort" : {
+                "__plugin_info__" : {
+                    "name" : "CH34串口通信",
+                    "description" : "CH34串口通信插件",
+                    "platforms" : "Android",
+                    "url" : "",
+                    "android_package_name" : "",
+                    "ios_bundle_id" : "",
+                    "isCloud" : false,
+                    "bought" : -1,
+                    "pid" : "",
+                    "parameters" : {}
+                }
+            },
+            "zego-ZegoExpressUniAppSDK" : {
+                "__plugin_info__" : {
+                    "name" : "ZegoExpress音视频SDK",
+                    "description" : "ZegoExpressUniApp插件，进入即构官网了解更多（https://doc-zh.zego.im/article/7775?source=dcloud）",
+                    "platforms" : "Android,iOS",
+                    "url" : "",
+                    "android_package_name" : "",
+                    "ios_bundle_id" : "",
+                    "isCloud" : false,
+                    "bought" : -1,
+                    "pid" : "",
+                    "parameters" : {}
+                }
             }
         }
     },
@@ -110,7 +138,8 @@
             "base" : "./"
         },
         "devServer" : {
-            "https" : false
+            "https" : false,
+            "port" : ""
         },
         "title" : "uniapp_vue3_vite_ts",
         "unipush" : {

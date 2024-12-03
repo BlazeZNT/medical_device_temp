@@ -37,7 +37,7 @@
                   </div>
 				</view>
 			
-			<button class="status-btn" :class="{ 'join-now-btn': doctor.status === 'upcoming', 'reschedule-btn': doctor.status === 'past' }">
+			<button class="status-btn" @tap.stop="gotoVideoCall" :class="{ 'join-now-btn': doctor.status === 'upcoming', 'reschedule-btn': doctor.status === 'past' }">
 				{{ doctor.status === 'upcoming' ? "JOIN NOW" : "RESCHEDULE" }}
 			</button>
 			
@@ -121,6 +121,10 @@ const handleItemClick = (type) => {
       break;
   }
 };
+
+const gotoVideoCall = () => {
+    slibrary.$router.go("/pages/telemedicine/videocall");
+}
 </script>
 
 <style lang="scss" scoped>
