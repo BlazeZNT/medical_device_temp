@@ -9,8 +9,11 @@
             <view class="doctor-details">
               <view class="doctor-name">{{ potato[0].name }}</view>
               <view class="doctor-specialization">{{ potato[0].specialization }}</view>
-              <view class="doctor-date">{{ `${potato[0].date} ${potato[0].year} ${potato[0].time}` }}</view>
             </view>
+			<view class="time-details">
+				<view class="day-time">Date & Time</view>
+				<view class="doctor-date">{{ `${potato[0].date} ${potato[0].year} ${potato[0].time}` }}</view>
+			</view>
           </view>
           <view v-else class="column">
             <uni-forms-item label="Tell your health complaints" name="healthComplaints">
@@ -255,41 +258,6 @@ const handleClickSubmit = async () => {
 		});
 	  }
 };
-	// else {
-	//   doctorInfo.time = state.userInfo.time; 
-	//   doctorInfo.date = state.userInfo.date;
-	//   doctorInfo.year = state.userInfo.year;
-	  
-	//   try {
-	// 	// Show loading spinner
-	// 	isLoading.value = true;
-
-	// 	const response = await createAppointment(
-	// 	  doctorInfo.name,
-	// 	  doctorInfo.specialization,
-	// 	  doctorInfo.date, 
-	// 	  doctorInfo.time,
-	// 	  doctorInfo.year, 
-	// 	  doctorInfo.image,
-	// 	);
-
-	// 	if (response) {
-	// 	  console.log("Appointment created successfully!");
-	// 	  // Navigate to the confirmation page after successful submission
-	// 	}
-	//   } catch (error) {
-	// 	console.error("Failed to create appointment:", error);
-	//   } finally {
-	// 	// Hide loading spinner after the operation is complete
-	// 	isLoading.value = false;
-
-	// 	uni.navigateTo({
-	// 	  url: `/pages/telemedicine/completeAppointment?${Object.entries(doctorInfo)
-	// 		.map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
-	// 		.join("&")}`,
-	// 	});
-	//   }
-	// }
 
 </script>
 
