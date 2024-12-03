@@ -1,4 +1,5 @@
 <template>
+
 	<LayoutContent showBack @back="handleClickHome">
 		<view class="pageView">
 			<view class="pageView-title">Patient Detail</view>
@@ -71,20 +72,18 @@
 import LayoutContent from "@/components/Layout/Content.vue";
 import slibrary from "@/slibrary/index.js";
 import BasicButton from "@/components/BasicButton/index.vue";
-import CodeInput from "@/components/CodeInput/index.vue";
 import CustomCalendar from "@/components/customCalendar/index.vue";
-import { createAppointment } from "@/utils/auth.ts"; // Import the API function
-
+import { createAppointment } from "@/utils/auth.ts"; 
 
 import { ref, reactive } from "vue";
 
-const times = ["08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00", "21:00", "22:00", "22:30", "23:00", "23:30"]; // Button labels
+const times = ["08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00", "21:00", "22:00", "22:30", "23:00", "23:30"]; 
 const clickedButton = ref(null);
 
 const handleClick = (index, time) => {
-  clickedButton.value = index; // Set the clicked button's index
-  state.userInfo.time = time; // Save the selected time into userInfo
-  console.log("Selected Time:", time); // Log the selected time
+  clickedButton.value = index;
+  state.userInfo.time = time;
+  console.log("Selected Time:", time);
 };
 
 const state = reactive({
@@ -92,7 +91,7 @@ const state = reactive({
   userInfo: {
     date: "",
     time: "",
-	year: "2024"
+    year: "2024"
   },
 });
 
@@ -100,18 +99,18 @@ const handleClickHome = () => {
   slibrary.$router.go("/pages/telemedicine/index");
 };
 
-const showCalendar = ref(false); // State to toggle the calendar visibility
+const showCalendar = ref(false); 
 const buttonLabel = ref("SELECT DATE");
 
 const handleClickCalendar = () => {
-  showCalendar.value = !showCalendar.value; // Toggle the visibility
+  showCalendar.value = !showCalendar.value; 
   console.log("Calendar visibility toggled:", showCalendar.value);
 };
 
 const updateDate = (formattedDate) => {
-  console.log("Received formatted month and date:", formattedDate); // Log the formatted date
+  console.log("Received formatted month and date:", formattedDate);
   buttonLabel.value = formattedDate;
-  state.userInfo.date = formattedDate; // Save the formatted date in state
+  state.userInfo.date = formattedDate;
 };
 
 const doctorInfo = reactive({
@@ -128,6 +127,7 @@ const doctorDataAvailable = ref(false);
 const potato = [];
 const reschedule = [];
 onLoad((options) => {
+
   // Check if options exist and have values
   if (options && Object.keys(options).length > 0) {
     console.log("Routed Data:", options);
@@ -161,192 +161,77 @@ onLoad((options) => {
     console.log("No valid data found in options.");
     // Handle the case where options are empty or invalid
   }
+  console.log("Routed Data:", options);
+
+  potato.push({
+    name: decodeURIComponent(options.name || "Unknown"),
+    specialization: decodeURIComponent(options.specialization || "Unknown"),
+    year: "2024",
+    date: decodeURIComponent(options.date || "No date provided"),
+    image: decodeURIComponent(options.image || '/static/doctordemo.png')
+  });
+
 });
 
-// const test = () => {
-//   console.log(
-//     "Decoded Test Print:",
-//     potato[0]?.name || "Unknown", // Safely access `potato[0]` to avoid errors if it's undefined
-//     potato[0]?.specialization || "Unknown",
-//     state.userInfo.time || "nothing", // Access `time` from `state.userInfo`
-//     state.userInfo.date || "hoho"    // Access `date` from `state.userInfo`
-//   );
-// };
-
-// const handleClickSubmit = () => {
-
-// 	uni.navigateTo({
-// 	  url: `/pages/telemedicine/completeAppointment?${Object.entries(potato[0])
-// 	    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
-// 	    .join("&")}`,
-// 	});
-// };
+const isLoading = ref(false); // Loading state
 
 const handleClickSubmit = async () => {
-		potato[0].time = state.userInfo.time;
-		potato[0].date = state.userInfo.date;
-		potato[0].year = state.userInfo.year;
+  potato[0].time = state.userInfo.time;
+  potato[0].date = state.userInfo.date;
+  potato[0].year = state.userInfo.year;
 
-  // Call createAppointment with the form data
   try {
 
-    // Call the API function to create the appointment
-    await createAppointment(
+    const response = await createAppointment(
       potato[0]?.name,
       potato[0]?.specialization,
-      state.userInfo.date,
-      state.userInfo.time,
-      potato[0]?.year,
+      potato[0].date, 
+      potato[0].time,
+      potato[0]?.year, 
       potato[0]?.image,
     );
-
-    // Navigate to the confirmation page after successful submission
-    uni.navigateTo({
-      url: `/pages/telemedicine/completeAppointment?${Object.entries(potato[0])
-        .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
-        .join("&")}`,
-    });
-
+    
+    if (response) {
+      console.log("Appointment created successfully!");
+      // Navigate to the confirmation page after successful submission
+   
+    }
   } catch (error) {
     console.error("Failed to create appointment:", error);
-    // Optionally, show an error message
+	
+  } finally {
+	uni.navigateTo({
+	  url: `/pages/telemedicine/completeAppointment?${Object.entries(potato[0])
+	    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+	    .join("&")}`,
+	});
   }
 };
-
-
 </script>
 
 <style lang="scss" scoped>
-	.pageView {
-		width: 100%;
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
+.pageView {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
-		.pinBox {
-			width: 100%;
-			display: flex;
-			flex-direction: column;
-			align-items: center;
+.form {
+  width: 386.46rpx;
+  .column {
+    display: flex;
+    flex-wrap: wrap; 
+    width: 100%;
+  }
+}
 
-			.pinBtn {
-				margin-top: 50rpx;
-				width: 436rpx;
-				display: flex;
-				justify-content: center;
-			}
-		}
-
-		&-title {
-			font-family: FB;
-			color: #fff;
-			font-size: 20px;
-			margin-bottom: 20px;
-
-			i {
-				color: #06ffb8;
-			}
-		}
-	}
-	.form {
-		width: 386.46rpx;
-
-		.column {
-			display: flex;
-			flex-wrap: wrap; /* Optional: This allows the entire column to wrap */
-			width: 100%;
-		}
-	}
-	:deep() {
-		.uni-forms-item {
-			flex: 1;
-		}
-
-		.uni-forms-item__label {
-			font-family: FL;
-
-			text {
-				color: #58FFCF;
-				font-size: 9rpx !important;
-				line-height: 10rpx;
-				text-align: left;
-				font-style: normal;
-				text-transform: none;
-			}
-		}
-		.uni-forms-item__content{
-		            display: flex;
-		        }
-
-		.uni-easyinput__content.is-input-border {
-			background-color: transparent !important;
-			border: 1px solid #D8D8D8 !important;
-			color: #fff !important;
-		}
-		.uni-date-x--border {
-			border: 1px solid #58FFCF !important;
-		}
-		
-		.uni-date-x {
-			background: transparent !important;
-			color: #fff !important;
-		
-		}
-		
-		.uni-calendar__content {
-			// position: absolute;
-			// top : 0;
-			background: #323D49 !important;
-		}
-		
-		.uni-calendar-item--disable .uni-calendar-item__weeks-box-text-disable {
-			color: #666 !important;
-		}
-		
-		.uni-calendar-item__weeks-box-text {
-			color: #fff !important;
-		}
-		
-		.uni-datetime-picker--btn {
-			background-color: #58FFCF !important;
-		}
-		
-		.calendarButton {
-		  background: transparent;
-		  border: 1px solid #58FFCF;
-		  color: #58FFCF;
-		  transition: background-color 0.3s ease, color 0.3s ease;
-		  // padding-top: 18px;
-		}
-		
-
-		
-		.calendarButton-clicked {
-		  background: #58FFCF;
-		  color: black;
-		}
-
-		// .uni-select__input-text {
-		// 	color: #fff !important;
-		// 	font-size: 9rpx !important;
-		// 	line-height: 10rpx;
-		// }
-
-		// .uni-select__selector {
-		// 	background: #323D49 !important;
-		// 	box-shadow: 0rpx 7rpx 7rpx 4rpx #1B2028 !important;
-		// 	border-radius: 2rpx 2rpx 2rpx 2rpx !important;
-		// 	border: none !important;
-		// }
-
-		.uni-popper__arrow_bottom {
-			display: none !important;
-		}
-
-		.uni-select__selector-item {
-			padding: 4rpx 6rpx !important;
+:deep() {
+  .uni-forms-item {
+    flex: 1;
+  }
 
 			text {
 				color: #fff !important;
@@ -422,5 +307,77 @@ const handleClickSubmit = async () => {
 	  color: #58ffcf;
 	}
 	
+  .uni-forms-item__label {
+    font-family: FL;
+    text {
+      color: #58FFCF;
+      font-size: 9rpx !important;
+      line-height: 10rpx;
+      text-align: left;
+      font-style: normal;
+      text-transform: none;
+    }
+  }
+  .uni-forms-item__content {
+    display: flex;
+  }
+  .uni-easyinput__content.is-input-border {
+    background-color: transparent !important;
+    border: 1px solid #D8D8D8 !important;
+    color: #fff !important;
+  }
+  .calendarButton {
+    background: transparent;
+    border: 1px solid #58FFCF;
+    color: #58FFCF;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  } 
 
+  .calendarButton-clicked {
+    background: #58FFCF;
+    color: black;
+  }
+  .custom-button {
+    flex: 1 1 auto;
+    max-width: 100px;
+    min-width: 79px;
+    margin: 5px;
+    font-size: 14px;
+    border: 1px solid white;
+    border-radius: 5px;
+    background-color: transparent;
+    color: #58FFCF;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+
+  .button-clicked {
+    color: black;
+    background-color: #58FFCF;
+  }
+  .timeButtons {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center;
+  }
+}
+
+/* Loading Spinner Style */
+.loading-spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-text {
+  margin-left: 10px;
+  color: #58FFCF;
+  font-size: 16px;
+}
 </style>
