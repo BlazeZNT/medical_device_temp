@@ -72,20 +72,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import Header from "@/components/Layout/Header.vue";
 import slibrary from "@/slibrary/index.js";
-import { getAppointments } from "@/utils/auth.ts"; // Import the API function
-
-
+import { getAppointments, cancelAppointment } from "@/utils/auth.ts"; // Import the API function
 
 // Initialize the doctors array
 const doctors = ref([]);
 const pages = ref([]);
 const showModal = ref(false);
 const selectedDoctor = ref({ pageIndex: null, doctorIndex: null });
-
-
 
 // API endpoint to fetch doctor data (replace with actual API URL)
 const fetchDoctors = async () => {
@@ -96,7 +92,7 @@ const fetchDoctors = async () => {
 
     // Assuming response contains the doctors list
     doctors.value = data.map(doctor => ({
-	  id: decodeURIComponent(doctor.id),
+      id: decodeURIComponent(doctor.id),
       image: decodeURIComponent(doctor.imageBase64 || '/static/doctordemo.png'),
       name: decodeURIComponent(doctor.name || 'Unknown'),
       specialization: decodeURIComponent(doctor.specialization || 'Unknown'),
@@ -104,18 +100,13 @@ const fetchDoctors = async () => {
       year: decodeURIComponent(doctor.year || 'No year'),
       time: decodeURIComponent(doctor.time || 'No time'),
       status: decodeURIComponent(doctor.status || 'past'),
-
     }));
-    // Recalculate pages for pagination
+    // Recalculate pages for  pagination
     const itemsPerPage = 3;
     pages.value = [];
     for (let i = 0; i < doctors.value.length; i += itemsPerPage) {
       pages.value.push(doctors.value.slice(i, i + itemsPerPage));
     }
-    
-    console.log("Doctors Array:", doctors.value);
-    console.log("Pages Array:", pages.value);
-
   } catch (error) {
     console.error("Error fetching doctors data:", error);
   }
@@ -135,75 +126,74 @@ const handleItemClick = (type) => {
     case 2:
       slibrary.$router.go("/pages/telemedicine/appointmentList");
       break;
-	case 3:
-		slibrary.$router.go("/pages/telemedicine/videoCall");
-		break;
-	case 4:
-		slibrary.$router.go("/pages/telemedicine/makeAppointment");
-		break;
+    case 3:
+      slibrary.$router.go("/pages/telemedicine/videoCall");
+      break;
+    case 4:
+      slibrary.$router.go("/pages/telemedicine/makeAppointment");
+      break;
   }
 };
 
-const removeDoctor = (pageIndex, doctorIndex) => {
-  // Find the actual index of the doctor in the `doctors` array
+// Function to remove the doctor from the array and cancel the appointment
+const removeDoctor = async (pageIndex, doctorIndex) => {
   const doctorToRemove = pages.value[pageIndex][doctorIndex];
   const actualIndex = doctors.value.findIndex(
-    (doctor) =>
-      doctor.name === doctorToRemove.name &&
-      doctor.specialization === doctorToRemove.specialization &&
-      doctor.date === doctorToRemove.date &&
-      doctor.year === doctorToRemove.year &&
-      doctor.time === doctorToRemove.time
+    (doctor) => doctor.id === doctorToRemove.id
   );
 
-  // Remove the doctor from the `doctors` array
   if (actualIndex !== -1) {
+    // Remove the doctor from the doctors array
     doctors.value.splice(actualIndex, 1);
   }
 
-  // Recalculate pages for pagination
-  const itemsPerPage = 3;
-  pages.value = [];
-  for (let i = 0; i < doctors.value.length; i += itemsPerPage) {
-    pages.value.push(doctors.value.slice(i, i + itemsPerPage));
+  // Remove the doctor from the pages array
+  pages.value[pageIndex].splice(doctorIndex, 1);
+    // Recalculate pages for pagination
+    const itemsPerPage = 3;
+    pages.value = [];
+    for (let i = 0; i < doctors.value.length; i += itemsPerPage) {
+      pages.value.push(doctors.value.slice(i, i + itemsPerPage)); 
+	  }
+	  
+  // Make the API call to cancel the appointment
+  try {
+    await cancelAppointment(doctorToRemove.id);
+    console.log(`Appointment with doctor ${doctorToRemove.name} cancelled successfully.`);
+  } catch (error) {
+    console.error("Error cancelling appointment:", error);
   }
-
-  console.log("Updated Doctors Array:", doctors.value);
-  console.log("Updated Pages Array:", pages.value);
 };
 
+// Open the modal to confirm cancellation
 const openModal = (pageIndex, doctorIndex) => {
-  // Store the selected doctor indices and show the modal
   selectedDoctor.value = { pageIndex, doctorIndex };
   showModal.value = true;
 };
 
+// Close the modal without taking action
 const closeModal = () => {
-  // Close the modal without taking action
   showModal.value = false;
 };
 
+// Confirm the cancellation and remove the doctor
 const confirmCancel = () => {
-  // Perform the cancellation and close the modal
-  removeDoctor(selectedDoctor.value.pageIndex, selectedDoctor.value.doctorIndex);
+  const { pageIndex, doctorIndex } = selectedDoctor.value;
+  removeDoctor(pageIndex, doctorIndex);
   closeModal();
 };
 
+// Handle reschedule logic
 const handleReschedule = (doctor) => {
-  // Add the source page information
   const sourcePage = "current"; // Change this to the actual source page name if needed
-
-  // Encode the doctor's data and the source page as query parameters
   const query = Object.entries({ ...doctor, sourcePage })
     .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
     .join("&");
 
-  // Navigate to the makeAppointment page with the doctor's data and source page
   uni.navigateTo({
     url: `/pages/telemedicine/makeAppointment?${query}`,
   });
 };
-
 </script>
 
 <style lang="scss" scoped>

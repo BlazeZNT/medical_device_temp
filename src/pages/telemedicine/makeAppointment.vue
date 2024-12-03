@@ -125,10 +125,10 @@ const currentDocName = ref('')
 const currentDocSpec = ref('')
 const potato = [];
 onLoad((options) => {
-	currentDocID.value = options.id;  // console.log("Routed Data:", options);
-	currentDocImg.value = options.image;  // console.log("Routed Data:", options);
-	currentDocName.value = options.name;  // console.log("Routed Data:", options);
-	currentDocSpec.value = options.specialization;  // console.log("Routed Data:", options);
+	currentDocID.value = decodeURIComponent(options.id);  // console.log("Routed Data:", options);
+	currentDocImg.value = decodeURIComponent(options.image);  // console.log("Routed Data:", options);
+	currentDocName.value = decodeURIComponent(options.name);  // console.log("Routed Data:", options);
+	currentDocSpec.value = decodeURIComponent(options.specialization);  // console.log("Routed Data:", options);
   // potato.push({
   //   name: decodeURIComponent(options.name || "Unknown"),
   //   specialization: decodeURIComponent(options.specialization || "Unknown"),
@@ -145,7 +145,6 @@ onLoad((options) => {
       if (options.sourcePage === "current") {
 
 			potato.push({
-			  id: decodeURIComponent(options.id || "Unknown"),
 			  name: decodeURIComponent(options.name || "Unknown"),
 			  specialization: decodeURIComponent(options.specialization || "Unknown"),
 			  year: decodeURIComponent(options.year || "2024"),
@@ -193,7 +192,7 @@ const isLoading = ref(false); // Loading state
 		potato.date = state.userInfo.date;
 		potato.year = state.userInfo.year;
 		
-		const request = { 
+		const request = {  
 			imageBase64: currentDocImg.value,
 			name: currentDocName.value,
 			specialization: currentDocSpec.value,

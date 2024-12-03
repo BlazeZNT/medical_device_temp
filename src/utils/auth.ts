@@ -54,6 +54,12 @@ const updateAppointment = (id, appointmentData) => {
       'Content-Type': 'application/json',
     });
   };
+  
+  const cancelAppointment = (id) => {
+  	return makeRequest('DELETE', `/appointments/${id}`, {
+        'Content-Type': 'application/json',
+      });
+    };
 
 // Create a new appointment (using a Base64 image string)
 const createAppointment = (name, specialization, date, time, year, imageBase64) => {
@@ -65,4 +71,4 @@ const createAppointment = (name, specialization, date, time, year, imageBase64) 
   
 };
 
-export { sendLoginRequest, getDoctors, getAppointments, createAppointment, getLiveDoctors, updateAppointment};
+export { sendLoginRequest, getDoctors, getAppointments, createAppointment, getLiveDoctors, updateAppointment, cancelAppointment};
