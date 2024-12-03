@@ -1,7 +1,7 @@
 <template>
   <LayoutContent showBack @back="handleClickHome">
     <view class="pageView">
-      <view class="pageView-title">Past Consultation</view>
+      <!-- <view class="pageView-title">Past Consultation</view> -->
       <view class="form">
         <uni-forms label-position="top" label-width="120rpx" :border="false" :modelValue="state.userInfo">
 			<view class="content-border-box">
@@ -29,38 +29,45 @@
 				  </view>
 				</view>
 				<view class="column">
-						<view class="uni-title">Doctor's Diagnosis</view>
-						<view class="uni-textarea">
-						  <textarea 
-							  v-model="state.diagnosis" 
-							  auto-height 
-							  class="textarea-grey-border">
-						  </textarea>
-						</view>
-						
-						<view class="uni-title">Doctors Suggestions</view>
-						<view class="uni-textarea">
-						  <textarea 
-							  v-model="state.suggestions"
-							  auto-height 
-							  class="textarea-grey-border">
-						  </textarea>
-						</view>
-					</view>
+				  <view class="uni-title">Doctor's Diagnosis</view>
+				  <view class="diagnosis-section">
+				    <text class="diagnosis-title"><b>Influenza (Flu)</b></text>
+				    <text class="diagnosis-details">
+				      The viruses that cause flu spread at high levels during certain times of the year in the Northern and Southern hemispheres.
+				      These are called flu seasons. During times when flu is widespread, you may not need a flu test.
+				    </text>
+				  </view>
+				</view>
+				
+				<view class="column">
+				  <view class="uni-title">Doctors Suggestions</view>
+				  <view class="suggestions-section">
+				    <ul class="suggestions-list">
+				      <li>Take a rest</li>
+				      <li>Get disciplined with taking medicine on prescription</li>
+				    </ul>
+				  </view>
+				</view>
 					<view class="column">
 						<view class="uni-title">Prescriptions</view>
 						<view class="prescriptionsbox">
 						  <view class="prescriptionscontent">
 						    <image src="@/static/medi1.png" class="image-responsive"></image>
-						    <text class="image-text">
-						      <b>Simetichone</b><br>1 morning, 1 night (before food)
-						    </text>
+						    <view class="image-text">
+						      <b class="prescription-name">Simetichone</b>
+						      <view class="prescription-details">
+						        1 morning, 1 night (before food)
+						      </view>
+						    </view>
 						  </view>
 						  <view class="prescriptionscontent">
 						    <image src="@/static/medi2.png" class="image-responsive"></image>
-						    <text class="image-text">
-						      <b>Antacids</b><br>1 morning, 1 night (before food)
-						    </text>
+						    <view class="image-text">
+						      <b class="prescription-name">Antacids</b>
+						      <view class="prescription-details">
+						        1 morning, 1 night (before food)
+						      </view>
+						    </view>
 						  </view>
 						</view>
 					</view>
@@ -110,14 +117,21 @@ onLoad((options) => {
   console.log("Routed Data:", options);
 
   // Populate the reactive doctorDetails object
-  doctorDetails.name = options.name || "Unknown";
-  doctorDetails.specialization = options.specialization || "Unknown";
-  doctorDetails.date = options.date || "No date provided";
-  doctorDetails.time = options.time || "No time";
-  doctorDetails.year = options.year || "2024";
-  doctorDetails.image = options.image || '/static/doctordemo.png';
+  doctorDetails.name = decodeURIComponent(options.name || "Unknown");
+  doctorDetails.specialization = decodeURIComponent(options.specialization || "Unknown");
+  doctorDetails.date = decodeURIComponent(options.date || "No date provided");
+  doctorDetails.time = decodeURIComponent(options.time || "No time");
+  doctorDetails.year = decodeURIComponent(options.year || "2024");
+  doctorDetails.image = decodeURIComponent(options.image || '/static/doctordemo.png');
+  
+  state.diagnosis =
+      "Influenza (Flu) The viruses that cause flu spread at high levels during certain times of the year in the Northern and Southern hemispheres. These are called flu seasons. During times when flu is widespread, you may not need a flu test.";
+  
+	state.suggestions =
+	  "Take a rest. Get discipline with taking medicine on prescription.";
 
-  console.log("Parsed Doctor Details:", doctorDetails);
+  // console.log("Parsed Doctor Details:", doctorDetails);
+  
 });
 
 const handleClickHome = () => {
@@ -166,6 +180,7 @@ const handleClickHome = () => {
 .uni-title{
 	color: #58FFCF;
 	margin-bottom: 15px;
+	margin-top: 15px;
 }
 
 .back{
@@ -174,33 +189,47 @@ const handleClickHome = () => {
 .prescriptionsbox {
   display: flex; /* Use flexbox layout */
   flex-wrap: wrap; /* Allow wrapping if items exceed container width */
-  justify-content: space-between; /* Add spacing between boxes */
+  // justify-content: space-between; /* Add spacing between boxes */
   width: 100%; /* Match the column width */
   max-width: 100%;
   box-sizing: border-box;
 }
 
 .prescriptionscontent {
-  display: flex; /* Align image and text horizontally */
-  align-items: center; /* Center align items vertically */
-  // border: 2px solid grey;
-  // padding: 10px;
-  // margin: 10px; /* Add spacing between boxes */
-  flex: 1 1 calc(45% - 20px); /* Allow 2 items per row with spacing */
-  box-sizing: border-box;
+  display: flex; /* Arrange image and text horizontally */
+  align-items: flex-start; /* Align items at the start vertically */
+  gap: 15px; /* Add spacing between the image and the text */
+  // margin-bottom: 20px; /* Add spacing between prescriptions */
+  padding: 7px;
+  border: 1px solid #ccc; /* Optional: Add a border */
+  border-radius: 8px; /* Optional: Rounded corners */
+  margin-left: 10px;
+  // background-color: #2b2b2b; /* Optional: Background color */
 }
 
 .image-responsive {
   max-width: 50px;
   max-height: 50px;
-  margin-right: 10px; /* Space between image and text */
+  border-radius: 8px; /* Optional: Rounded edges for the image */
 }
 
 .image-text {
-  color: white;
-  font-size: 14px;
-  word-wrap: break-word; /* Wrap long text */
-  flex: 1; /* Let the text take up remaining space */
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* Space between lines of text */
+  color: white; /* Text color */
+}
+
+.prescription-name {
+  font-weight: bold; /* Make the medicine name bold */
+  font-size: 14px; /* Increase font size */
+  margin-bottom: 4px; /* Add spacing below the name */
+}
+
+.prescription-details {
+  font-size: 12px; /* Standard font size for details */
+  line-height: 1.5; /* Improve readability with line height */
+  color: #a0a0a0; /* Slightly lighter color for details */
 }
 
 .textarea-grey-border {
@@ -224,6 +253,19 @@ const handleClickHome = () => {
   .uni-forms-item {
     flex: 1;
   }
+  .uni-easyinput__content-textarea[data-v-af395001] {
+    position: relative;
+    overflow: hidden;
+    flex: 1;
+    line-height: 1.5;
+    font-size: 14px;
+    margin: 6px;
+    margin-left: 0;
+    height: 80px;
+    min-height: auto; 
+    width: auto;
+    /* margin-bottom: 20px; */
+}
 
   .uni-forms-item__label {
     font-family: FL;
@@ -243,6 +285,7 @@ const handleClickHome = () => {
     background-color: transparent !important;
     border: 1px solid #D8D8D8 !important;
     color: #fff !important;
+	padding: 3px;
   }
 }
 .doctor-card {
@@ -334,5 +377,39 @@ const handleClickHome = () => {
 	width: 70%;
 }
 
+.diagnosis-section {
+  padding: 10px; /* Padding around the diagnosis content */
+  background-color: transparent; /* Background color for contrast */
+  border-radius: 8px; /* Rounded corners for better appearance */
+  border: 1px solid #D8D8D8;
+}
+
+.diagnosis-title {
+  font-size: 12px; /* Slightly larger font size for the title */
+  font-weight: bold; /* Make the title bold */
+  color: white; /* Highlight the title in a specific color */
+  // margin-bottom: 10px; /* Add space below the title */
+  display: block; /* Ensure it appears as a block element */
+}
+
+.diagnosis-details {
+  font-size: 12px; /* Standard font size for content */
+  line-height: 1.6; /* Add line spacing for readability */
+  color: white; /* Text color for content */
+}
+
+.suggestions-section {
+	padding: 10px; /* Add padding around the suggestions */
+	background-color: transparent; /* Background color for the suggestions section */
+	border-radius: 8px; /* Rounded corners for a polished look */
+	border: 1px solid #D8D8D8
+}
+
+.suggestions-list {
+  list-style-type: disc; /* Add bullet points */
+  color: white; /* Text color */
+  font-size: 12px; /* Standard font size */
+  line-height: 1.6; /* Increase line spacing for readability */
+}
 
 </style>
