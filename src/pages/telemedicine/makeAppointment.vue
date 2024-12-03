@@ -1,7 +1,8 @@
 <template>
   <LayoutContent showBack @back="handleClickHome">
     <view class="pageView">
-      <view class="pageView-title">Patient Detail</view>
+	  <view v-if="doctorDataAvailable" class="pageView-title">Reschedule</view>
+      <view v-else class="pageView-title">Patient Detail</view>
       <view class="form">
         <uni-forms label-position="top" label-width="120rpx" :border="false" :modelValue="state.userInfo">
           <view v-if="doctorDataAvailable" class="doctor-info-box">
@@ -27,6 +28,9 @@
                 :class="['calendarButton', { 'calendarButton-clicked': showCalendar }]">
                 {{ buttonLabel }}
               </BasicButton>
+			  <BasicButton v-if="doctorDataAvailable" class = "assistantBtn" @click="handleClickChat">
+				  GET DOCTOR ASSISTANT BUTTON
+			  </BasicButton>
             </uni-forms-item>
           </view>
           <div>
@@ -82,7 +86,7 @@ const clickedButton = ref(null);
 const handleClick = (index, time) => {
   clickedButton.value = index;
   state.userInfo.time = time;
-  console.log("Selected Time:", time);
+  // console.log("Selected Time:", time);
 };
 
 const state = reactive({
@@ -98,16 +102,20 @@ const handleClickHome = () => {
   slibrary.$router.go("/pages/telemedicine/choicePage");
 };
 
+const handleClickChat = () => {
+	slibrary.$router.go("/pages/telemedicine/chatPage");	
+}
+
 const showCalendar = ref(false); 
 const buttonLabel = ref("SELECT DATE");
 
 const handleClickCalendar = () => {
   showCalendar.value = !showCalendar.value; 
-  console.log("Calendar visibility toggled:", showCalendar.value);
+  // console.log("Calendar visibility toggled:", showCalendar.value);
 };
 
 const updateDate = (formattedDate) => {
-  console.log("Received formatted month and date:", formattedDate);
+  // console.log("Received formatted month and date:", formattedDate);
   buttonLabel.value = formattedDate;
   state.userInfo.date = formattedDate;
 };
@@ -141,7 +149,7 @@ onLoad((options) => {
   // });	
   // Check if options exist and have values
     if (options && Object.keys(options).length > 0) {
-      console.log("Routed Data:", options);
+      // console.log("Routed Data:", options);
 	  
   
       // Check the source of the route
@@ -155,13 +163,6 @@ onLoad((options) => {
 			  time: decodeURIComponent(options.time) || "No time",
 			  image: decodeURIComponent(options.image || "/static/doctordemo.png"),
 			});
-  	        // doctorInfo.name = decodeURIComponent(options.name || "Unknown");
-  	        // doctorInfo.specialization = decodeURIComponent(options.specialization || "Unknown");
-  	        // doctorInfo.date = decodeURIComponent(options.date || "No date provided");
-  	        // doctorInfo.year = decodeURIComponent(options.year || "2024");
-  	        // doctorInfo.time = decodeURIComponent(options.time || "No time");
-  	        // doctorInfo.image = decodeURIComponent(options.image || "/static/doctordemo.png");
-  	        console.log('ID CHCK', potato.id)
 			doctorDataAvailable.value = true; 
   	      
       } else {
@@ -175,8 +176,6 @@ onLoad((options) => {
           image: decodeURIComponent(options.image || "/static/doctordemo.png"),
         });
   
-     //    console.log("Processed Data:", potato);
-  	  // console.log("This is from appointmentlist")
       }
     } else {
       console.log("No valid data found in options.");
@@ -400,6 +399,10 @@ const handleClickSubmit = async () => {
 .doctor-date {
   font-size: 12px;
   color: #58ffcf;
+}
+
+.assistantBtn{
+	margin-left: 20px;
 }
 
 </style>

@@ -93,7 +93,7 @@ onMounted(() => {
 const handleItemClick = (type) => {
   switch (type) {
     case 1:
-      slibrary.$router.go("/pages/health/index");
+      slibrary.$router.go("/pages/telemedicine/choicePage");
       break;
   }
 };

@@ -57,6 +57,9 @@ const loading = ref(false);   // This will manage the loading state for the API 
 const handleClickBack = () => {
   if (state.setp != 1) {
     state.setp = state.setp - 1;
+
+  }else{
+	slibrary.$router.go("/pages/health/index");
   }
 };
 

@@ -1,5 +1,5 @@
 <template>
-	<LayoutContent showBack @click="handleClickHome">
+	<LayoutContent showBack @back="handleClickHome">
 		<view class="pageView">
 			<view class="pageView-title">Video Call</view>
 			<view class="form">
@@ -36,8 +36,9 @@ export default {
 };
 
 const handleClickHome = () => {
-  slibrary.$router.go("/pages/telemedicine/choicePage");
-};
+		slibrary.$router.go("/pages/telemedicine/choicePage");
+	}
+	
 </script>
 
 <style lang="scss" scoped>
