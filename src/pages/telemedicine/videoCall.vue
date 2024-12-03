@@ -25,6 +25,7 @@ import { reactive, ref } from "vue";
 import LayoutContent from "@/components/Layout/Content.vue";
 import BasicButton from "@/components/BasicButton/index.vue";
 import CustomCalendar from "@/components/CustomCalendar/index.vue";
+import slibrary from "@/slibrary/index.js"; // Ensure this is imported
 
 export default {
 	components: {
@@ -32,13 +33,14 @@ export default {
 		BasicButton,
 		CustomCalendar,
 	},
-
+	 methods: {
+	    handleClickHome() {
+	      console.log("Navigating home...");
+	      slibrary.$router.go("/pages/telemedicine/consultNow");
+	    },
+	  },
 };
 
-const handleClickHome = () => {
-		slibrary.$router.go("/pages/telemedicine/choicePage");
-	}
-	
 </script>
 
 <style lang="scss" scoped>

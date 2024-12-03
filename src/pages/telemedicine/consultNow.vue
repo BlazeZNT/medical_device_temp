@@ -52,7 +52,7 @@
         </swiper>
       </view>
       <view class="appointment-button-container">
-        <button class="appointment-button" @click="handleItemClick(2)">Book an Appointment</button>
+        <button class="appointment-button" @click="handleItemClick(3)">Book an Appointment</button>
       </view>
     </view>
   </view>
@@ -114,6 +114,9 @@ const handleItemClick = (type) => {
 	case 2:
 	  slibrary.$router.go("/pages/telemedicine/choicePage");
 	  break;
+	case 3:
+		slibrary.$router.go("/pages/telemedicine/consultNow");
+		break;
   }
 };
 </script>
