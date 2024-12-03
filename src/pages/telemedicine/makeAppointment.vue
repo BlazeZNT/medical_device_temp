@@ -3,20 +3,20 @@
     <view class="pageView">
       <view class="pageView-title">Patient Detail</view>
       <view class="form">
-		<uni-forms label-position="top" label-width="120rpx" :border="false" :modelValue="state.userInfo">
-		  <view v-if="doctorDataAvailable" class="doctor-info-box">
-			<image :src="potato[0].image ? 'data:image/jpeg;base64,' + potato[0].image : '/static/doctordemo.png'" class="doctor-image" />
-			<view class="doctor-details">
-			  <view class="doctor-name">{{ potato[0].name }}</view>
-			  <view class="doctor-specialization">{{ potato[0].specialization }}</view>
-			  <view class="doctor-date">{{ `${potato[0].date} ${potato[0].year} ${potato[0].time}` }}</view>
-			</view>
-		  </view>
-		  <view v-else class="column">
-			<uni-forms-item label="Tell your health complaints" name="healthComplaints">
-			  <uni-easyinput type="textarea" v-model="state.userInfo.name" placeholder="Name" />
-			</uni-forms-item>
-		  </view>
+        <uni-forms label-position="top" label-width="120rpx" :border="false" :modelValue="state.userInfo">
+          <view v-if="doctorDataAvailable" class="doctor-info-box">
+            <image :src="potato[0].image ? 'data:image/jpeg;base64,' + potato[0].image : '/static/doctordemo.png'" class="doctor-image" />
+            <view class="doctor-details">
+              <view class="doctor-name">{{ potato[0].name }}</view>
+              <view class="doctor-specialization">{{ potato[0].specialization }}</view>
+              <view class="doctor-date">{{ `${potato[0].date} ${potato[0].year} ${potato[0].time}` }}</view>
+            </view>
+          </view>
+          <view v-else class="column">
+            <uni-forms-item label="Tell your health complaints" name="healthComplaints">
+              <uni-easyinput type="textarea" v-model="state.userInfo.name" placeholder="Name" />
+            </uni-forms-item>
+          </view>
           <view class="column">
             <uni-forms-item label="Select Date" name="date">
               <BasicButton
@@ -44,7 +44,11 @@
               </view>
             </uni-forms-item>
           </view>
-          <BasicButton @click="handleClickSubmit">
+          <!-- Conditionally render the button -->
+          <BasicButton v-if="doctorDataAvailable" @click="handleClickUpdate">
+            Update
+          </BasicButton>
+          <BasicButton v-else @click="handleClickSubmit">
             Submit
           </BasicButton>
         </uni-forms>
@@ -59,12 +63,13 @@
   </LayoutContent>
 </template>
 
+
 <script setup>
 import LayoutContent from "@/components/Layout/Content.vue";
 import slibrary from "@/slibrary/index.js";
 import BasicButton from "@/components/BasicButton/index.vue";
 import CustomCalendar from "@/components/customCalendar/index.vue";
-import { createAppointment } from "@/utils/auth.ts"; 
+import { createAppointment, updateAppointment } from "@/utils/auth.ts"; 
 
 import { ref, reactive } from "vue";
 
@@ -114,11 +119,16 @@ const doctorInfo = reactive({
 });
 
 const doctorDataAvailable = ref(false);
-
+const currentDocID = ref(0)
+const currentDocImg = ref('')
+const currentDocName = ref('')
+const currentDocSpec = ref('')
 const potato = [];
 onLoad((options) => {
-  // console.log("Routed Data:", options);
-
+	currentDocID.value = options.id;  // console.log("Routed Data:", options);
+	currentDocImg.value = options.image;  // console.log("Routed Data:", options);
+	currentDocName.value = options.name;  // console.log("Routed Data:", options);
+	currentDocSpec.value = options.specialization;  // console.log("Routed Data:", options);
   // potato.push({
   //   name: decodeURIComponent(options.name || "Unknown"),
   //   specialization: decodeURIComponent(options.specialization || "Unknown"),
@@ -128,22 +138,29 @@ onLoad((options) => {
   // });	
   // Check if options exist and have values
     if (options && Object.keys(options).length > 0) {
-      console.log("Routed Data:", options.pageIndex, options.doctorIndex);
+      console.log("Routed Data:", options);
+	  
   
       // Check the source of the route
       if (options.sourcePage === "current") {
-        console.log("This is from current !!!", options);
+
 			potato.push({
+			  id: decodeURIComponent(options.id || "Unknown"),
 			  name: decodeURIComponent(options.name || "Unknown"),
 			  specialization: decodeURIComponent(options.specialization || "Unknown"),
 			  year: decodeURIComponent(options.year || "2024"),
 			  date: decodeURIComponent(options.date || "No date provided"),
 			  time: decodeURIComponent(options.time) || "No time",
 			  image: decodeURIComponent(options.image || "/static/doctordemo.png"),
-			  
 			});
-  	        doctorDataAvailable.value = true;
-			
+  	        // doctorInfo.name = decodeURIComponent(options.name || "Unknown");
+  	        // doctorInfo.specialization = decodeURIComponent(options.specialization || "Unknown");
+  	        // doctorInfo.date = decodeURIComponent(options.date || "No date provided");
+  	        // doctorInfo.year = decodeURIComponent(options.year || "2024");
+  	        // doctorInfo.time = decodeURIComponent(options.time || "No time");
+  	        // doctorInfo.image = decodeURIComponent(options.image || "/static/doctordemo.png");
+  	        console.log('ID CHCK', potato.id)
+			doctorDataAvailable.value = true; 
   	      
       } else {
         // Push the routed data into the potato array
@@ -167,6 +184,37 @@ onLoad((options) => {
 });
 
 const isLoading = ref(false); // Loading state
+
+  const handleClickUpdate = async () => {
+    try{
+		console.log(potato)
+    	isLoading.value = true;
+		potato.time = state.userInfo.time;
+		potato.date = state.userInfo.date;
+		potato.year = state.userInfo.year;
+		
+		const request = { 
+			imageBase64: currentDocImg.value,
+			name: currentDocName.value,
+			specialization: currentDocSpec.value,
+			year: potato.year,
+			date: potato.date,
+			time: potato.time
+		};
+		
+		console.log('Request:', request);
+		const response = await updateAppointment(currentDocID.value, request);
+		if(response){
+			console.log(response);
+			isLoading.value = false;
+			
+		}
+		
+    }catch(e){
+		console.error("Failed to update appointment:", e);
+    }
+
+  };
 
 const handleClickSubmit = async () => {
 	// if (potato[0].name === "Unknown") {
@@ -192,8 +240,8 @@ const handleClickSubmit = async () => {
 		  // Navigate to the confirmation page after successful submission
 	   
 		}
-	  } catch (error) {
-		console.error("Failed to create appointment:", error);
+	  } catch (e) {
+		console.error("Failed to create appointment:", e);
 		
 	  } finally {
 		// Hide loading spinner after the operation is complete
@@ -205,6 +253,41 @@ const handleClickSubmit = async () => {
 		});
 	  }
 };
+	// else {
+	//   doctorInfo.time = state.userInfo.time; 
+	//   doctorInfo.date = state.userInfo.date;
+	//   doctorInfo.year = state.userInfo.year;
+	  
+	//   try {
+	// 	// Show loading spinner
+	// 	isLoading.value = true;
+
+	// 	const response = await createAppointment(
+	// 	  doctorInfo.name,
+	// 	  doctorInfo.specialization,
+	// 	  doctorInfo.date, 
+	// 	  doctorInfo.time,
+	// 	  doctorInfo.year, 
+	// 	  doctorInfo.image,
+	// 	);
+
+	// 	if (response) {
+	// 	  console.log("Appointment created successfully!");
+	// 	  // Navigate to the confirmation page after successful submission
+	// 	}
+	//   } catch (error) {
+	// 	console.error("Failed to create appointment:", error);
+	//   } finally {
+	// 	// Hide loading spinner after the operation is complete
+	// 	isLoading.value = false;
+
+	// 	uni.navigateTo({
+	// 	  url: `/pages/telemedicine/completeAppointment?${Object.entries(doctorInfo)
+	// 		.map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+	// 		.join("&")}`,
+	// 	});
+	//   }
+	// }
 
 </script>
 

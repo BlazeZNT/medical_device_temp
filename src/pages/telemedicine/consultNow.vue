@@ -62,8 +62,7 @@
 import { ref, onMounted, watch } from 'vue';
 import Header from "@/components/Layout/Header.vue";
 import slibrary from "@/slibrary/index.js";
-import { getAppointments } from "@/utils/auth.ts"; // Import the API function
-import { getDoctors } from "@/utils/auth.ts"; // Import the API function
+import { getLiveDoctors } from "@/utils/auth.ts"; // Import the API function
 
 
 // Initialize the doctors array
@@ -74,7 +73,7 @@ const pages = ref([]);
 const fetchDoctors = async () => {
   try {
     // Assuming your API returns an array of doctors
-    const response = await getDoctors();
+    const response = await getLiveDoctors();
     const data = await response;
 
     // Assuming response contains the doctors list

@@ -96,13 +96,14 @@ const fetchDoctors = async () => {
 
     // Assuming response contains the doctors list
     doctors.value = data.map(doctor => ({
-      image: doctor.imageBase64 || '/static/doctordemo.png',
-      name: doctor.name || 'Unknown',
-      specialization: doctor.specialization || 'Unknown',
-      date: doctor.date || 'No date provided',
-      year: doctor.year || 'No year',
-      time: doctor.time || 'No time',
-      status: doctor.status || 'past',
+	  id: decodeURIComponent(doctor.id),
+      image: decodeURIComponent(doctor.imageBase64 || '/static/doctordemo.png'),
+      name: decodeURIComponent(doctor.name || 'Unknown'),
+      specialization: decodeURIComponent(doctor.specialization || 'Unknown'),
+      date: decodeURIComponent(doctor.date || 'No date provided'),
+      year: decodeURIComponent(doctor.year || 'No year'),
+      time: decodeURIComponent(doctor.time || 'No time'),
+      status: decodeURIComponent(doctor.status || 'past'),
 
     }));
     // Recalculate pages for pagination
