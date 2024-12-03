@@ -5,11 +5,11 @@
       <view class="form">
 		<uni-forms label-position="top" label-width="120rpx" :border="false" :modelValue="state.userInfo">
 		  <view v-if="doctorDataAvailable" class="doctor-info-box">
-			<image :src="doctorInfo.image ? 'data:image/jpeg;base64,' + doctorInfo.image : '/static/doctordemo.png'" class="doctor-image" />
+			<image :src="potato[0].image ? 'data:image/jpeg;base64,' + potato[0].image : '/static/doctordemo.png'" class="doctor-image" />
 			<view class="doctor-details">
-			  <view class="doctor-name">{{ doctorInfo.name }}</view>
-			  <view class="doctor-specialization">{{ doctorInfo.specialization }}</view>
-			  <view class="doctor-date">{{ `${doctorInfo.date} ${doctorInfo.year} ${doctorInfo.time}` }}</view>
+			  <view class="doctor-name">{{ potato[0].name }}</view>
+			  <view class="doctor-specialization">{{ potato[0].specialization }}</view>
+			  <view class="doctor-date">{{ `${potato[0].date} ${potato[0].year} ${potato[0].time}` }}</view>
 			</view>
 		  </view>
 		  <view v-else class="column">
@@ -133,12 +133,20 @@ onLoad((options) => {
       // Check the source of the route
       if (options.sourcePage === "current") {
         // console.log("This is from current !!!");
-  	        doctorInfo.name = decodeURIComponent(options.name || "Unknown");
-  	        doctorInfo.specialization = decodeURIComponent(options.specialization || "Unknown");
-  	        doctorInfo.date = decodeURIComponent(options.date || "No date provided");
-  	        doctorInfo.year = decodeURIComponent(options.year || "2024");
-  	        doctorInfo.time = decodeURIComponent(options.time || "No time");
-  	        doctorInfo.image = decodeURIComponent(options.image || "/static/doctordemo.png");
+			potato.push({
+			  name: decodeURIComponent(options.name || "Unknown"),
+			  specialization: decodeURIComponent(options.specialization || "Unknown"),
+			  year: decodeURIComponent(options.year || "2024"),
+			  date: decodeURIComponent(options.date || "No date provided"),
+			  time: decodeURIComponent(options.time) || "No time",
+			  image: decodeURIComponent(options.image || "/static/doctordemo.png"),
+			});
+  	        // doctorInfo.name = decodeURIComponent(options.name || "Unknown");
+  	        // doctorInfo.specialization = decodeURIComponent(options.specialization || "Unknown");
+  	        // doctorInfo.date = decodeURIComponent(options.date || "No date provided");
+  	        // doctorInfo.year = decodeURIComponent(options.year || "2024");
+  	        // doctorInfo.time = decodeURIComponent(options.time || "No time");
+  	        // doctorInfo.image = decodeURIComponent(options.image || "/static/doctordemo.png");
   	        doctorDataAvailable.value = true;
   	      
       } else {
@@ -148,7 +156,7 @@ onLoad((options) => {
           specialization: decodeURIComponent(options.specialization || "Unknown"),
           year: decodeURIComponent(options.year || "2024"),
           date: decodeURIComponent(options.date || "No date provided"),
-  		time: decodeURIComponent(options.time) || "No time",
+  		  time: decodeURIComponent(options.time) || "No time",
           image: decodeURIComponent(options.image || "/static/doctordemo.png"),
         });
   
@@ -165,41 +173,78 @@ onLoad((options) => {
 const isLoading = ref(false); // Loading state
 
 const handleClickSubmit = async () => {
-  potato[0].time = state.userInfo.time;
-  potato[0].date = state.userInfo.date;
-  potato[0].year = state.userInfo.year;
+	// if (potato[0].name === "Unknown") {
+	  potato[0].time = state.userInfo.time;
+	  potato[0].date = state.userInfo.date;
+	  potato[0].year = state.userInfo.year;
 
-  try {
-    // Show loading spinner
-    isLoading.value = true;
+	  try {
+		// Show loading spinner
+		isLoading.value = true;
 
-    const response = await createAppointment(
-      potato[0]?.name,
-      potato[0]?.specialization,
-      potato[0].date, 
-      potato[0].time,
-      potato[0]?.year, 
-      potato[0]?.image,
-    );
-    
-    if (response) {
-      console.log("Appointment created successfully!");
-      // Navigate to the confirmation page after successful submission
-   
-    }
-  } catch (error) {
-    console.error("Failed to create appointment:", error);
-	
-  } finally {
-    // Hide loading spinner after the operation is complete
-    isLoading.value = false;
-	uni.navigateTo({
-	  url: `/pages/telemedicine/completeAppointment?${Object.entries(potato[0])
-	    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
-	    .join("&")}`,
-	});
-  }
+		const response = await createAppointment(
+		  potato[0]?.name,
+		  potato[0]?.specialization,
+		  potato[0].date, 
+		  potato[0].time,
+		  potato[0]?.year, 
+		  potato[0]?.image,
+		);
+		
+		if (response) {
+		  console.log("Appointment created successfully!");
+		  // Navigate to the confirmation page after successful submission
+	   
+		}
+	  } catch (error) {
+		console.error("Failed to create appointment:", error);
+		
+	  } finally {
+		// Hide loading spinner after the operation is complete
+		isLoading.value = false;
+		uni.navigateTo({
+		  url: `/pages/telemedicine/completeAppointment?${Object.entries(potato[0])
+			.map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+			.join("&")}`,
+		});
+	  }
 };
+	// else {
+	//   doctorInfo.time = state.userInfo.time; 
+	//   doctorInfo.date = state.userInfo.date;
+	//   doctorInfo.year = state.userInfo.year;
+	  
+	//   try {
+	// 	// Show loading spinner
+	// 	isLoading.value = true;
+
+	// 	const response = await createAppointment(
+	// 	  doctorInfo.name,
+	// 	  doctorInfo.specialization,
+	// 	  doctorInfo.date, 
+	// 	  doctorInfo.time,
+	// 	  doctorInfo.year, 
+	// 	  doctorInfo.image,
+	// 	);
+
+	// 	if (response) {
+	// 	  console.log("Appointment created successfully!");
+	// 	  // Navigate to the confirmation page after successful submission
+	// 	}
+	//   } catch (error) {
+	// 	console.error("Failed to create appointment:", error);
+	//   } finally {
+	// 	// Hide loading spinner after the operation is complete
+	// 	isLoading.value = false;
+
+	// 	uni.navigateTo({
+	// 	  url: `/pages/telemedicine/completeAppointment?${Object.entries(doctorInfo)
+	// 		.map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+	// 		.join("&")}`,
+	// 	});
+	//   }
+	// }
+
 </script>
 
 <style lang="scss" scoped>
@@ -313,6 +358,7 @@ const handleClickSubmit = async () => {
 	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 	margin-top: 30px;
 	margin-bottom: 30px;
+	justify-content: space-evenly;
 }
 
 .doctor-image {
