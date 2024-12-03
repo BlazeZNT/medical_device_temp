@@ -103,7 +103,7 @@ const handleClickHome = () => {
 };
 
 const handleClickChat = () => {
-	slibrary.$router.go("/pages/telemedicine/chatPage");	
+	slibrary.$router.go("/pages/telemedicine/aiChat");	
 }
 
 const showCalendar = ref(false); 
@@ -120,14 +120,6 @@ const updateDate = (formattedDate) => {
   state.userInfo.date = formattedDate;
 };
 
-const doctorInfo = reactive({
-  name: "",
-  specialization: "",
-  date: "",
-  year: "",
-  time: "",
-  image: "",
-});
 
 const doctorDataAvailable = ref(false);
 const currentDocID = ref(0)
@@ -140,13 +132,6 @@ onLoad((options) => {
 	currentDocImg.value = decodeURIComponent(options.image);  // console.log("Routed Data:", options);
 	currentDocName.value = decodeURIComponent(options.name);  // console.log("Routed Data:", options);
 	currentDocSpec.value = decodeURIComponent(options.specialization);  // console.log("Routed Data:", options);
-  // potato.push({
-  //   name: decodeURIComponent(options.name || "Unknown"),
-  //   specialization: decodeURIComponent(options.specialization || "Unknown"),
-  //   year: "2024",
-  //   date: decodeURIComponent(options.date || "No date provided"),
-  //   image: decodeURIComponent(options.image || '/static/doctordemo.png')
-  // });	
   // Check if options exist and have values
     if (options && Object.keys(options).length > 0) {
       // console.log("Routed Data:", options);
