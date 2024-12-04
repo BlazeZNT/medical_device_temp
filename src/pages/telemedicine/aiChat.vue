@@ -17,7 +17,7 @@
 				        </div>       
 				      </view>
 				    </div>
-				    <button class='recordBtn'>FISNISH</button>
+				    <button class='recordBtn' @click = "handleClickHome()">FISNISH</button>
 				  </view>
 				 <view class="divider"></view>
 				</view>
@@ -281,25 +281,41 @@ const handleClickHome = () => {
   margin-top: 10px;
   margin-bottom: 5px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  opacity: 0; /* Initially hidden */
+  transform: translateX(-100%); /* Start off-screen to the left */
+  animation: slideInFromLeft 1s ease-out 1s forwards; /* Slide in animation */
 }
 
 .action-button {
-  display: inline-flex;
+  display: inline-flex; /* Adapt to text size */
   align-items: center;
-  justify-content: start;
-  padding: 10px 10px;
+  justify-content: center;
+  padding: 10px 15px;
   background-color: #1e1e2e; /* Dark background color */
   border: 2px solid #00d1ff; /* Gradient-like border effect */
   border-radius: 12px; /* Rounded corners */
   color: white; /* Text color */
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  width: auto;
+  opacity: 0; /* Initially hidden */
+  transform: translateX(-100%); /* Start off-screen to the left */
+  animation: slideInFromLeft 1s ease-out 2s forwards; /* Slide in animation */
   margin-top: 10px;
   margin-bottom: 5px;
-  
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* Keyframes for sliding in from the left */
+@keyframes slideInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%); /* Off-screen */
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0); /* Final position */
+  }
 }
 
 .action-button:hover {
