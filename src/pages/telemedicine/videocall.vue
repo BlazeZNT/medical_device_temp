@@ -2,11 +2,18 @@
   <view class="page">
     <Header />
 
+
     <view class="content">
+		<view class="doctor">
+			<view class="consultation-details">
+			<text class="doctor-name">Consultation with {{ doctors[0].name }}</text>
+		</view>
       <view class="content-border-box">
         <view class="leftback">
           <image src="@/static/back.png" class="image-link" @click="handleItemClick(1)"></image>
         </view>
+		
+		
 
         <view class="doctor">
           <view class="self">
@@ -47,6 +54,7 @@
 	    <button class="appointment-button" @click="call()">Call the doctor</button>
 	  </view>
     </view>
+	</view>
   </view>
 </template>
 
@@ -249,12 +257,13 @@ const handleItemClick = (type) => {
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 1.6rem;
+    padding: 1.9rem;
     padding-top: 0;
 
 
     .doctor {
-      position: relative;
+      display: flex;
+	  flex-direction: column;
       width: 100%;
       height: 100%;
 
@@ -266,6 +275,11 @@ const handleItemClick = (type) => {
         height: 200px;
         z-index: 999;
       }
+	  .consultation-details {
+	          margin-top: 20px;
+	          text-align: center;
+	          color: #ffffff;
+		}
     }
 	.appointment-button-container{
 		width: 80%;
@@ -307,5 +321,3 @@ const handleItemClick = (type) => {
   }
 }
 </style>
-
-

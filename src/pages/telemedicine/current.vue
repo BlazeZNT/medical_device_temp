@@ -38,9 +38,11 @@
 
 				</view>
 			
-			<button class="status-btn" @tap.stop="gotoVideoCall" :class="{ 'join-now-btn': doctor.status === 'upcoming', 'reschedule-btn': doctor.status === 'past' }">
-				{{ doctor.status === 'upcoming' ? "JOIN NOW" : "RESCHEDULE" }}
-			</button>
+				<!-- Handle button click for either joining the video call or rescheduling -->
+				<button class="status-btn" @tap.stop="handleButtonClick(doctor)" 
+				        :class="{ 'join-now-btn': doctor.status === 'upcoming', 'reschedule-btn': doctor.status === 'past' }">
+					{{ doctor.status === 'upcoming' ? "JOIN NOW" : "RESCHEDULE" }}
+				</button>
 			
 			</view>
 			</view>
@@ -96,7 +98,7 @@ const fetchDoctors = async () => {
       time: decodeURIComponent(doctor.time || 'No time'),
       status: decodeURIComponent(doctor.status || 'past'),
     }));
-    // Recalculate pages for  pagination
+    // Recalculate pages for pagination
     const itemsPerPage = 3;
     pages.value = [];
     for (let i = 0; i < doctors.value.length; i += itemsPerPage) {
@@ -130,10 +132,28 @@ const handleItemClick = (type) => {
   }
 };
 
+// Handle button click for joining video call or rescheduling
+const handleButtonClick = (doctor) => {
+  if (doctor.status === 'upcoming') {
+    gotoVideoCall();
+  } else if (doctor.status === 'past') {
+    handleReschedule(doctor);
+  }
+};
 
 const gotoVideoCall = () => {
-    slibrary.$router.go("/pages/telemedicine/videocall");
+  slibrary.$router.go("/pages/telemedicine/videocall");
 }
+
+// Function to navigate to reschedule flow
+const handleReschedule = (doctor) => {
+  const sourcePage = "current"; // Change this to the actual source page name if needed
+  const query = Object.entries({ ...doctor, sourcePage })
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+    .join("&");
+
+  slibrary.$router.go(`/pages/telemedicine/makeAppointment?${query}`);
+};
 
 // Function to remove the doctor from the array and cancel the appointment
 const removeDoctor = async (pageIndex, doctorIndex) => {
@@ -154,8 +174,8 @@ const removeDoctor = async (pageIndex, doctorIndex) => {
     pages.value = [];
     for (let i = 0; i < doctors.value.length; i += itemsPerPage) {
       pages.value.push(doctors.value.slice(i, i + itemsPerPage)); 
-	  }
-	  
+  }
+  
   // Make the API call to cancel the appointment
   try {
     await cancelAppointment(doctorToRemove.id);
@@ -182,19 +202,6 @@ const confirmCancel = () => {
   removeDoctor(pageIndex, doctorIndex);
   closeModal();
 };
-
-// Handle reschedule logic
-const handleReschedule = (doctor) => {
-  const sourcePage = "current"; // Change this to the actual source page name if needed
-  const query = Object.entries({ ...doctor, sourcePage })
-    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
-    .join("&");
-
-  uni.navigateTo({
-    url: `/pages/telemedicine/makeAppointment?${query}`,
-  });
-};
-
 </script>
 
 <style lang="scss" scoped>
