@@ -102,9 +102,7 @@ const handleClickHome = () => {
   slibrary.$router.go("/pages/telemedicine/choicePage");
 };
 
-const handleClickChat = () => {
-	slibrary.$router.go("/pages/telemedicine/aiChat");	
-}
+
 
 const showCalendar = ref(false); 
 const buttonLabel = ref("SELECT DATE");
@@ -242,6 +240,14 @@ const handleClickSubmit = async () => {
 		});
 	  }
 };
+
+const handleClickChat = () => {
+	uni.navigateTo({
+	  url: `/pages/telemedicine/aiChat?${Object.entries(potato[0])
+		.map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+		.join("&")}`,
+	});	
+}
 
 </script>
 
