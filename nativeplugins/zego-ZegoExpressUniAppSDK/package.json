@@ -1,0 +1,86 @@
+{
+	"name": "ZegoExpress音视频SDK",
+	"id": "zego-ZegoExpressUniAppSDK",
+	"version": "3.16.5",
+	"description": "ZegoExpressUniApp插件，进入即构官网了解更多（https://doc-zh.zego.im/article/7775?source=dcloud）",
+	"_dp_type": "nativeplugin",
+	"_dp_nativeplugin": {
+		"ios": {
+			"plugins": [{
+				"type": "module",
+				"name": "zego-ZegoExpressUniAppSDK_ZegoExpressUniAppEngine",
+				"class": "ZegoExpressUniAppEngine"
+			}, {
+				"type": "component",
+				"name": "zego-view",
+				"class": "ZegoView"
+			}, {
+				"type": "component",
+				"name": "zego-preview-view",
+				"class": "ZegoPreviewView"
+			}, {
+				"type": "component",
+				"name": "ZegoExpress-Local-View",
+				"class": "ZegoPublishPreview"
+			}, {
+				"type": "component",
+				"name": "ZegoExpress-Remote-View",
+				"class": "ZegoPlayView"
+			}, {
+				"type": "component",
+				"name": "ZegoExpress-Mediaplayer-View",
+				"class": "ZegoMediaPlayerView"
+			}],
+			"frameworks": ["libc++.tbd", "VideoToolbox.framework", "AudioToolbox.framework", "CoreMedia.framework",
+				"CoreTelephony.framework"
+			],
+			"embedFrameworks": [
+				"ZegoExpressEngine.framework"
+			],
+			"integrateType": "framework",
+			"privacies": [
+				"NSMicrophoneUsageDescription", "NSCameraUsageDescription"
+			],
+			"deploymentTarget": "12.0"
+		},
+		"android": {
+			"plugins": [{
+				"type": "module",
+				"name": "zego-ZegoExpressUniAppSDK_ZegoExpressUniAppEngine",
+				"class": "com.zego.express.ZegoExpressUniAppEngine"
+			}, {
+				"type": "component",
+				"name": "zego-view",
+				"class": "com.zego.express.ZegoView"
+			}, {
+				"type": "component",
+				"name": "zego-preview-view",
+				"class": "com.zego.express.ZegoPreviewView"
+			}, {
+				"type": "component",
+				"name": "ZegoExpress-Local-View",
+				"class": "com.zego.express.ZegoPublishPreview"
+			}, {
+				"type": "component",
+				"name": "ZegoExpress-Remote-View",
+				"class": "com.zego.express.ZegoPlayView"
+			}, {
+				"type": "component",
+				"name": "ZegoExpress-Mediaplayer-View",
+				"class": "com.zego.express.ZegoMediaPlayerView"
+			}],
+			"hooksClass": "com.zego.express.ZegoExpressUniAppEngine",
+			"dependencies": [
+				"com.android.support:recyclerview-v7:28.0.0",
+				"com.android.support:support-v4:28.0.0",
+				"com.android.support:appcompat-v7:28.0.0",
+				"com.alibaba:fastjson:1.1.46.android"
+			],
+			"abis": [
+				"armeabi-v7a",
+				"arm64-v8a"
+			],
+			"integrateType": "aar"
+		}
+	}
+}

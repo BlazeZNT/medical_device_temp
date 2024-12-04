@@ -60,6 +60,17 @@
 			}
 		},
 		{
+			"path": "pages/telemedicine/videocall",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom"
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
+			}
+		},
+		{
 			"path": "pages/telemedicine/appointmentList",
 			"style": {
 				"navigationBarTitleText": "uni-app",

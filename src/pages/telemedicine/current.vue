@@ -35,20 +35,15 @@
                     <view class="day-time">Date & Time</view>
                     <view class="doctor-date">{{ `${doctor.date} ${doctor.year} ${doctor.time} ` }}</view>
                   </div>
-                </view>
-            
-                <button
-                  class="status-btn"
-                  :class="{ 'reschedule-btn': doctor.status === 'past' }"
-                  v-if="doctor.status === 'past'"
-                  @click="handleReschedule(doctor)"
-                >
-                  RESCHEDULE
-                </button>
-				<button class="status-btn" @click="openModal(pageIndex, idx)">CANCEL</button>
-            
-              </view>
-            </view>
+
+				</view>
+			
+			<button class="status-btn" @tap.stop="gotoVideoCall" :class="{ 'join-now-btn': doctor.status === 'upcoming', 'reschedule-btn': doctor.status === 'past' }">
+				{{ doctor.status === 'upcoming' ? "JOIN NOW" : "RESCHEDULE" }}
+			</button>
+			
+			</view>
+			</view>
           </swiper-item>
         </swiper>
       </view>
@@ -135,6 +130,11 @@ const handleItemClick = (type) => {
   }
 };
 
+
+const gotoVideoCall = () => {
+    slibrary.$router.go("/pages/telemedicine/videocall");
+}
+
 // Function to remove the doctor from the array and cancel the appointment
 const removeDoctor = async (pageIndex, doctorIndex) => {
   const doctorToRemove = pages.value[pageIndex][doctorIndex];
@@ -194,6 +194,7 @@ const handleReschedule = (doctor) => {
     url: `/pages/telemedicine/makeAppointment?${query}`,
   });
 };
+
 </script>
 
 <style lang="scss" scoped>
