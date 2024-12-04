@@ -17,25 +17,20 @@
 				        </div>       
 				      </view>
 				    </div>
-				    <button class='recordBtn' @click = "handleClickHome()">FISNISH</button>
+				    <button class='recordBtn' @click = "handleClickHome()">FINISH</button>
 				  </view>
 				 <view class="divider"></view>
 				</view>
-				<view class= "chatContainer">
-					<view class="column">
-						<view class="chat-bubble">
-						  Good Morning! I am Doctor Richardson's bot assistant.
-						</view>
+				<view class="chatContainer" ref="chatContainer">
+					<view
+					  v-for="(message, index) in chatMessages.slice(0,2)"
+					  :key="index"
+					  class="chat-bubble"
+					>	
+					  {{ message }}
 					</view>
-
 					<view class="column">
-					  <view class="chat-bubble">
-						What can I help you today?
-					  </view>
-					</view>
-					
-					<view class="column">
-					  <view class="action-button">
+					  <view class="action-button" @click = "runReschedule()">
 						  <image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
 						  <text class="button-text">Reschedule My Appointment</text>
 						</view>
@@ -46,9 +41,118 @@
 						  <text class="button-text">View Doctor's Schedule</text>
 						</view>
 					</view>
+					<view v-if="rescheduleClick"
+					  v-for="(message, index) in chatMessages.slice(2,3)"
+					  :key="index"
+					  class="chat-bubble reply-bubble"
+					>	
+					  {{ message }}
+					</view>
+					
+					<view v-if="rescheduleClick"
+					  v-for="(message, index) in chatMessages.slice(3,5)"
+					  :key="index"
+					  class="chat-bubble"
+					>
+					  {{ message }}
+					</view>
+					
+					<view class="column" v-if="rescheduleClick" @click = "showDateFun()">
+					  <view class="action-button">
+						  <image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
+						  <text class="button-text">View Doctor's Schedule</text>
+						</view>
+					</view>
+					
+					<view class="column" v-if="showDates" @click = "selectDate()">
+					  <view class="action-button">
+						  <image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
+						  <text class="button-text">Dec 7</text>
+						</view>
+						<view class="action-button dec8">
+						  <image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
+						  <text class="button-text">Dec 8</text>
+						</view>
+					</view>
+					
+					<view v-if="hoho"
+					  v-for="(message, index) in chatMessages.slice(5,6)"
+					  :key="index"
+					  class="chat-bubble reply-bubble"
+					>
+					  {{ message }}
+					</view>
+					
+					<view v-if="hoho"
+					  v-for="(message, index) in chatMessages.slice(6,7)"
+					  :key="index"
+					  class="chat-bubble"
+					>
+					  {{ message }}
+					</view>
+					
+					<view class="column" v-if="hoho" @click = "timu()">
+					  <view class="action-button">
+						  <image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
+						  <text class="button-text">11 Am</text>
+						</view>
+						<view class="action-button dec8">
+						  <image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
+						  <text class="button-text"> 1 PM</text>
+						</view>
+						<view class="action-button dec8">
+						  <image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
+						  <text class="button-text">5 PM</text>
+						</view>
+					</view>
+					
+					<view v-if="completo"
+					  v-for="(message, index) in chatMessages.slice(7,8)"
+					  :key="index"
+					  class="chat-bubble reply-bubble"
+					>
+					  {{ message }}
+					</view>
+					
+					<view v-if="completo"
+					  v-for="(message, index) in chatMessages.slice(8,9)"
+					  :key="index"
+					  class="chat-bubble"
+					>
+					  {{ message }}
+					</view>
+					
+					<view class="column" v-if="completo" @click = "choic()">
+						<view class="action-button dec8">
+						  <image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
+						  <text class="button-text"> YES </text>
+						</view>
+						<view class="action-button dec8">
+						  <image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
+						  <text class="button-text"> NO </text>
+						</view>
+					</view>
+					
+					<view v-if="fullchoice"
+					  v-for="(message, index) in chatMessages.slice(9,10)"
+					  :key="index"
+					  class="chat-bubble reply-bubble"
+					>
+					  {{ message }}
+					</view>
+					
+					<view v-if="fullchoice"
+					  v-for="(message, index) in chatMessages.slice(10,11)"
+					  :key="index"
+					  class="chat-bubble"
+					>
+					  {{ message }}
+					</view>
+					
+					
 				</view>
 				<view class="divider"></view>
-					<view class="speech-button">
+					<view class="speech-button">	
 					    <image class="icon" src="@/static/mic.png" alt="Microphone Icon" />
 					    <text class="button-text">SPEECH TO CHAT</text>
 					 </view>
@@ -64,24 +168,27 @@
 <script setup>
 import LayoutContent from "@/components/Layout/Content.vue";
 import slibrary from "@/slibrary/index.js";
-import BasicButton from "@/components/BasicButton/index.vue";
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
+import { watch } from "vue";
 
+const rescheduleClick = ref(false);
+const showDates = ref(false);
+const hoho = ref(false);
+const completo = ref(false);
+const fullchoice = ref(false);
 
-
+// State for user and doctor details
 const state = reactive({
   step: 1,
   userInfo: {
     date: "",
     time: "",
     year: "2024",
-  },
-  diagnosis: "Influenza (Flu) The viruses that cause flu spread at high levels during certain times of the year in the Northern and Southern hemispheres. These are called flu seasons. During times when flu is widespread, you may not need a flu test.",
-  suggestions: "Take a rest. Get discipline with taking medicine on prescription.",
+  }
 });
 
 const doctorDetails = reactive({
-  name: "",
+  name: "",	
   specialization: "",
   date: "",
   time: "",
@@ -89,26 +196,119 @@ const doctorDetails = reactive({
   image: "",
 });
 
+// Reactive chat messages array
+const chatMessages = ref([
+  "Good Morning! I am Doctor Richardson's bot assistant.",
+  "What can I help you today?",
+  "Reschedule My Appointment",
+  "Select your new Appointment Date",
+  "Here are some recommendations for this week",
+  "Dec 8",
+  "Pick a Time Slot",
+  "11 AM",
+  "Do you want to change you date to Dec 8 11 AM ?",
+  "YES",
+  "Thank You! Date successfully Changed to DEC 8 / 11 AM"
+]);	
 
+
+
+// Populate doctor details from the route on load
 onLoad((options) => {
   console.log("Routed Data:", options);
 
-  // Populate the reactive doctorDetails object
   doctorDetails.name = decodeURIComponent(options.name || "Unknown");
   doctorDetails.specialization = decodeURIComponent(options.specialization || "Unknown");
   doctorDetails.date = decodeURIComponent(options.date || "No date provided");
   doctorDetails.time = decodeURIComponent(options.time || "No time");
   doctorDetails.year = decodeURIComponent(options.year || "2024");
-  doctorDetails.image = decodeURIComponent(options.image || '/static/doctordemo.png');
-  
-
-  // console.log("Parsed Doctor Details:", doctorDetails);
-  
+  doctorDetails.image = decodeURIComponent(options.image || "/static/doctordemo.png");
 });
 
+// Navigate to the home page
 const handleClickHome = () => {
   slibrary.$router.go("/pages/telemedicine/current");
 };
+
+// Function to add messages dynamically
+const addMessage = (newMessage) => {
+  chatMessages.value.push(newMessage);
+  scrollToBottom();	
+};
+
+
+const runReschedule = () => {
+	rescheduleClick.value = true;
+}
+
+const showDateFun = () => {
+	showDates.value = true;
+}
+
+const selectDate = () => {
+	hoho.value = true;
+}
+
+const timu = () => {
+	completo.value = true;
+}
+
+const choic = () => {
+	fullchoice.value = true;
+}
+// Scroll to the bottom of the chat container
+const scrollToBottom = () => {
+  const chatContainer = document.querySelector(".chatContainer");
+  if (chatContainer) {
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }
+};
+
+watch(rescheduleClick, (newVal) => {
+  if (newVal) {
+    nextTick(() => {
+      scrollToBottom();
+    });
+  }
+});
+
+watch(showDates, (newVal) => {
+  if (newVal) {
+    nextTick(() => {
+      scrollToBottom();
+    });
+  }
+});
+
+watch(hoho, (newVal) => {
+  if (newVal) {
+    nextTick(() => {
+      scrollToBottom();
+    });
+  }
+});
+
+watch(completo, (newVal) => {
+  if (newVal) {
+    nextTick(() => {
+      scrollToBottom();
+    });
+  }
+});
+
+watch(fullchoice, (newVal) => {
+  if (newVal) {
+    nextTick(() => {
+      scrollToBottom();
+    });
+  }
+});
+// Add dynamic messages every 3 seconds
+// onMounted(() => {
+//   setInterval(() => {
+//     addMessage("This is a new message added to the chat!");
+//   }, 7000);
+// });	
 </script>
 
 <style lang="scss" scoped>
@@ -268,43 +468,75 @@ const handleClickHome = () => {
 	margin-right: -40px;
 }
 
-.chat-bubble {
-  display: inline-block;
-  padding: 5px 10px;
-  background-color: #2B333A;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
-  font-size: 14px;
-  color: white;
-  text-align: center;
-  max-width: 80%;
-  margin-top: 10px;
-  margin-bottom: 5px;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-  opacity: 0; /* Initially hidden */
-  transform: translateX(-100%); /* Start off-screen to the left */
-  animation: slideInFromLeft 1s ease-out 1s forwards; /* Slide in animation */
+.chatContainer {
+  height: 300px; /* Set a fixed height */
+  overflow: hidden; /* Hide content outside the container */
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Space between chat bubbles */
+  // border: 1px solid rgba(0, 0, 0, 0.2); /* Optional: Add a border */
+  border-radius: 10px;
+  background-color: transparent; /* Match theme */
+  padding: 10px;
 }
 
+.chat-bubble {
+	display: inline-flex;
+	background-color: rgba(255, 255, 255, 0.1);
+	color: white;
+	padding: 10px 15px;
+	border-radius: 20px;
+	font-size: 14px;
+	max-width: 50%;
+	opacity: 0; /* Initially hidden */
+	align-self: flex-start;
+	transform: translateX(-100%); /* Start off-screen to the left */
+	animation: slideInFromLeft 1s ease-out 1s forwards; /* Slide in animation */
+}
+
+.reply-bubble {
+  display: inline-flex;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+  max-width: 50%;
+  align-self: flex-end; /* Aligns the bubble to the right */
+  opacity: 0; /* Initially hidden */
+  transform: translateX(100%); /* Start off-screen to the right */
+  animation: slideInFromRight 0.5s ease-out forwards; /* Slide in animation */
+}
+
+@keyframes slideInFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100%); /* Off-screen to the right */
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0); /* Final position */
+  }
+}
+
+
+
 .action-button {
-  display: inline-flex; /* Adapt to text size */
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  background-color: #1e1e2e;
+  border: 2px solid #00d1ff;
+  border-radius: 12px;
   padding: 10px 15px;
-  background-color: #1e1e2e; /* Dark background color */
-  border: 2px solid #00d1ff; /* Gradient-like border effect */
-  border-radius: 12px; /* Rounded corners */
-  color: white; /* Text color */
-  font-size: 16px;
+  color: white;
   cursor: pointer;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
   opacity: 0; /* Initially hidden */
   transform: translateX(-100%); /* Start off-screen to the left */
   animation: slideInFromLeft 1s ease-out 2s forwards; /* Slide in animation */
-  margin-top: 10px;
-  margin-bottom: 5px;
-  white-space: nowrap; /* Prevent text wrapping */
 }
+
+
 
 /* Keyframes for sliding in from the left */
 @keyframes slideInFromLeft {
@@ -362,9 +594,10 @@ const handleClickHome = () => {
 	color: black;
 }
 
-.chatContainer{
-	height: 350px;
+.dec8{
+	margin-left: 10px;
 }
+
 
 
 </style>

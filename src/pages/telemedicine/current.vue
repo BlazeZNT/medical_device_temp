@@ -39,10 +39,15 @@
 				</view>
 			
 				<!-- Handle button click for either joining the video call or rescheduling -->
-				<button class="status-btn" @tap.stop="handleButtonClick(doctor)" 
-				        :class="{ 'join-now-btn': doctor.status === 'upcoming', 'reschedule-btn': doctor.status === 'past' }">
-					{{ doctor.status === 'upcoming' ? "JOIN NOW" : "RESCHEDULE" }}
+				<button
+				  class="status-btn"
+				  :class="{ 'reschedule-btn': doctor.status === 'past' }"
+				  v-if="doctor.status === 'past'"
+				  @click="handleReschedule(doctor)"
+				>
+				  RESCHEDULE
 				</button>
+				<button class="status-btn" @click="openModal(pageIndex, idx)">CANCEL</button>
 			
 			</view>
 			</view>
