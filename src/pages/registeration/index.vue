@@ -68,9 +68,9 @@
 		ref,
 		reactive
 	} from "vue";
-	import {
-		sendCode
-	} from "@/services/api/auth";
+	// import {
+	// 	sendCode
+	// } from "@/services/api/auth";
 
 	// 使用 reactive 创建响应式状态
 	const state = reactive({

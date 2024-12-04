@@ -35,48 +35,42 @@
                     <view class="day-time">Date & Time</view>
                     <view class="doctor-date">{{ `${doctor.date} ${doctor.year} ${doctor.time} ` }}</view>
                   </div>
-
-				</view>
-			
-			<button class="status-btn" @tap.stop="gotoVideoCall" :class="{ 'join-now-btn': doctor.status === 'upcoming', 'reschedule-btn': doctor.status === 'past' }">
-				{{ doctor.status === 'upcoming' ? "JOIN NOW" : "RESCHEDULE" }}
-			</button>
-			
-			</view>
-			</view>
+                </view>
+            
+				<button
+				  class="status-btn"
+				  @click="handleItemClick(5, doctor)"
+				>
+				  VIEW DETAIL
+				</button>
+            
+              </view>
+            </view>
           </swiper-item>
         </swiper>
       </view>
       <view class="appointment-button-container">
         <button class="appointment-button" @click="handleItemClick(2)">Book an Appointment</button>
       </view>
-	  <view v-if="showModal" class="modal-overlay">
-	    <view class="modal">
-	      <view class="modal-header">Confirm Cancellation</view>
-	      <view class="modal-body">
-	        Are you sure you want to cancel this appointment?
-	      </view>
-	      <view class="modal-footer">
-	        <button class="modal-btn cancel" @click="confirmCancel">Yes</button>
-	        <button class="modal-btn close" @click="closeModal">No</button>
-	      </view>
-	    </view>
-	  </view>
     </view>
   </view>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import Header from "@/components/Layout/Header.vue";
 import slibrary from "@/slibrary/index.js";
-import { getAppointments, cancelAppointment } from "@/utils/auth.ts"; // Import the API function
+import { getAppointments } from "@/utils/auth.ts"; // Import the API function
+
+
 
 // Initialize the doctors array
 const doctors = ref([]);
 const pages = ref([]);
 const showModal = ref(false);
 const selectedDoctor = ref({ pageIndex: null, doctorIndex: null });
+
+
 
 // API endpoint to fetch doctor data (replace with actual API URL)
 const fetchDoctors = async () => {
@@ -87,21 +81,25 @@ const fetchDoctors = async () => {
 
     // Assuming response contains the doctors list
     doctors.value = data.map(doctor => ({
-      id: decodeURIComponent(doctor.id),
-      image: decodeURIComponent(doctor.imageBase64 || '/static/doctordemo.png'),
-      name: decodeURIComponent(doctor.name || 'Unknown'),
-      specialization: decodeURIComponent(doctor.specialization || 'Unknown'),
-      date: decodeURIComponent(doctor.date || 'No date provided'),
-      year: decodeURIComponent(doctor.year || 'No year'),
-      time: decodeURIComponent(doctor.time || 'No time'),
-      status: decodeURIComponent(doctor.status || 'past'),
+      image: doctor.imageBase64 || '/static/doctordemo.png',
+      name: doctor.name || 'Unknown',
+      specialization: doctor.specialization || 'Unknown',
+      date: doctor.date || 'No date provided',
+      year: doctor.year || 'No year',
+      time: doctor.time || 'No time',
+      status: doctor.status || 'past',
+
     }));
-    // Recalculate pages for  pagination
+    // Recalculate pages for pagination
     const itemsPerPage = 3;
     pages.value = [];
     for (let i = 0; i < doctors.value.length; i += itemsPerPage) {
       pages.value.push(doctors.value.slice(i, i + itemsPerPage));
     }
+    
+    console.log("Doctors Array:", doctors.value);
+    console.log("Pages Array:", pages.value);
+
   } catch (error) {
     console.error("Error fetching doctors data:", error);
   }
@@ -113,86 +111,32 @@ onMounted(() => {
 });
 
 // Handle navigation based on the button type
-const handleItemClick = (type) => {
+const handleItemClick = (type, doctor = null) => {
   switch (type) {
     case 1:
-      slibrary.$router.go("/pages/telemedicine/choicePage");
+      uni.navigateTo({
+        url: "/pages/telemedicine/choicePage",
+      });
       break;
     case 2:
-      slibrary.$router.go("/pages/telemedicine/appointmentList");
+      uni.navigateTo({
+        url: "/pages/telemedicine/appointmentList",
+      });
       break;
-    case 3:
-      slibrary.$router.go("/pages/telemedicine/videoCall");
-      break;
-    case 4:
-      slibrary.$router.go("/pages/telemedicine/makeAppointment");
+    case 5:
+      if (doctor) {
+        // Construct query parameters
+        const queryParams = Object.entries(doctor)
+          .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+          .join("&");
+
+        // Navigate to the detail page with doctor info
+        uni.navigateTo({
+          url: `/pages/telemedicine/consultRecord?${queryParams}`,
+        });
+      }
       break;
   }
-};
-
-
-const gotoVideoCall = () => {
-    slibrary.$router.go("/pages/telemedicine/videocall");
-}
-
-// Function to remove the doctor from the array and cancel the appointment
-const removeDoctor = async (pageIndex, doctorIndex) => {
-  const doctorToRemove = pages.value[pageIndex][doctorIndex];
-  const actualIndex = doctors.value.findIndex(
-    (doctor) => doctor.id === doctorToRemove.id
-  );
-
-  if (actualIndex !== -1) {
-    // Remove the doctor from the doctors array
-    doctors.value.splice(actualIndex, 1);
-  }
-
-  // Remove the doctor from the pages array
-  pages.value[pageIndex].splice(doctorIndex, 1);
-    // Recalculate pages for pagination
-    const itemsPerPage = 3;
-    pages.value = [];
-    for (let i = 0; i < doctors.value.length; i += itemsPerPage) {
-      pages.value.push(doctors.value.slice(i, i + itemsPerPage)); 
-	  }
-	  
-  // Make the API call to cancel the appointment
-  try {
-    await cancelAppointment(doctorToRemove.id);
-    console.log(`Appointment with doctor ${doctorToRemove.name} cancelled successfully.`);
-  } catch (error) {
-    console.error("Error cancelling appointment:", error);
-  }
-};
-
-// Open the modal to confirm cancellation
-const openModal = (pageIndex, doctorIndex) => {
-  selectedDoctor.value = { pageIndex, doctorIndex };
-  showModal.value = true;
-};
-
-// Close the modal without taking action
-const closeModal = () => {
-  showModal.value = false;
-};
-
-// Confirm the cancellation and remove the doctor
-const confirmCancel = () => {
-  const { pageIndex, doctorIndex } = selectedDoctor.value;
-  removeDoctor(pageIndex, doctorIndex);
-  closeModal();
-};
-
-// Handle reschedule logic
-const handleReschedule = (doctor) => {
-  const sourcePage = "current"; // Change this to the actual source page name if needed
-  const query = Object.entries({ ...doctor, sourcePage })
-    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
-    .join("&");
-
-  uni.navigateTo({
-    url: `/pages/telemedicine/makeAppointment?${query}`,
-  });
 };
 
 </script>
@@ -308,9 +252,6 @@ const handleReschedule = (doctor) => {
 	    font-weight: bold;
 	    text-transform: uppercase;
 	    transition: all 0.3s ease-in-out;
-		margin-right: 10px;
-		display: flex;
-		justify-content: center;
 	  }
 	  
 	  .join-now-btn {
@@ -329,9 +270,7 @@ const handleReschedule = (doctor) => {
 	    background-color: transparent;
 	    color: #ffffff;
 	    border: 1px solid #ffffff;
-		margin-left: 5px;
-		display: flex;
-		justify-content: center;
+		margin-left: 10px;
 	  }
 	  
 	  .reschedule-btn:hover {

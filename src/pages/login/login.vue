@@ -17,7 +17,7 @@
               <image src="@/static/login/Vector1.png" mode="heightFix"></image>
             </view>
             <view class="text">
-              Health card<br />
+              HEALTH<br />CARD
               &nbsp;
             </view>
           </BtnCard>
@@ -28,7 +28,7 @@
               <image src="@/static/login/Vector3.png" mode="heightFix"></image>
             </view>
             <view class="text">
-              unique code<br />
+              UNIQUE<br />CODE
               &nbsp;
             </view>
           </BtnCard>
@@ -43,11 +43,13 @@
           <view class="inputBox">
             <view class="qianzhui">+86</view>
             <view class="input">
-              <input type="text" />
+              <input type="text" v-model="phoneNumber" /> <!-- Bind phoneNumber to input -->
             </view>
           </view>
         </view>
-        <BasicButton @click="handleClickLogin"> SUBMIT </BasicButton>
+        <BasicButton @click="handleClickLogin" :disabled="loading"> 
+          {{ loading ? 'Submitting...' : 'SUBMIT' }} 
+        </BasicButton>
       </view>
     </view>
     <view class="login" v-else-if="state.setp == 3">
@@ -63,20 +65,22 @@
     </view>
   </LayoutContent>
 </template>
-  
-  <script setup>
+
+<script setup>
 import LayoutContent from "@/components/Layout/Content.vue";
 import BtnCard from "@/components/Card/BtnCard.vue";
 import slibrary from "@/slibrary/index.js";
 import CodeInput from "@/components/CodeInput/index.vue";
-
 import BasicButton from "@/components/BasicButton/index.vue";
 import { ref, reactive } from "vue";
-import { sendCode } from "@/services/api/auth";
+import {sendLoginRequest} from "@/utils/auth.ts"; // Import the API function
 
 const state = reactive({
   setp: 1,
 });
+
+const phoneNumber = ref("");  // Use this to bind the phone number input
+const loading = ref(false);   // This will manage the loading state for the API request
 
 const handleClickBack = () => {
   if (state.setp != 1) {
@@ -88,26 +92,42 @@ const handleClickCard = () => {
   state.setp = 2;
 };
 
-const form = ref({
-  email: "",
-});
+const handleClickLogin = async () => {
+  if (!phoneNumber.value) {
+    console.log("Please enter a phone number.");
+    return;
+  }
 
-const loading = ref(false);
+  loading.value = true;
 
-const handleClickLogin = () => {
-  state.setp = 3;
+  try {
+    console.log('Sending API request...');
+    const response = await sendLoginRequest(phoneNumber.value); // Check if this request is being sent correctly
+    console.log('API response:', response);
+	
+    if (response) {
+      state.setp = 3;  // Move to next step
+    } else {
+      console.log("Login failed: No valid data.");
+    }
+  } catch (error) {
+    console.error("Error during login:", error);
+  } finally {
+    loading.value = false;
+  }
 };
+
 
 const handleClickRegister = () => {
   slibrary.$router.go("/pages/login/login");
 };
 
 const handleClickLoginCreate = () => {
-	slibrary.$router.go("/pages/health/index");
+  slibrary.$router.go("/pages/health/index");
 }
 </script>
-  
-  <style lang="scss" scoped>
+
+<style lang="scss" scoped>
 .login {
   width: 100%;
   height: 100%;
@@ -143,7 +163,6 @@ const handleClickLoginCreate = () => {
 
       .inputBox {
         width: 100%;
-        // height: 29rpx;
         border-radius: 2rpx 2rpx 2rpx 2rpx;
         border: 1rpx solid #d8d8d8;
         display: flex;
@@ -155,10 +174,6 @@ const handleClickLoginCreate = () => {
           margin-right: 10rpx;
           font-size: 12rpx;
           color: #ffffff;
-          line-height: 12rpx;
-          text-align: left;
-          font-style: normal;
-          text-transform: none;
         }
         .input {
           width: 100%;
@@ -167,7 +182,6 @@ const handleClickLoginCreate = () => {
             background: transparent;
             font-size: 12rpx;
             color: #ffffff;
-            line-height: 12rpx;
           }
         }
       }

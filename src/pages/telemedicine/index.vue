@@ -69,9 +69,9 @@
 		reactive
 	} from "vue";
 	
-	import {
-		sendCode
-	} from "@/services/api/auth";
+	// import {
+	// 	sendCode
+	// } from "@/services/api/auth";
 
 
 	const state = reactive({
