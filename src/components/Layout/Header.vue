@@ -22,7 +22,7 @@
 			</view>
 			<view class="textBox">
 				<view class="label">Phone</view>
-				<view class="value">+6285-7891</view>
+				<view class="value">62857891</view>
 			</view>
 			<view class="avatar"></view>
 		</view>

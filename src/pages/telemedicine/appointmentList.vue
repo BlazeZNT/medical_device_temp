@@ -4,26 +4,30 @@
 
     <view class="content">
       <view class="content-border-box">
-		  
+
+        <!-- Loading animation -->
+        <view v-if="loading" class="loading-spinner">
+          <image src="/static/loading.gif" alt="Loading..."></image>
+        </view>
+
         <swiper class="swiper" :circular="true" :interval="3000" :autoplay="false" indicator-dots>
           <swiper-item v-for="(page, pageIndex) in pages" :key="pageIndex">
+            <view class="leftback">
+              <image src="@/static/back.png" @click="handleItemClick(1)"></image>
+            </view>
+            <view class="centertext">
+              Book an Appointment
+            </view>
+            <view>
+              <view class="rightback">
+                <image src="./noti.png" ></image>
+              </view>
+            </view>
 
-				<view class="leftback" >
-					<image src="@/static/back.png" @click="handleItemClick(1)"></image>
-				</view>
-				<view class="centertext">
-					Book an Appointment
-				</view>
-				<view>
-					<view class="rightback" >
-						<image src="./noti.png" ></image>
-					</view>
-				</view>
-
-			
             <view class="content-box">
               <view v-for="(doctor, idx) in page" :key="idx" class="doctor-card" @click="handleDoctorClick(doctor)">
-                <image :src="doctor.image" class="doctor-image" />
+                <!-- Use base64 formatted string for image -->
+                <image :src="'data:image/jpeg;base64,' + doctor.imageBase64" class="doctor-image" />
                 <view class="doctor-info">
                   <div class="doc-details">
                     <view class="doctor-name">{{ doctor.name }}</view>
@@ -41,70 +45,85 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue';
 import Header from "@/components/Layout/Header.vue";
 import slibrary from "@/slibrary/index.js";
+import { getDoctors } from "@/utils/auth.ts"; // Import the API function
 
-// Example data (to be replaced with API calls)
-const doctors = [
-  { image: '/static/doctordemo.png', name: "Dr. Robert Lee", specialization: "Dermatologist", review: 4.5 },
-  { image: "/static/doctor2.png", name: "Dr. Richardson Jones", specialization: "Dermatologist", review: 4.5 },
-  { image: "/static/doctor3.png", name: "Dr. Prasnan Meni", specialization: "Family Medicine", review: 4.5 },
-  { image: "/static/doctor4.png", name: "Dr. Dhanang Prast", specialization: "Neurologist", review: 4.5 },
-  { image: "/static/doctor5.png", name: "Dr. Adnan Satya", specialization: "Surgeon", review: 4.5 },
-  { image: "/static/doctor6.png", name: "Dr. Erlon Murz", specialization: "Cardiologist", review: 4.5 },
-  { image: "/static/doctor5.png", name: "Dr. Adnan Satya", specialization: "Surgeon", review: 4.5 },
-  { image: "/static/doctor6.png", name: "Dr. Erlon Murz", specialization: "Cardiologist", review: 4.5 },
-  { image: "/static/doctor3.png", name: "Dr. Prasnan Meni", specialization: "Family Medicine", review: 4.5 },
-  { image: "/static/doctor4.png", name: "Dr. Dhanang Prast", specialization: "Neurologist", review: 4.5 },
-  { image: "/static/doctor5.png", name: "Dr. Adnan Satya", specialization: "Surgeon", review: 4.5 },
-  
-];
+// Reactive state for loading and doctors data
+const loading = ref(true);
+const pages = ref([]);
 
-const itemsPerPage = 6;
-const pages = [];
-for (let i = 0; i < doctors.length; i += itemsPerPage) {
-  pages.push(doctors.slice(i, i + itemsPerPage));
-}
+// Fetch doctor data from the backend
+const fetchDoctors = async () => {
+  try {
+    // Simulating a backend call with a timeout
+    const response = await getDoctors(); // Fetch the doctors data
+    // console.log(response);  // Handle the response
 
+    // Example of how data might be structured
+    const doctors = response;
+
+    // Ensure that doctor.imageBase64 is a valid base64 string
+    doctors.forEach((doctor) => {
+      // Check if imageBase64 is missing or empty, and set a default fallback
+      if (!doctor.imageBase64) {
+        doctor.imageBase64 = ''; // Empty string for fallback or a default base64 string
+      }
+    });
+
+    // Split data into pages (items per page)
+    const itemsPerPage = 6;
+    for (let i = 0; i < doctors.length; i += itemsPerPage) {
+      pages.value.push(doctors.slice(i, i + itemsPerPage));
+    }
+  } catch (error) {
+    console.error("Error fetching doctors:", error);
+  } finally {
+    loading.value = false; // Set loading to false once the data is loaded
+  }
+};
+
+// Fetch data when the component is mounted
+onMounted(() => {
+  fetchDoctors();
+});
+
+// Navigation handlers
 const handleItemClick = (type) => {
-			switch (type) {
-				case 1:
-					console.log("it is")
-					slibrary.$router.go("/pages/health/index");
-					break;
-					
-				}
-}
+  switch (type) {
+    case 1:
+      slibrary.$router.go("/pages/telemedicine/choicePage");
+      break;
+  }
+};
+
 const handleDoctorClick = (doctor) => {
   console.log("Doctor Information:", {
     name: doctor.name,
     specialization: doctor.specialization,
   });
 
-  // Navigate to the completeAppointment page with query parameters
-	uni.navigateTo({
-	  url: `/pages/telemedicine/makeAppointment?name=${encodeURIComponent(doctor.name)}&specialization=${encodeURIComponent(doctor.specialization)}&image=${encodeURIComponent(doctor.image)}`,
-	});
+  uni.navigateTo({
+    url: `/pages/telemedicine/makeAppointment?name=${encodeURIComponent(doctor.name)}&specialization=${encodeURIComponent(doctor.specialization)}&image=${encodeURIComponent(doctor.imageBase64)}`,
+  });
 };
-
 </script>
 
 <style lang="scss" scoped>
-		.leftCardTitle {
-		  flex-shrink: 0;
-		  padding: 15rpx;
-		  display: flex;
-		  align-items: center;
-		  color: #fff;
-		  font-size: 11rpx;
-		  color: #ffffff;
-		  line-height: 14rpx;
-		
-		  .line {
-		    margin: 0 6rpx;
-		    color: #58ffcf;
-		  } 
-		}
+/* Add a loading spinner style */
+.loading-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  img {
+    width: 60px;
+    height: 60px;
+  }
+}
+
 .page {
   width: 100vw;
   height: 100vh;
@@ -199,7 +218,7 @@ const handleDoctorClick = (doctor) => {
           width: 48%;
 		  height: 2.2rem;
           display: flex;
-          justify-content: space-around;
+          // justify-content: space-around;
           align-items: center;
           background: #232a31;
           border-radius: 16px;
@@ -211,39 +230,63 @@ const handleDoctorClick = (doctor) => {
             height: 60px;
             border-radius: 20%;
             object-fit: cover;
-            margin-bottom: 8px;
+			margin-left: 15px;
           }
 		  
 		  .doc-details{
-			  display:flex;
+			  display: flex;
 			  flex-direction: column;
 			  text-overflow: ellipsis;
+			  justify-content: center;
+			  align-items: baseline;
+			  margin-right: 20px;
+			  width: 3rem;
+			  margin-left: 15px;
+	
 		  }
+		  // .doctor-name {
+		  //   max-width: 3rem;
+		  //   font-weight: bold;
+		  //   margin-bottom: 4px;
+		  //   display:flex;
+		  //   font-size: 0.3rem;
+		  //   text-align: left;
+		  //   margin-bottom: 4px;
+		  // }
+		  // .doctor-specialization {
+		  //   color: #a0a0a0;
+		  //   margin-bottom: 4px;
+		  //   text-align: left;
+		  //   font-size: 0.2rem;
+		  // }
 
           .doctor-info {
 		    display: flex;
 			min-width: 3rem;
             color: #fff;
-			gap: 8rpx;
+			// gap: 8rpx;
 
             .doctor-name {
-			  max-width: 2.3rem;
               font-weight: bold;
               margin-bottom: 4px;
+			  font-size: 0.3rem;
             }
 
             .doctor-specialization {
               color: #a0a0a0;
               margin-bottom: 4px;
+			  font-size: 0.25rem;
             }
 
             .doctor-review {
-			  max-width: 1rem;
-			  min-height: 1.7rem;
-              color: #10e2f5;
+			  max-width: 0.8rem;
+              color: white;
 			  flex-shrink: 0; /* Prevent shrinking of the review */
 
             }
+			.doctor-review .star {
+			  color: #58ffcf; /* Color of the star */
+			}
           }
         }
       }

@@ -27,12 +27,12 @@
 		onLoad,
 		onShow
 	} from '@dcloudio/uni-app';
-	import {
-		resgister,
-	} from '@/services/api/auth';
-	import {
-		useUserStore
-	} from '@/stores/modules/user';
+	// import {
+	// 	resgister,
+	// } from '@/services/api/auth';
+	// import {
+	// 	useUserStore
+	// } from '@/stores/modules/user';
 	const userStore = useUserStore();
 
 
@@ -63,7 +63,7 @@
 		loading.value = true
 
 		setTimeout(() => {
-			slibrary.$helper.toast('Successfullyï¼')
+			slibrary.$helper.toast('Successfullyï¼')
 			slibrary.$router.go('/pages/health/index')
 			loading.value = false
 		}, 1500)

@@ -25,7 +25,7 @@ import LayoutContent from "@/components/Layout/Content.vue";
 import slibrary from "@/slibrary/index.js";
 import BasicButton from "@/components/BasicButton/index.vue";
 import { ref } from "vue";
-import { sendCode } from "@/services/api/auth";
+// import { sendCode } from "@/services/api/auth";
 
 const form = ref({
   email: "",

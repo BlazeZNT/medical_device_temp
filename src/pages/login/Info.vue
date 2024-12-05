@@ -25,7 +25,7 @@
 				</view>
 			</view>
 			<view class="absolute bottom-4 w-full text-center text-white text-sm px-4">
-				Clinics On Cloud Health kiosk is an aggregation of CE/FDA/medical grade devices combined with HIPAA
+				NIGGERClinics On Cloud Health kiosk is an aggregation of CE/FDA/medical grade devices combined with HIPAA
 				Compliant
 				backend software which solves problem of basic health awareness checkup in rural/urban areas.
 			</view>
