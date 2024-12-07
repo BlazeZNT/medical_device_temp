@@ -18,7 +18,10 @@
           </view>
           <view v-else class="column">
             <uni-forms-item label="Tell your health complaints" name="healthComplaints">
-              <uni-easyinput type="textarea" v-model="state.userInfo.name" placeholder="Name" />
+              <div class="textarea-container">
+                <div class="textarea-content" contenteditable="true" @input="handleTextChange">{{ transcript }}</div>
+                <button class="record-button" @click="ToggleMic">Record</button>
+              </div>
             </uni-forms-item>
           </view>
           <view class="column">
@@ -77,11 +80,73 @@ import slibrary from "@/slibrary/index.js";
 import BasicButton from "@/components/BasicButton/index.vue";
 import CustomCalendar from "@/components/customCalendar/index.vue";
 import { createAppointment, updateAppointment } from "@/utils/auth.ts"; 
+import { ref, reactive, onMounted } from "vue";
 
-import { ref, reactive } from "vue";
+const transcript = ref('')
+const isRecording = ref(false)
+
+const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition
+const sr = new Recognition()
 
 const times = ["08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00", "21:00", "22:00", "22:30", "23:00", "23:30"]; 
 const clickedButton = ref(null);
+
+
+onMounted(() => {
+	sr.continuous = true
+	sr.interimResults = true
+
+	sr.onstart = () => {
+		console.log('SR Started')
+		isRecording.value = true
+	}
+
+	sr.onend = () => {
+		console.log('SR Stopped')
+		isRecording.value = false
+	}
+
+	sr.onresult = (evt) => {
+		for (let i = 0; i < evt.results.length; i++) {
+			const result = evt.results[i]
+
+			if (result.isFinal) CheckForCommand(result)
+		}
+
+		const t = Array.from(evt.results)
+			.map(result => result[0])
+			.map(result => result.transcript)
+			.join('')
+		
+		transcript.value = t
+	}
+})
+
+const CheckForCommand = (result) => {
+	const t = result[0].transcript;
+	if (t.includes('stop recording')) {
+		sr.stop()
+	} else if (
+		t.includes('what is the time') ||
+		t.includes('what\'s the time')
+	) {
+		sr.stop()
+		alert(new Date().toLocaleTimeString())
+		setTimeout(() => sr.start(), 100)
+	}
+}
+
+const ToggleMic = () => {
+	if (isRecording.value) {
+		sr.stop()
+	} else {
+		sr.start()
+	}
+}
+
+const handleTextChange = (event) => {
+  transcript.value = event.target.innerText;
+};
 
 const handleClick = (index, time) => {
   clickedButton.value = index;
@@ -396,4 +461,39 @@ const handleClickChat = () => {
 	margin-left: 20px;
 }
 
+.textarea-container {
+  display: flex;
+  position: relative; /* Set relative positioning for the parent */
+  border: 1px solid #d8d8d8;
+  border-radius: 5px;
+  padding: 8px;
+  background-color: #29353d;
+  color: white;
+  min-height: 100px;
+  width: 100%;
+}
+
+.textarea-content {
+  flex: 1;
+  outline: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+  color: white;
+  overflow-y: auto;
+  max-height: 150px;
+}
+
+.record-button {
+  position: absolute; /* Position the button absolutely within the container */
+  bottom: 8px; /* Align to the bottom of the container */
+  right: 8px; /* Align to the right side of the container */
+  background-color: #58ffcf;
+  color: black;
+  border: none;
+  border-radius: 3px; /* Slightly smaller border radius */
+  padding: 3px 6px; /* Reduce padding to make the button smaller */
+  font-size: 12px; /* Smaller font size */
+  cursor: pointer;
+}
 </style>
