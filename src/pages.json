@@ -158,6 +158,17 @@
 				"ignoreAuth": true
 			}
 		},
+		{
+			"path": "pages/telemedicine/chat",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom"
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
+			}
+		},
         {
             "path" : "pages/health/detection",
             "style" : {

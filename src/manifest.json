@@ -69,6 +69,20 @@
                     "parameters" : {}
                 }
             },
+			"zego-ZIMUniPlugin": {
+			    "__plugin_info__": {
+			        "name": "ZegoZIMUniAppSDK",
+			        "description": "Zego Instant Messaging SDK for Uni-App",
+			        "platforms": "Android,iOS",
+			        "url": "",
+			        "android_package_name": "",
+			        "ios_bundle_id": "",
+			        "isCloud": true,
+			        "bought": 1,
+			        "pid": "",
+			        "parameters": {}
+			    }
+			},
             "Leiye-UniSerialPort" : {
                 "__plugin_info__" : {
                     "name" : "CH34串口通信",
@@ -114,19 +128,31 @@
             "subPackages" : true
         },
         "lazyCodeLoading" : "requiredComponents",
-        "style" : "v2"
+        "style" : "v2",
+        "unipush" : {
+            "enable" : true
+        }
     },
     "mp-alipay" : {
         "usingComponents" : true,
         "optimization" : {
             "subPackages" : true
+        },
+        "unipush" : {
+            "enable" : true
         }
     },
     "mp-baidu" : {
-        "usingComponents" : true
+        "usingComponents" : true,
+        "unipush" : {
+            "enable" : true
+        }
     },
     "mp-toutiao" : {
-        "usingComponents" : true
+        "usingComponents" : true,
+        "unipush" : {
+            "enable" : true
+        }
     },
     "uniStatistics" : {
         "enable" : false
@@ -143,7 +169,7 @@
         },
         "title" : "uniapp_vue3_vite_ts",
         "unipush" : {
-            "enable" : false
+            "enable" : true
         },
         "sdkConfigs" : {
             "maps" : {}
@@ -154,5 +180,25 @@
             }
         }
     },
-    "locale" : "en"
+    "locale" : "en",
+    "mp-lark" : {
+        "unipush" : {
+            "enable" : true
+        }
+    },
+    "mp-kuaishou" : {
+        "unipush" : {
+            "enable" : false
+        }
+    },
+    "mp-jd" : {
+        "unipush" : {
+            "enable" : true
+        }
+    },
+    "mp-qq" : {
+        "unipush" : {
+            "enable" : true
+        }
+    }
 }
