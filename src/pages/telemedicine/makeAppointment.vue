@@ -21,6 +21,11 @@
               <div class="textarea-container">
                 <div class="textarea-content" contenteditable="true" @input="handleTextChange">{{ transcript }}</div>
                 <button class="record-button" @click="ToggleMic">Record</button>
+                  <div v-if="isRecording" class="sound-wave">
+                    <span class="wave"></span>
+                    <span class="wave"></span>
+                    <span class="wave"></span>
+                  </div>
               </div>
             </uni-forms-item>
           </view>
@@ -143,6 +148,14 @@ const ToggleMic = () => {
 		sr.start()
 	}
 }
+
+// const ToggleMic = () => {
+//   if (isRecording.value) {
+//     sr.stop();
+//   } else {
+//     sr.start();
+//   }
+// };
 
 const handleTextChange = (event) => {
   transcript.value = event.target.innerText;
@@ -313,6 +326,7 @@ const handleClickChat = () => {
 		.join("&")}`,
 	});	
 }
+
 
 </script>
 
@@ -495,5 +509,41 @@ const handleClickChat = () => {
   padding: 3px 6px; /* Reduce padding to make the button smaller */
   font-size: 12px; /* Smaller font size */
   cursor: pointer;
+}
+
+.sound-wave {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.wave {
+  width: 4px;
+  height: 10px;
+  background-color: #58ffcf;
+  border-radius: 2px;
+  animation: wave-animation 1s infinite ease-in-out;
+}
+
+.wave:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.wave:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes wave-animation {
+  0%, 100% {
+    height: 10px;
+  }
+  50% {
+    height: 20px;
+  }
 }
 </style>
