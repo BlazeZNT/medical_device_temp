@@ -225,6 +225,7 @@ const confirmCancel = () => {
 	image: decodeURIComponent(removedDoctor.image || 'No time'),
 	
 	message: `Appointment at ${removedDoctor.date} ${removedDoctor.year} ${removedDoctor.time} with Dr. ${removedDoctor.name} was canceled.`,
+	source: "cancel"
 	
 	});
 
@@ -542,5 +543,21 @@ const confirmCancel = () => {
 
 .modal-btn:hover {
   opacity: 0.9;
+}
+
+h4{
+	color: white;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+.notification-message{
+	color: white;
+	font-size: 14px;
+}
+
+.currenttime {
+  font-size: 12px;         
+  color: rgba(255, 255, 255, 0.6); 
 }
 </style>

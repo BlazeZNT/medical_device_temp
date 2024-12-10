@@ -88,9 +88,14 @@
 		
 		    // Add notification to the Pinia store
 		appStore.addNotification({
-		  id: doctor.name, // Assuming name is unique
-		  name: doctor.name,
-		  message: `Appointment with Dr. ${doctor.name} is confirmed for ${doctor.date} at ${doctor.time}.`,
+			id: doctor.id,
+			name: doctor.name,
+			date: decodeURIComponent(doctor.date || 'No date provided'),
+			year: decodeURIComponent(doctor.year || 'No year'),
+			time: decodeURIComponent(doctor.time || 'No time'),
+			image: decodeURIComponent(doctor.image || 'No time'),
+			message: `Appointment with Dr. ${doctor.name} is confirmed for ${doctor.date} at ${doctor.time}.`,
+			source: "complete",
 		});
 			
 			
@@ -287,6 +292,21 @@
       }
     }
   }
+}
+h4{
+	color: white;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+.notification-message{
+	color: white;
+	font-size: 14px;
+}
+
+.currenttime {
+  font-size: 12px;         
+  color: rgba(255, 255, 255, 0.6); 
 }
 </style>
 

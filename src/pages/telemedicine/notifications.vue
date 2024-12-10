@@ -1,44 +1,73 @@
 <template>
   <LayoutContent showBack @back="handleClickHome">
     <view class="pageView">
-      <!-- <view class="pageView-title">Past Consultation</view> -->
       <view class="form">
         <uni-forms label-position="top" label-width="120rpx" :border="false" :modelValue="state.userInfo">
-			<view class="pageView-title">Notifications</view>
-			<view class= "notificationContainer">
-				<!-- <view class="today notibox">
-					<view class="notibox-title">Today</view>
-					<view class="content-border-box">
-					  <view class="contentBox"> 
-					  </view>
-					</view>
-				</view> -->
-				<view class="allNotifications notibox">	
-					<view class="notibox-title">All Notifications</view>
-					<view class="content-border-box">
-					  <view class="contentBox">
-						    <view class="notification-page">
-						      <view v-if="notifications.length > 0">
-						        <h3>Notifications</h3>
-						        <ul>
-						          <li v-for="(notification, index) in notifications" :key="index">
-						            <p>{{ notification.message }}</p>
-						          </li>
-						        </ul>
-						      </view>
-						      <view v-else>
-						        <p>No notifications available.</p>
-						      </view>
-						    </view>
-					  </view>
-					</view>
-				</view>
-			</view>
+          <view class="pageView-title">Notifications</view>
+          <view class="notificationContainer">
+            <view class="allNotifications notibox">
+              <view class="<strong>notibox-title</strong> topic">All Notifications</view>
+              <view v-if="notifications.length > 0">
+                <view v-for="(notification, index) in notifications" :key="index">
+                  <!-- Conditional Rendering Based on Notification Source -->
+                  <view v-if="notification.source === 'cancel'" class="content-border-box cancelNotification">
+                    <view class="contentBox">
+						<view class="currenttime">
+							 {{ currentDateTime }}
+						</view>
+						<h4>Your appointment has been cancelled</h4>
+                        <!-- Greeting and Notification Message -->
+						
+                        <view class="notification-message">
+                          Hi Debra! Your appointment at {{ notification.date }} {{ notification.year }} at {{ notification.time }} with {{ notification.name }} has been cancelled.
+                        </view>
+                    </view>
+                  </view>
+
+                  <view v-else-if="notification.source === 'update'" class="content-border-box updateNotification">
+                    <view class="contentBox">
+                    	<view class="currenttime">
+                    		 {{ currentDateTime }}
+                    	</view>
+                    	<h4>Your appointment has been updated.</h4>
+                        <!-- Greeting and Notification Message -->
+                    	
+                        <view class="notification-message">
+                          Hi Debra! You old appointment with {{ notification.name }} at {{ notification.olddate }} {{ notification.oldyear }}/ {{ notification.time }} has been successfully changed to {{ notification.date }} {{ notification.year }} / {{ notification.time }}.
+                        </view>
+                    </view>
+                  </view>
+
+                  <view v-else class="content-border-box completeNotification">
+                    <view class="contentBox">
+                    	<view class="currenttime">
+                    		 {{ currentDateTime }}
+                    	</view>
+                    	<h4>An appointment has been made.</h4>
+                        <!-- Greeting and Notification Message -->
+                    	
+                        <view class="notification-message">
+                          Hi Debra! An appointment with {{ notification.name }} at {{ notification.date }} {{ notification.year }} at {{ notification.time }} has been made.
+                        </view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+              <view v-else>
+                <view class="content-border-box">
+                  <view class="contentBox">
+                    <p>No notifications available.</p>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
         </uni-forms>
       </view>
     </view>
   </LayoutContent>
 </template>
+
 
 <script setup>
 import LayoutContent from "@/components/Layout/Content.vue";
@@ -47,6 +76,10 @@ import BasicButton from "@/components/BasicButton/index.vue";
 import { ref, reactive } from "vue";
 import { getAppointments, cancelAppointment } from "@/utils/auth.ts"; // Import the API function
 import { useAppStore } from '@/stores/app'; // Import the store
+
+const currentDateTime = ref('');
+
+
 
 // Access the notifications from the store
 const appStore = useAppStore();
@@ -63,9 +96,7 @@ const state = reactive({
     date: "",
     time: "",
     year: "2024",
-  },
-  diagnosis: "Influenza (Flu) The viruses that cause flu spread at high levels during certain times of the year in the Northern and Southern hemispheres. These are called flu seasons. During times when flu is widespread, you may not need a flu test.",
-  suggestions: "Take a rest. Get discipline with taking medicine on prescription.",
+  }
 });
 
 const doctorDetails = reactive({
@@ -90,6 +121,21 @@ onLoad((options) => {
 
   // console.log("Parsed Doctor Details:", doctorDetails);
   
+});
+const updateCurrentDateTime = () => {
+  const now = new Date();
+  const date = now.getDate().toString().padStart(2, '0');
+  const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
+  const year = now.getFullYear();
+  const hours = now.getHours();
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const formattedHours = hours % 12 || 12; // Convert to 12-hour format
+
+  currentDateTime.value = `${date}/${month}/${year} at ${formattedHours}:${minutes} ${ampm}`;
+};
+onMounted(() => {
+  updateCurrentDateTime(); // Set initial value
 });
 
 const handleClickHome = () => {
@@ -125,7 +171,7 @@ const handleClickHome = () => {
     border-radius: 15px;
 }
 .contentBox{
-	background: linear-gradient(181deg, rgb(44,56,65) 0%, rgb(27, 32, 40) 100%);
+	background: linear-gradient(181deg, rgb(44,56,65) 0%, rgb(34, 45, 52) 100%);
 	border-radius: 15px;
 	display: flex;
 	flex-direction: column;
@@ -156,6 +202,29 @@ const handleClickHome = () => {
 .notification-page {
   padding: 16px;
   background-color: #f8f9fa;
+}
+
+h4{
+	color: white;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	font_size:20px;
+}
+
+.notification-message{
+	color: white;
+	font-size: 14px;
+}
+
+.currenttime {
+  font-size: 12px;         
+  color: rgba(255, 255, 255, 0.6); 
+}
+
+.topic{
+	color: #59FFCF;
+	font-size: 15px;
+	font-weight: bold;
 }
 
 </style>

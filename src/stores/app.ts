@@ -15,7 +15,7 @@ import { defineStore } from 'pinia';
 
 interface AppState {
   sys?: string | number;
-  notifications: Array<{ id: string; name: string; message: string }>; // Add notifications
+  notifications: Array<{ id: string; name: string; message: string; source: string }>; // Add notifications
 }
 
 export const useAppStore = defineStore({
@@ -28,7 +28,7 @@ export const useAppStore = defineStore({
     allNotifications: (state) => state.notifications, // Getter for notifications
   },
   actions: {
-    addNotification(notification: { id: string; name: string; message: string }) {
+    addNotification(notification: { id: string; name: string; message: string; source: string }) {
       this.notifications.push(notification); // Add a new notification
     },
   },
