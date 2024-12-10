@@ -417,8 +417,8 @@ const confirmCancel = () => {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        // justify-content: flex-start;
-        // align-content: flex-start;
+        justify-content: flex-start;
+        align-content: flex-start;
         gap: 16px;
         padding: 1.5rem;
         background: linear-gradient(181deg, rgba(35, 42, 49, 1) 0%, rgba(27, 32, 40, 1) 100%);
