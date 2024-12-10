@@ -10,7 +10,7 @@ import axios from './utils/axios'; // Import the axios configuration
 export function createApp() {
 	const app = createSSRApp(App);
 
-	// setupStore(app);
+	setupStore(app);
 
 	// setupRouter(app);
 

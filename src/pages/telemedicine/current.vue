@@ -78,6 +78,7 @@ import { ref, onMounted } from 'vue';
 import Header from "@/components/Layout/Header.vue";
 import slibrary from "@/slibrary/index.js";
 import { getAppointments, cancelAppointment } from "@/utils/auth.ts"; // Import the API function
+import { useAppStore } from '@/stores/app'; // Import the store
 
 // Initialize the doctors array
 const doctors = ref([]);
@@ -203,9 +204,35 @@ const closeModal = () => {
 
 // Confirm the cancellation and remove the doctor
 const confirmCancel = () => {
-  const { pageIndex, doctorIndex } = selectedDoctor.value;
-  removeDoctor(pageIndex, doctorIndex);
-  closeModal();
+  // const { pageIndex, doctorIndex } = selectedDoctor.value;
+  // removeDoctor(pageIndex, doctorIndex);
+  // closeModal();
+
+	const appStore = useAppStore(); // Access the store
+	const { pageIndex, doctorIndex } = selectedDoctor.value;
+
+	// Get the doctor details before removing
+	const removedDoctor = pages.value[pageIndex][doctorIndex];
+
+	// Add the notification to the store
+	appStore.addNotification({
+	id: removedDoctor.id,
+	name: removedDoctor.name,
+	date: decodeURIComponent(removedDoctor.date || 'No date provided'),
+	year: decodeURIComponent(removedDoctor.year || 'No year'),
+	time: decodeURIComponent(removedDoctor.time || 'No time'),
+	image: decodeURIComponent(removedDoctor.image || 'No time'),
+	
+	message: `Appointment at ${removedDoctor.date} ${removedDoctor.year} ${removedDoctor.time} with Dr. ${removedDoctor.name} was canceled.`,
+	
+	});
+
+	// Remove the doctor and close the modal
+	removeDoctor(pageIndex, doctorIndex);
+	closeModal();
+
+	// Navigate to the notifications page
+	slibrary.$router.go('/pages/telemedicine/notifications');
 };
 </script>
 
