@@ -24,7 +24,7 @@ export default {
       chatHistory: [
         { role: "assistant", content: "Hello! How can I help you today?" },
       ],
-      apiKey: "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", // Use a secure method to store your key
+      apiKey: "addkeyhere", // Use a secure method to store your key
     };
   },
   methods: {
