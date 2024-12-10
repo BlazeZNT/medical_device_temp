@@ -93,7 +93,7 @@ onLoad((options) => {
 });
 
 const handleClickHome = () => {
-  slibrary.$router.go("/pages/telemedicine/consultHistory");
+  slibrary.$router.go("/pages/telemedicine/choicePage");
 };
 </script>
 

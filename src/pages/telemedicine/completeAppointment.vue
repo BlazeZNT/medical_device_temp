@@ -48,6 +48,9 @@
 	import Header from "@/components/Layout/Header.vue";
 	import slibrary from "@/slibrary/index.js";
 	import BasicButton from "@/components/BasicButton/index.vue";
+	import { useAppStore } from "@/stores/app"; // Import the Pinia store
+	
+	const appStore = useAppStore(); // Access the store
 
 	// Example data (to be replaced with API calls)
 	const doctors = ref([]);
@@ -82,6 +85,15 @@
 	  if (doctors.value.length > 0) {
 	    const doctor = doctors.value[0];
 		// console.log("Testing : " ,doctor.name,doctor.specialization,doctor.date,doctor.time)
+		
+		    // Add notification to the Pinia store
+		appStore.addNotification({
+		  id: doctor.name, // Assuming name is unique
+		  name: doctor.name,
+		  message: `Appointment with Dr. ${doctor.name} is confirmed for ${doctor.date} at ${doctor.time}.`,
+		});
+			
+			
 	    uni.navigateTo({
 	      url: `/pages/telemedicine/current?name=${encodeURIComponent(doctor.name)}&specialization=${encodeURIComponent(doctor.specialization)}&date=${encodeURIComponent(doctor.date)}&time=${encodeURIComponent(doctor.time)}&year=${encodeURIComponent(doctor.year)}&image=${encodeURIComponent(doctor.image)}`,
 	    });

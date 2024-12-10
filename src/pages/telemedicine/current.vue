@@ -14,7 +14,7 @@
             </view>
             <view>
               <view class="rightback">
-                <image src="./noti.png" class="image-link"></image>
+                <image src="./noti.png" class="image-link" @click="handleItemClick(5)"></image>
               </view>
             </view>
 
@@ -135,6 +135,10 @@ const handleItemClick = (type) => {
     case 4:
       slibrary.$router.go("/pages/telemedicine/makeAppointment");
       break;
+	case 5:
+	  slibrary.$router.go("/pages/telemedicine/notifications");
+	  break;
+	  
   }
 };
 
@@ -204,9 +208,6 @@ const closeModal = () => {
 
 // Confirm the cancellation and remove the doctor
 const confirmCancel = () => {
-  // const { pageIndex, doctorIndex } = selectedDoctor.value;
-  // removeDoctor(pageIndex, doctorIndex);
-  // closeModal();
 
 	const appStore = useAppStore(); // Access the store
 	const { pageIndex, doctorIndex } = selectedDoctor.value;
@@ -232,7 +233,7 @@ const confirmCancel = () => {
 	closeModal();
 
 	// Navigate to the notifications page
-	slibrary.$router.go('/pages/telemedicine/notifications');
+	slibrary.$router.go('/pages/telemedicine/notifications');	
 };
 </script>
 

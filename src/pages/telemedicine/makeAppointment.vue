@@ -86,6 +86,9 @@ import BasicButton from "@/components/BasicButton/index.vue";
 import CustomCalendar from "@/components/customCalendar/index.vue";
 import { createAppointment, updateAppointment } from "@/utils/auth.ts"; 
 import { ref, reactive, onMounted } from "vue";
+import { useAppStore } from "@/stores/app"; // Import the store
+
+const appStore = useAppStore(); // Access the Pinia store
 
 const transcript = ref('')
 const isRecording = ref(false)
@@ -268,6 +271,13 @@ const isLoading = ref(false); // Loading state
 		const response = await updateAppointment(currentDocID.value, request);
 		if(response){
 			console.log(response);
+			
+			 appStore.addNotification({
+			        id: currentDocID.value,
+			        name: currentDocName.value,
+			        message: `Appointment with Dr. ${currentDocName.value} has been updated to ${potato[0].date} at ${potato[0].time}.`,
+			      });
+				  
 			isLoading.value = false;
 			slibrary.$router.go("/pages/telemedicine/current");
 			
