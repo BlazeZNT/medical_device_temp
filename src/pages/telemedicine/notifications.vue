@@ -1,54 +1,45 @@
 <template>
   <LayoutContent showBack @back="handleClickHome">
     <view class="pageView">
-      <view class="form">
+      <scroll-view class="form" scroll-y>
         <uni-forms label-position="top" label-width="120rpx" :border="false" :modelValue="state.userInfo">
           <view class="pageView-title">Notifications</view>
           <view class="notificationContainer">
             <view class="allNotifications notibox">
-              <view class="<strong>notibox-title</strong> topic">All Notifications</view>
+              <view class="notibox-title">All Notifications</view>
               <view v-if="notifications.length > 0">
                 <view v-for="(notification, index) in notifications" :key="index">
-                  <!-- Conditional Rendering Based on Notification Source -->
                   <view v-if="notification.source === 'cancel'" class="content-border-box cancelNotification">
                     <view class="contentBox">
-						<view class="currenttime">
-							 {{ currentDateTime }}
-						</view>
-						<h4>Your appointment has been cancelled</h4>
-                        <!-- Greeting and Notification Message -->
-						
-                        <view class="notification-message">
-                          Hi Debra! Your appointment at {{ notification.date }} {{ notification.year }} at {{ notification.time }} with {{ notification.name }} has been cancelled.
-                        </view>
+                      <view class="currenttime">
+                        {{ currentDateTime }}
+                      </view>
+                      <h4>Your appointment has been cancelled</h4>
+                      <view class="notification-message">
+                        Hi Debra! Your appointment at {{ notification.date }} {{ notification.year }} at {{ notification.time }} with {{ notification.name }} has been cancelled.
+                      </view>
                     </view>
                   </view>
-
                   <view v-else-if="notification.source === 'update'" class="content-border-box updateNotification">
                     <view class="contentBox">
-                    	<view class="currenttime">
-                    		 {{ currentDateTime }}
-                    	</view>
-                    	<h4>Your appointment has been updated.</h4>
-                        <!-- Greeting and Notification Message -->
-                    	
-                        <view class="notification-message">
-                          Hi Debra! You old appointment with {{ notification.name }} at {{ notification.olddate }} {{ notification.oldyear }}/ {{ notification.time }} has been successfully changed to {{ notification.date }} {{ notification.year }} / {{ notification.time }}.
-                        </view>
+                      <view class="currenttime">
+                        {{ currentDateTime }}
+                      </view>
+                      <h4>Your appointment has been updated.</h4>
+                      <view class="notification-message">
+                        Hi Debra! Your old appointment with {{ notification.name }} at {{ notification.olddate }} {{ notification.oldyear }} / {{ notification.time }} has been successfully changed to {{ notification.date }} {{ notification.year }} / {{ notification.time }}.
+                      </view>
                     </view>
                   </view>
-
                   <view v-else class="content-border-box completeNotification">
                     <view class="contentBox">
-                    	<view class="currenttime">
-                    		 {{ currentDateTime }}
-                    	</view>
-                    	<h4>An appointment has been made.</h4>
-                        <!-- Greeting and Notification Message -->
-                    	
-                        <view class="notification-message">
-                          Hi Debra! An appointment with {{ notification.name }} at {{ notification.date }} {{ notification.year }} at {{ notification.time }} has been made.
-                        </view>
+                      <view class="currenttime">
+                        {{ currentDateTime }}
+                      </view>
+                      <h4>An appointment has been made.</h4>
+                      <view class="notification-message">
+                        Hi Debra! An appointment with {{ notification.name }} at {{ notification.date }} {{ notification.year }} at {{ notification.time }} has been made.
+                      </view>
                     </view>
                   </view>
                 </view>
@@ -63,11 +54,10 @@
             </view>
           </view>
         </uni-forms>
-      </view>
+      </scroll-view>
     </view>
   </LayoutContent>
 </template>
-
 
 <script setup>
 import LayoutContent from "@/components/Layout/Content.vue";
@@ -185,9 +175,9 @@ const handleClickHome = () => {
 }
 .notibox{
 	.notibox-title{
-		font-family: FB;
-		color: seagreen;
+		color: #59FFCF;
 		font-size: 15px;
+		font-weight: bold;
 		
 	}
 
@@ -221,10 +211,29 @@ h4{
   color: rgba(255, 255, 255, 0.6); 
 }
 
-.topic{
-	color: #59FFCF;
-	font-size: 15px;
-	font-weight: bold;
+.pageView {
+  width: 100%;
+  height: 100%; /* Make sure the page occupies full height */
+  display: flex;
+  flex-direction: column;
+}
+
+.form {
+  // width: 100%;	
+  height: calc(100vh - 50px); /* Subtract any header/footer height */
+  overflow: hidden;
+}
+
+.scroll-view {
+  // width: 100%;
+  height: 100%; /* Full height of the scrollable area */
+  overflow-y: scroll; /* Enable vertical scrolling */
+  -webkit-overflow-scrolling: touch; /* Enable smooth scrolling for touch devices */
+}
+
+p{
+	color: white;
+	size: 10px;
 }
 
 </style>

@@ -29,7 +29,7 @@ export const useAppStore = defineStore({
   },
   actions: {
     addNotification(notification: { id: string; name: string; message: string; source: string }) {
-      this.notifications.push(notification); // Add a new notification
+      this.notifications.unshift(notification); // Add a new notification
     },
   },
 });

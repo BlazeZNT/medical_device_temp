@@ -24,7 +24,7 @@ export default {
       chatHistory: [
         { role: "assistant", content: "Hello! How can I help you today?" },
       ],
-      apiKey: "addkeyhere", // Use a secure method to store your key
+      // apiKey: "addkeyhere", // Use a secure method to store your key
     };
   },
   methods: {

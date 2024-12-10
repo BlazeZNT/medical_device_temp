@@ -345,12 +345,12 @@ const handleClickSubmit = async () => {
 };
 
 const handleClickChat = () => {
-	// uni.navigateTo({
-	//   url: `/pages/telemedicine/aiChat?${Object.entries(potato[0])
-	// 	.map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
-	// 	.join("&")}`,
-	// });	
-	slibrary.$router.go("/pages/telemedicine/aiChat");
+	uni.navigateTo({
+	  url: `/pages/telemedicine/aiChat?${Object.entries(potato[0])
+		.map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+		.join("&")}`,
+	});	
+	// slibrary.$router.go("/pages/telemedicine/aiChat");
 	
 }
 

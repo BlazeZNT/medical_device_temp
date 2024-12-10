@@ -1,44 +1,37 @@
 <template>
   <view class="page">
     <Header />
-
     <view class="content">
-      <view class="content-border-box">
-        <swiper class="swiper" :circular="true" :interval="3000" :autoplay="false" indicator-dots>
-          <swiper-item v-for="(page, pageIndex) in pages" :key="pageIndex">
-            <view class="leftback">
-              <image src="@/static/back.png" class="image-link" @click="handleItemClick(1)"></image>
-            </view>
-            <view class="centertext">
-              My Appointments
-            </view>
-            <view>
-              <view class="rightback">
-                <image src="./noti.png" class="image-link" @click="handleItemClick(5)"></image>
-              </view>
-            </view>
-
-            <view class="content-box" :class="{ 'fewer-items': page.length < 3 }">
-              <view v-for="(doctor, idx) in page" :key="idx" class="doctor-card">
-                <div class="leftItems">
-                  <image :src="'data:image/jpeg;base64,' + doctor.image" class="doctor-image" />
-                  <view class="doctor-info">
-                    <div class="doc-details">
-                      <view class="doctor-name">{{ doctor.name }}</view>
-                      <view class="doctor-specialization">{{ doctor.specialization }}</view>
-                    </div>       
-                  </view>
-                </div>
-            
-                <view class="doctor-info">
-                  <div class="doc-details">
-                    <view class="day-time">Date & Time</view>
-                    <view class="doctor-date">{{ `${doctor.date} ${doctor.year} ${doctor.time} ` }}</view>
-                  </div>
-
+      <view v-if=" doctors.length>0 " class="content-border-box">
+        <!-- Check if `hello` is true -->
+		<swiper class="swiper" :circular="true" :interval="3000" :autoplay="false" indicator-dots>
+		  <swiper-item v-for="(page, pageIndex) in pages" :key="pageIndex">
+			<view class="leftback">
+			  <image src="@/static/back.png" class="image-link" @click="handleItemClick(1)" />
+			</view>
+			<view class="centertext">My Appointments</view>
+			<view>
+			  <view class="rightback">
+				<image src="./noti.png" class="image-link" @click="handleItemClick(5)" />
+			  </view>
+			</view>
+			<view class="content-box " :class="{ 'fewer-items': page.length < 3 }">
+			  <view v-for="(doctor, idx) in page" :key="idx" class="doctor-card">
+				<div class="leftItems">
+				  <image :src="'data:image/jpeg;base64,' + doctor.image" class="doctor-image" />
+				  <view class="doctor-info">
+					<div class="doc-details">
+					  <view class="doctor-name">{{ doctor.name }}</view>
+					  <view class="doctor-specialization">{{ doctor.specialization }}</view>
+					</div>
+				  </view>
+				</div>
+				<view class="doctor-info">
+				  <div class="doc-details">
+					<view class="day-time">Date & Time</view>
+					<view class="doctor-date">{{ `${doctor.date} ${doctor.year} ${doctor.time} ` }}</view>
+				  </div>
 				</view>
-			
-				<!-- Handle button click for either joining the video call or rescheduling -->
 				<button
 				  class="status-btn"
 				  :class="{ 'reschedule-btn': doctor.status === 'past' }"
@@ -48,27 +41,48 @@
 				  RESCHEDULE
 				</button>
 				<button class="status-btn" @click="openModal(pageIndex, idx)">CANCEL</button>
-			
+			  </view>
 			</view>
-			</view>
-          </swiper-item>
-        </swiper>
+		  </swiper-item>
+		</swiper>
+        <!-- Fallback content if `hello` is false -->
       </view>
+	  <view v-else class="newStructure">
+		  <view class="topic">
+			  <view class="leftback">
+				<image src="@/static/back.png" class="image-link" @click="handleItemClick(1)" />
+			  </view>
+			  <view class="centertext">My Appointments</view>
+			  <view>
+				<view class="rightback">
+				<image src="./noti.png" class="image-link noti" @click="handleItemClick(5)" />
+				</view>
+			  </view>
+		  </view>
+		  <view>
+			  <image src="@/static/Frame.png" class="image-link" />
+		  </view>
+		  <view class="appText">
+		  		You don't have any Appointment 
+		  </view>
+	  </view>
       <view class="appointment-button-container">
         <button class="appointment-button" @click="handleItemClick(2)">Book an Appointment</button>
       </view>
-	  <view v-if="showModal" class="modal-overlay">
-	    <view class="modal">
-	      <view class="modal-header">Confirm Cancellation</view>
-	      <view class="modal-body">
-	        Are you sure you want to cancel this appointment?
-	      </view>
-	      <view class="modal-footer">
-	        <button class="modal-btn cancel" @click="confirmCancel">Yes</button>
-	        <button class="modal-btn close" @click="closeModal">No</button>
-	      </view>
-	    </view>
-	  </view>
+    </view>
+
+    <!-- Modal -->
+    <view v-if="showModal" class="modal-overlay">
+      <view class="modal">
+        <view class="modal-header">Confirm Cancellation</view>
+        <view class="modal-body">
+          Are you sure you want to cancel this appointment?
+        </view>
+        <view class="modal-footer">
+          <button class="modal-btn cancel" @click="confirmCancel">Yes</button>
+          <button class="modal-btn close" @click="closeModal">No</button>
+        </view>
+      </view>
     </view>
   </view>
 </template>
@@ -85,7 +99,8 @@ const doctors = ref([]);
 const pages = ref([]);
 const showModal = ref(false);
 const selectedDoctor = ref({ pageIndex: null, doctorIndex: null });
-
+const hello = ref(false);
+const count = ref(0);
 // API endpoint to fetch doctor data (replace with actual API URL)
 const fetchDoctors = async () => {
   try {
@@ -104,12 +119,16 @@ const fetchDoctors = async () => {
       time: decodeURIComponent(doctor.time || 'No time'),
       status: decodeURIComponent(doctor.status || 'past'),
     }));
+		count.value = doctors.value.length
+		console.log("this is count",count.value)
+	// console.log(hello.value)
     // Recalculate pages for pagination
     const itemsPerPage = 3;
     pages.value = [];
     for (let i = 0; i < doctors.value.length; i += itemsPerPage) {
       pages.value.push(doctors.value.slice(i, i + itemsPerPage));
     }
+	// console.log(pages.value.length)
   } catch (error) {
     console.error("Error fetching doctors data:", error);
   }
@@ -119,6 +138,7 @@ const fetchDoctors = async () => {
 onMounted(() => {
   fetchDoctors();
 });
+
 
 // Handle navigation based on the button type
 const handleItemClick = (type) => {
@@ -231,10 +251,13 @@ const confirmCancel = () => {
 
 	// Remove the doctor and close the modal
 	removeDoctor(pageIndex, doctorIndex);
+	count.value -= 1;
+	console.log("This is count: ", count.value)
 	closeModal();
 
+
 	// Navigate to the notifications page
-	slibrary.$router.go('/pages/telemedicine/notifications');	
+	// slibrary.$router.go('/pages/telemedicine/notifications');	8410
 };
 </script>
 
@@ -394,8 +417,8 @@ const confirmCancel = () => {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        justify-content: flex-start;
-        align-content: flex-start;
+        // justify-content: flex-start;
+        // align-content: flex-start;
         gap: 16px;
         padding: 1.5rem;
         background: linear-gradient(181deg, rgba(35, 42, 49, 1) 0%, rgba(27, 32, 40, 1) 100%);
@@ -560,4 +583,61 @@ h4{
   font-size: 12px;         
   color: rgba(255, 255, 255, 0.6); 
 }
+
+.newStructure {
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column; /* Ensure elements are in a horizontal row */
+  align-items: center; /* Vertically align items */
+  justify-content: space-evenly; /* Distribute space between items */
+  padding: 10px; /* Add some padding for spacing */
+  width: 80%;
+  align-items: center;
+  align-self: center;
+  
+  .topic{
+	  display: flex; /* Use flexbox for layout */
+	  flex-direction: row; /* Ensure elements are in a horizontal row */
+	  align-items: center; /* Vertically align items */
+	  justify-content: space-evenly; /* Distribute space between items */
+	  width: 100%;
+	  align-items: center;
+	  align-self: center;
+  }
+
+  .leftback,
+  .rightback {
+    display: flex; /* Flexbox for aligning the image */
+    align-items: center; /* Vertically center the image */
+  }
+
+  .centertext {
+    flex: 1; /* Take remaining space */
+    text-align: center; /* Center text horizontally */
+    font-size: 0.375rem; /* Adjust font size */
+    color: white; /* Change color if needed */
+  }
+
+  .image-link {
+    width: 80px; /* Adjust size of the image */
+    height: 80px; /* Adjust size of the image */
+    cursor: pointer; /* Add a pointer cursor for clickable images */
+  }
+  
+  .noti{
+	  width: 55px; /* Adjust size of the image */
+	  height: 55px; /* Adjust size of the image */
+	  margin-left: 20px;
+  }
+
+  & + .content-box {
+    margin-top: 20px; /* Add margin to the content below */
+    display: block; /* Ensure content goes to the next line */
+  }
+  .appText{
+	  color: white;
+	  margin-top: 20px;
+	  margin-bottom: 20px;
+  }
+}
+
 </style>
