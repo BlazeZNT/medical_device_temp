@@ -14,7 +14,7 @@
             </view>
             <view>
               <view class="rightback">
-                <image src="./noti.png" class="image-link"></image>
+                <image src="./noti.png" class="image-link" @click="handleItemClick(6)"></image>
               </view>
             </view>
 
@@ -123,6 +123,9 @@ const handleItemClick = (type, doctor = null) => {
         url: "/pages/telemedicine/appointmentList",
       });
       break;
+	case 6:
+	  slibrary.$router.go("/pages/telemedicine/notifications");
+	  break;
     case 5:
       if (doctor) {
         // Construct query parameters
