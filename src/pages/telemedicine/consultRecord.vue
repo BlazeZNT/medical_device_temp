@@ -25,7 +25,7 @@
 				      </div>
 				    </view>
 				
-				    <button class='recordBtn'>VIEW RECORD</button>
+				    <button class='recordBtn' @click="handleClickPrint()">VIEW RECORD</button>
 				  </view>
 				</view>
 				<view class="column">
@@ -114,7 +114,7 @@ const doctorDetails = reactive({
 });
 
 onLoad((options) => {
-  console.log("Routed Data:", options);
+  // console.log("Routed Data:", options);
 
   // Populate the reactive doctorDetails object
   doctorDetails.name = decodeURIComponent(options.name || "Unknown");
@@ -137,6 +137,22 @@ onLoad((options) => {
 const handleClickHome = () => {
   slibrary.$router.go("/pages/telemedicine/consultHistory");
 };
+
+const handleClickPrint = () => {
+	// slibrary.$router.go("/pages/telemedicine/printPage")
+	console.log("sent to print")
+	if (doctorDetails) {
+	// Construct query parameters from the doctorDetails object
+	const queryParams = Object.entries(doctorDetails)
+	  .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+	  .join("&");
+	console.log("done sent",doctorDetails.name)
+	// Navigate to the detail page with serialized doctor details
+	uni.navigateTo({
+	  url: `/pages/telemedicine/printPage?${queryParams}`,
+	});
+	}
+}
 </script>
 
 <style lang="scss" scoped>

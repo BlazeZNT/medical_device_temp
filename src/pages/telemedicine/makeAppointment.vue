@@ -86,6 +86,9 @@ import BasicButton from "@/components/BasicButton/index.vue";
 import CustomCalendar from "@/components/customCalendar/index.vue";
 import { createAppointment, updateAppointment } from "@/utils/auth.ts"; 
 import { ref, reactive, onMounted } from "vue";
+import { useAppStore } from "@/stores/app"; // Import the store
+
+const appStore = useAppStore(); // Access the Pinia store
 
 const transcript = ref('')
 const isRecording = ref(false)
@@ -202,12 +205,19 @@ const currentDocID = ref(0)
 const currentDocImg = ref('')
 const currentDocName = ref('')
 const currentDocSpec = ref('')
+const currentDocDate = ref('')
+const currentDocYear = ref('')
+const currentDocTime = ref('')
 const potato = [];
 onLoad((options) => {
 	currentDocID.value = decodeURIComponent(options.id);  // console.log("Routed Data:", options);
 	currentDocImg.value = decodeURIComponent(options.image);  // console.log("Routed Data:", options);
 	currentDocName.value = decodeURIComponent(options.name);  // console.log("Routed Data:", options);
 	currentDocSpec.value = decodeURIComponent(options.specialization);  // console.log("Routed Data:", options);
+	currentDocDate.value = decodeURIComponent(options.date);  // console.log("Routed Data:", options);
+	currentDocYear.value = decodeURIComponent(options.year);  // console.log("Routed Data:", options);
+	currentDocTime.value = decodeURIComponent(options.time);
+	
   // Check if options exist and have values
     if (options && Object.keys(options).length > 0) {
       // console.log("Routed Data:", options);
@@ -268,6 +278,21 @@ const isLoading = ref(false); // Loading state
 		const response = await updateAppointment(currentDocID.value, request);
 		if(response){
 			console.log(response);
+			
+			 appStore.addNotification({
+				id: currentDocName.id,
+				name: currentDocName.value,
+				olddate: currentDocDate.value,
+				oldtime: currentDocTime.value,
+				olddyear: currentDocYear.value,
+				date: decodeURIComponent(potato.date || 'No date provided'),
+				year: decodeURIComponent(potato.year || 'No year'),
+				time: decodeURIComponent(potato.time || 'No time'),
+				image: decodeURIComponent(currentDocName.image || 'No time'),
+				message: `Appointment with Dr. ${currentDocName.value} has been updated to ${potato[0].date} at ${potato[0].time}.`,
+				source: "update"
+			      });
+				  
 			isLoading.value = false;
 			slibrary.$router.go("/pages/telemedicine/current");
 			
@@ -325,6 +350,8 @@ const handleClickChat = () => {
 		.map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
 		.join("&")}`,
 	});	
+	// slibrary.$router.go("/pages/telemedicine/aiChat");
+	
 }
 
 
@@ -545,5 +572,21 @@ const handleClickChat = () => {
   50% {
     height: 20px;
   }
+}
+
+h4{
+	color: white;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+.notification-message{
+	color: white;
+	font-size: 14px;
+}
+
+.currenttime {
+  font-size: 12px;         
+  color: rgba(255, 255, 255, 0.6); 
 }
 </style>

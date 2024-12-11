@@ -1,5 +1,5 @@
 <template>
-  <LayoutContent showBack @back="handleClickBack">
+  <LayoutContent showBack @back="handleClickBack" >
     <view class="login" v-if="state.setp == 1">
       <view class="login-title">My Appointments</view>
       <view class="login-select-box">

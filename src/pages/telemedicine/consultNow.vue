@@ -14,7 +14,7 @@
             </view>
             <view>
               <view class="rightback">
-                <image src="./noti.png" class="image-link"></image>
+                <image src="./noti.png" class="image-link" @click="handleItemClick(4)"></image>
               </view>
             </view>
 
@@ -117,6 +117,10 @@ const handleItemClick = (type) => {
 	case 3:
 		slibrary.$router.go("/pages/telemedicine/consultNow");
 		break;
+	case 4:
+		slibrary.$router.go("/pages/telemedicine/notifications");
+		break;
+		
   }
 };
 </script>
