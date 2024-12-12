@@ -1,106 +1,99 @@
 <template>
-  <view class="chat-container">
-    <view class="chat-box">
-      <view v-for="(message, index) in chatHistory" :key="index" :class="message.role">
-        <text>{{ message.content }}</text>
-      </view>
-    </view>
-    <view class="input-box">
+  <div class="chatbot-container">
+    <div class="chatbot-messages">
+      <div
+        v-for="message in messages"
+        :key="message.id"
+        :class="message.isUser ? 'user-message' : 'bot-message'"
+      >
+        {{ message.text }}
+      </div>
+    </div>
+    <div class="chatbot-input">
       <input
         v-model="userInput"
-        placeholder="Type your message..."
         @keyup.enter="sendMessage"
+        placeholder="Type your message..."
       />
       <button @click="sendMessage">Send</button>
-    </view>
-  </view>
+    </div>
+  </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      userInput: "",
-      chatHistory: [
-        { role: "assistant", content: "Hello! How can I help you today?" },
-      ],
-      // apiKey: "addkeyhere", // Use a secure method to store your key
-    };
-  },
-  methods: {
-    async sendMessage() {
-      if (!this.userInput.trim()) return;
+<script setup>
+import { ref } from "vue";
 
-      // Add user's message to the chat history
-      this.chatHistory.push({ role: "user", content: this.userInput });
-      const message = this.userInput;
-      this.userInput = "";
+const messages = ref([]);
+const userInput = ref("");
 
-      try {
-        const res = await new Promise((resolve, reject) => {
-          uni.request({
-            url: "https://api.openai.com/v1/chat/completions",
-            method: "POST",
-            header: {
-              Authorization: `Bearer ${this.apiKey}`,
-              "Content-Type": "application/json",
-            },
-            data: {
-              model: "gpt-3.5-turbo",
-              messages: this.chatHistory,
-              max_tokens: 150,
-            },
-            success: (response) => resolve(response),
-            fail: (error) => reject(error),
-          });
-        });
+const sendMessage = async () => {
+  if (userInput.value.trim() === "") return;
 
-        // Debugging: Log the full response
-        console.log("Full response:", res);
+  const userMessage = {
+    id: Date.now(),
+    text: userInput.value,
+    isUser: true,
+  };
+  messages.value.push(userMessage);
+  userInput.value = "";
 
-        // Extract reply
-        const reply =
-          res.data?.choices && res.data.choices.length > 0
-            ? res.data.choices[0].message.content
-            : "No valid response from API.";
+  // Simulate bot response
+  const botResponse = await fetchBotResponse(userMessage.text);
+  messages.value.push({
+    id: Date.now(),
+    text: botResponse,
+    isUser: false,
+  });
+};
 
-        // Add assistant's reply to the chat history
-        this.chatHistory.push({ role: "assistant", content: reply });
-      } catch (error) {
-        console.error("Error response:", error.response?.data || error);
-        this.chatHistory.push({
-          role: "assistant",
-          content: "An error occurred. Please try again later.",
-        });
-      }
-    },
-  },
+const fetchBotResponse = async (userMessage) => {
+  try {
+    const response = await fetch("http://localhost:8080/api/chatbot", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: userMessage }),
+    });
+    const data = await response.json();
+    return data.reply;
+  } catch (error) {
+    console.error("Error fetching bot response:", error);
+    return "Sorry, I couldn't process your request. Please try again.";
+  }
 };
 </script>
 
-<style>
-.chat-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  padding: 10px;
-  background-color: #f5f5f5;
+<style scoped>
+.chatbot-container {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  max-width: 400px;
+  margin: auto;
 }
-.chat-box {
-  flex: 1;
+.chatbot-messages {
+  max-height: 300px;
   overflow-y: auto;
-  margin-bottom: 10px;
+  padding: 10px;
+  background: #f9f9f9;
 }
-.chat-box .user {
+.user-message {
   text-align: right;
-  color: blue;
+  margin: 5px 0;
 }
-.chat-box .assistant {
+.bot-message {
   text-align: left;
-  color: green;
+  margin: 5px 0;
 }
-.input-box {
+.chatbot-input {
   display: flex;
-  gap: 10px;
+  padding: 10px;
+  background: #fff;
+}
+.chatbot-input input {
+  flex: 1;
+  padding: 5px;
+}
+.chatbot-input button {
+  margin-left: 5px;
+  padding: 5px 10px;
 }
 </style>
