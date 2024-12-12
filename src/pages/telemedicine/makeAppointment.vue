@@ -346,7 +346,7 @@ const handleClickSubmit = async () => {
 
 const handleClickChat = () => {
 	uni.navigateTo({
-	  url: `/pages/telemedicine/ChatBot?${Object.entries(potato[0])
+	  url: `/pages/telemedicine/aiChat?${Object.entries(potato[0])
 		.map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
 		.join("&")}`,
 	});	
