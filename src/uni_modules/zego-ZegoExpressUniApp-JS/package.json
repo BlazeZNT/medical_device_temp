@@ -1,7 +1,7 @@
 {
   "id": "zego-ZegoExpressUniApp-JS",
   "displayName": "ZegoExpressEngine 音视频插件（JS）",
-  "version": "3.16.1",
+  "version": "3.17.3",
   "description": "ZegoExpressEngineSDK 音视频插件的JS包装",
   "keywords": [
     "音视频",
@@ -51,8 +51,8 @@
       },
       "client": {
         "Vue": {
-          "vue2": "u",
-          "vue3": "u"
+          "vue2": "y",
+          "vue3": "y"
         },
         "App": {
           "app-vue": "u",

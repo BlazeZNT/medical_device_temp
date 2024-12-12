@@ -1,3 +1,7 @@
+### 3.16.1 及以上版本破坏性改动：
+适配 uni_modules，开发者可以使用 uni_modules 依赖本插件，插件的导入路径发生变更，开发者需要主动进行适配；
+`@/components/zego-ZegoExpressUniApp-JS` -> `@/uni_modules/zego-ZegoExpressUniApp-JS/components/zego-ZegoExpressUniApp-JS`
+
 # ZegoExpressUniAppSDK
 
 即构科技 (ZEGO) 极速音视频 uni-app SDK 是一个基于 [ZegoExpressEngine](https://doc-zh.zego.im/zh/693.html) 原生 Android / iOS SDK 的 uni-app Wrapper，提供视频直播以及实时音视频服务。仅需几行代码，30分钟即可轻松接入。
