@@ -1,5 +1,6 @@
 <template>
   <LayoutContent showBack @back="handleClickBack">
+    <!-- Login Options -->
     <view class="login" v-if="state.setp == 1">
       <view class="login-title">Select Login Option</view>
       <view class="login-select-box">
@@ -8,7 +9,7 @@
             <view class="icon">
               <image src="@/static/login/Vector.png" mode="heightFix"></image>
             </view>
-            <view class="text"> MOBILE<br />NUMBER </view>
+            <view class="text">MOBILE<br />NUMBER</view>
           </BtnCard>
         </view>
         <view class="login-select-box-card" @click="handleClickCard">
@@ -16,10 +17,7 @@
             <view class="icon">
               <image src="@/static/login/Vector1.png" mode="heightFix"></image>
             </view>
-            <view class="text">
-              HEALTH<br />CARD
-              &nbsp;
-            </view>
+            <view class="text">HEALTH<br />CARD</view>
           </BtnCard>
         </view>
         <view class="login-select-box-card" @click="handleClickCard">
@@ -27,14 +25,13 @@
             <view class="icon">
               <image src="@/static/login/Vector3.png" mode="heightFix"></image>
             </view>
-            <view class="text">
-              UNIQUE<br />CODE
-              &nbsp;
-            </view>
+            <view class="text">UNIQUE<br />CODE</view>
           </BtnCard>
         </view>
       </view>
     </view>
+
+    <!-- Phone Number Login -->
     <view class="login" v-else-if="state.setp == 2">
       <view class="login-title">Login with <i>Phone Number</i></view>
       <view class="loginInputBox">
@@ -43,23 +40,36 @@
           <view class="inputBox">
             <view class="qianzhui">+86</view>
             <view class="input">
-              <input type="text" v-model="phoneNumber" /> <!-- Bind phoneNumber to input -->
+              <input type="text" v-model="phoneNumber" />
             </view>
           </view>
         </view>
-        <BasicButton @click="handleClickLogin" :disabled="loading"> 
-          {{ loading ? 'Submitting...' : 'SUBMIT' }} 
+        <BasicButton @click="handleClickLogin" :disabled="loading">
+          {{ loading ? "Submitting..." : "SUBMIT" }}
         </BasicButton>
       </view>
     </view>
+
+    <!-- Pin Verification -->
     <view class="login" v-else-if="state.setp == 3">
       <view class="login-title">Input <i>Pin Verification</i></view>
       <view class="pinBox">
         <CodeInput :digitboxcount="6"></CodeInput>
         <view class="pinBtn">
-          <BasicButton @click="handleClickLoginCreate">
-            CREATE
-          </BasicButton>
+          <BasicButton @click="handleClickLoginCreate">CREATE</BasicButton>
+        </view>
+      </view>
+    </view>
+
+    <!-- Modal for Wrong Credentials -->
+    <view v-if="showModal" class="modal-overlay">
+      <view class="modal">
+        <view class="modal-header">Invalid Login</view>
+        <view class="modal-body">
+          The phone number or credentials entered are incorrect. Please try again.
+        </view>
+        <view class="modal-footer">
+          <button class="modal-btn close" @click="closeModal">Close</button>
         </view>
       </view>
     </view>
@@ -81,6 +91,7 @@ const state = reactive({
 
 const phoneNumber = ref("");  // Use this to bind the phone number input
 const loading = ref(false);   // This will manage the loading state for the API request
+const showModal = ref(false);
 
 const handleClickBack = () => {
   if (state.setp != 1) {
@@ -109,14 +120,19 @@ const handleClickLogin = async () => {
       state.setp = 3;  // Move to next step
     } else {
       console.log("Login failed: No valid data.");
+	  showModal.value = true;
     }
   } catch (error) {
     console.error("Error during login:", error);
+	showModal.value = true;
   } finally {
     loading.value = false;
   }
 };
 
+const closeModal = () => {
+  showModal.value = false; // Close the modal
+};
 
 const handleClickRegister = () => {
   slibrary.$router.go("/pages/login/login");
@@ -228,5 +244,48 @@ const handleClickLoginCreate = () => {
   .uni-input-wrapper {
     height: auto;
   }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+.modal {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+.modal-header {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.modal-body {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+}
+.modal-btn {
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.modal-btn.close {
+  background-color: #f44336;
+  color: #fff;
 }
 </style>
