@@ -1,198 +1,205 @@
 <template>
   <view class="container">
-	  <view class="content">
-		<view class="header">
-			<view class="textBox left">
-				<view class="label">Patient Name</view>
-				<view class="value">Debra Robertson</view>
-			</view>
-			<view class="textBox">
-				<view class="label">Date of Birth</view>
-				<view class="value">10/11/1996</view>
-			</view>
-			<view class="textBox">
-				<view class="label">Gender</view>
-				<view class="value">Female</view>
-			</view>
-			<view class="textBox">
-				<view class="label">Age</view>
-				<view class="value">38</view>
-			</view>
-		</view>
-		<view class="top">
-		  <view class="leftback">
-		    <image src="@/static/back.png" class="image-link" @click="handleItemClick(1)" />
-		  </view>
-		  <view class="page-title">
-		    <text class="title">Post Consultation</text>
-		  </view>
-		</view>
-		<view class="section">
-		  <view class="title-details">
-			<view class="imagebox">
-				<image :src="'data:image/jpeg;base64,' + doctorDetails.image" class="doctor-image" />
-			</view>
-			<div class="doc-details">
-			  <view class="doctor-name">{{ doctorDetails.name }}</view>
-			  <view class="doctor-specialization">{{ doctorDetails.specialization }}</view>
-			</div>      
-		  </view>
-		</view>
-		
-		
-		<view class="section-title">
-			<text>Date & Time Consultation</text>
-		</view>
-		<view class="section">
-		  <view class="details">
-			  <view class="doctor-time">{{ doctorDetails.date }}, {{ doctorDetails.year }} / {{ doctorDetails.time }}</view>
-		  </view>
-		</view>
-		
-		<view class="section-title">
-			<text>Doctor's Diagnosis</text>
-		</view>
-		<view class="section">
-		  <view class="details">
-			<text>The viruses that cause flu spread at high levels during certain times of the year in the Northern and Southern hemispheres. These are called flu seasons. During times when flu is widespread, you may not need a flu test.</text>
-		  </view>
-		</view>
+    <view class="box">
+      <view class="header">
+        <view class="textBox left">
+          <view class="label">Patient Name</view>
+          <view class="value">Debra Robertson</view>
+        </view>
+        <view class="textBox">
+          <view class="label">Date of Birth</view>
+          <view class="value">10/11/1996</view>
+        </view>
+        <view class="textBox">
+          <view class="label">Gender</view>
+          <view class="value">Female</view>
+        </view>
+        <view class="textBox">
+          <view class="label">Age</view>
+          <view class="value">38</view>
+        </view>
+      </view>
+      <view class="top">
+        <view class="leftback">
+          <image src="@/static/back.png" class="image-link" @click="handleBackClick" />
+        </view>
+        <view class="page-title">
+          <text class="title">Post Consultation</text>
+        </view>
+      </view>
+      <view class="section">
+        <view class="title-details">
+          <view class="imagebox">
+            <image :src="`data:image/jpeg;base64,${doctorDetails.image}`" class="doctor-image" />
+          </view>
+          <div class="doc-details">
+            <view class="doctor-name">{{ doctorDetails.name }}</view>
+            <view class="doctor-specialization">{{ doctorDetails.specialization }}</view>
+          </div>
+        </view>
+      </view>
 
-		<view class="section-title">
-			<text>Doctor's Suggestion</text>
+      <view class="section-title">
+        <text>Date & Time Consultation</text>
+      </view>
+      <view class="section">
+        <view class="details">
+          <view class="doctor-time">{{ doctorDetails.date }}, {{ doctorDetails.year }} / {{ doctorDetails.time }}</view>
+        </view>
+      </view>
+
+      <view class="section-title">
+        <text>Doctor's Diagnosis</text>
+      </view>
+      <view class="section">
+        <view class="details">
+          <text>The viruses that cause flu spread at high levels during certain times of the year in the Northern and Southern hemispheres. These are called flu seasons. During times when flu is widespread, you may not need a flu test.</text>
+        </view>
+      </view>
+
+      <view class="section-title">
+        <text>Doctor's Suggestion</text>
+      </view>
+      <view class="section">
+        <view class="details">
+          <text>- Take a rest</text>
+          <text>- Get disciplined with taking medicine on prescription</text>
+        </view>
+      </view>
+
+      <view class="section-title">
+        <text>Prescription</text>
+      </view>
+      <view class="section">
+        <view class="title-details">
+          <view class="imagebox">
+            <image src="@/static/medi1.png" class="medicine-image" />
+          </view>
+          <div class="doc-details">
+            <view class="doctor-name">Antacids</view>
+            <view class="doctor-specialization">1 morning, 1 night (before food)</view>
+          </div>
+        </view>
+      </view>
+      <view class="section">
+        <view class="title-details">
+          <view class="imagebox">
+            <image src="@/static/medi2.png" class="medicine-image" />
+          </view>
+          <div class="doc-details">
+            <view class="doctor-name">Simetichone</view>
+            <view class="doctor-specialization">1 morning, 1 night (before food)</view>
+          </div>
+        </view>
+      </view>
+	  <HealthDashboard :healthItems="healthData" />
+    </view>
+	<!-- Floating button -->
+	<div class="floating-button">+</div>
+    <button class="floating-button" @click="openModal">
+      <image src="@/static/print.png" class="button-icon" />
+    </button>
+	<view v-if="showModal" class="modal-overlay">
+	  <view class="modal">
+		<view class="modal-header">Print Confirmation</view>
+		<view class="modal-body">
+		  Are you sure you want to print this page?
 		</view>
-		<view class="section">
-		  <view class="details">
-			<text>- Take a rest</text>
-			<text>- Get disciplined with taking medicine on prescription</text>
-		  </view>
-		</view>
-		
-		<view class="section-title">
-			<text>Prescription</text>
-		</view>
-		<view class="section">
-		  <view class="title-details">
-			<view class="imagebox">
-				<image src="@/static/medi1.png" class="medicine-image"></image>
-			</view>
-			<div class="doc-details">
-			  <view class="doctor-name">Antacids</view>
-			  <view class="doctor-specialization">1 morning, 1 night (before food)</view>
-			</div>      
-		  </view>
-		</view>
-		<view class="section">
-		  <view class="title-details">
-			<view class="imagebox">
-				<image src="@/static/medi2.png" class="medicine-image"></image>
-			</view>
-			<div class="doc-details">
-			  <view class="doctor-name">Simetichone</view>
-			  <view class="doctor-specialization">1 morning, 1 night (before food)</view>
-			</div>      
-		  </view>
+		<view class="modal-footer">
+		  <button class="modal-btn cancel" @click="confirmPrint">Yes</button>
+		  <button class="modal-btn close" @click="closeModal">No</button>
 		</view>
 	  </view>
-	  <button class="floating-button">
-	    <image src="@/static/print.png" class="button-icon" />
-	  </button>
+	</view>
   </view>
 </template>
 
-<script>
-import { reactive } from "vue";
-import slibrary from "@/slibrary/index.js";
+<script setup>
+import { reactive, ref } from "vue";
+import HealthDashboard from "@/components/HealthDashboard/index.vue"; // Import the component
 
-export default {
-  name: "PostConsultationPage",
-  
-  data() {
-    return {
-      doctorDetails: reactive({
-        name: "",
-        specialization: "",
-        date: "",
-        time: "",
-        year: "",
-        image: "",
-        diagnosis: "",
-        suggestions: "",
-        prescriptions: "",
-      }),
-    };
-  },
+const doctorDetails = reactive({
+  name: "",
+  specialization: "",
+  date: "",
+  time: "",
+  year: "",
+  image: "",
+});
 
-  methods: {
-    handleItemClick(type) {
-      switch (type) {
-        case 1:
-          slibrary.$router.go("/pages/telemedicine/consultHistory");
-          break;
-        default:
-          console.warn("Unhandled item click type:", type);
-      }
-    },
-  },
+const healthData = [
+  { id: 1, icon: "/static/view.png", title: "RIGHT | LEFT EYE", value: "6/36 | 6/36", status: "below-standard", statusText: "Below Standard" },
+  { id: 2, icon: "/static/blood.png", title: "BLOOD PRESSURE", value: "133/82 mmHg", status: "normal", statusText: "Normal" },
+  { id: 3, icon: "/static/knee.png", title: "BONE MASS", value: "2.84 kg", status: "normal", statusText: "Normal" },
+  { id: 4, icon: "/static/heart.png", title: "HEART RATE", value: "99 bpm", status: "normal", statusText: "Normal" },
+  { id: 5, icon: "/static/cholesterol.png", title: "CHOLESTEROL", value: "2.84 kg", status: "normal", statusText: "Normal" },
+  { id: 6, icon: "/static/blood.png", title: "HEMOGLOBIN", value: "99 bpm", status: "normal", statusText: "Normal" },
+];
 
-  onLoad(options) {
-    console.log("Routed Data:", options);
+// Modal logic
+const showModal = ref(false);
 
-    // Populate the reactive doctorDetails object
-    this.doctorDetails.name = decodeURIComponent(options.name || "Unknown");
-    this.doctorDetails.specialization = decodeURIComponent(
-      options.specialization || "Unknown"
-    );
-    this.doctorDetails.date = decodeURIComponent(options.date || "No date provided");
-    this.doctorDetails.time = decodeURIComponent(options.time || "No time");
-    this.doctorDetails.year = decodeURIComponent(options.year || "2024");
-    this.doctorDetails.image = decodeURIComponent(
-      options.image || "/static/doctordemo.png"
-    );
-    this.doctorDetails.diagnosis = decodeURIComponent(
-      options.diagnosis ||
-        "Influenza (Flu) The viruses that cause flu spread at high levels during certain times of the year in the Northern and Southern hemispheres. These are called flu seasons. During times when flu is widespread, you may not need a flu test."
-    );
-    this.doctorDetails.suggestions = decodeURIComponent(
-      options.suggestions ||
-        "Take a rest. Get disciplined with taking medicine on prescription."
-    );
-    this.doctorDetails.prescriptions = decodeURIComponent(
-      options.prescriptions || "no prescriptions"
-    );
-  },
+const openModal = () => {
+  showModal.value = true;
 };
 
+const closeModal = () => {
+  showModal.value = false;
+};
+
+const confirmPrint = () => {
+  showModal.value = false; // Hide the modal
+  setTimeout(() => {
+    window.print(); // Trigger the print dialog
+  }, 100); // Small delay to ensure modal is hidden before printing
+};
+
+const handleBackClick = () => {
+  uni.navigateTo({
+    url: "/pages/telemedicine/consultHistory",
+  });
+};
+
+onLoad((options) => {
+  console.log("Routed Data:", options);
+
+  // Populate the reactive doctorDetails object
+  doctorDetails.name = decodeURIComponent(options.name || "Unknown");
+  doctorDetails.specialization = decodeURIComponent(options.specialization || "Unknown");
+  doctorDetails.date = decodeURIComponent(options.date || "No date provided");
+  doctorDetails.time = decodeURIComponent(options.time || "No time");
+  doctorDetails.year = decodeURIComponent(options.year || "2024");
+  doctorDetails.image = decodeURIComponent(options.image || "/static/doctordemo.png");
+});
 </script>
 
 <style>
 .container {
-  display: flex; /* Enable flexbox for centering */
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  min-height: 100vh; /* Full viewport height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
   background-color: #f9f9f9;
   font-family: Arial, sans-serif;
 }
 
-.content {
-  width: 60%; /* Set content width to 80% */
-  max-width: 800px; /* Optional: limit the maximum width */
-  background-color: #fff; /* Ensure it stands out from the container */
-  padding: 20px; /* Add some padding for spacing */
-  border: 1px solid #ccc; /* Border for visual separation */
-  border-radius: 10px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+.box {
+  width: 60%;
+  max-width: 800px;
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 .header {
   height: 65px;
-  width: 100%;
-  flex-shrink: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 50px;
-  border-bottom: 2px solid #ccc; /* Add a bottom border */
+  border-bottom: 2px solid #ccc;
   margin-bottom: 40px;
 }
 
@@ -202,11 +209,11 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 0 10px;
-  border-right: 3px dotted #ccc; /* Add a dotted line */
+  border-right: 3px dotted #ccc;
 }
 
 .textBox:last-child {
-  border-right: none; /* Remove border from the last item */
+  border-right: none;
 }
 
 .label {
@@ -219,6 +226,7 @@ export default {
   font-weight: bold;
   color: #333;
 }
+
 .title {
   font-size: 26px;
   font-weight: bold;
@@ -226,10 +234,12 @@ export default {
   text-align: center;
   margin-right: 50px;
 }
-.page-title{
-	text-align: center;
-	margin-bottom: 12px;
+
+.page-title {
+  text-align: center;
+  margin-bottom: 12px;
 }
+
 .section {
   margin-bottom: 16px;
   padding: 16px;
@@ -238,90 +248,94 @@ export default {
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
+
 .section-title {
-  font-size: 17px;
+  font-size: 13px;
   font-weight: bold;
   margin-bottom: 12px;
   color: #444;
   padding-bottom: 4px;
 }
+
 .details text {
   display: block;
   margin-bottom: 8px;
   font-size: 14px;
   color: #555;
 }
+
 .details {
   padding-left: 12px;
 }
 
 .floating-button {
-  position: fixed; /* Keeps the button fixed in place */
-  bottom: 20px; /* Distance from the bottom of the viewport */
-  right: 20px; /* Distance from the right of the viewport */
-  width: 60px; /* Width of the button */
-  height: 60px; /* Height of the button */
-  border-radius: 50%; /* Makes the button circular */
-  background-color: #007bff; /* Fallback background color */
-  display: flex; /* Center content */
-  justify-content: center; /* Center content */
-  align-items: center; /* Center content */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow */
-  border: none; /* Remove border */
-  cursor: pointer; /* Pointer cursor on hover */
-  z-index: 1000; /* Ensure it's above other elements */
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #007bff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: none;
+  cursor: pointer;
+  z-index: 1000;
 }
 
 .button-icon {
-  width: 100%; /* Adjust the image size relative to the button */
+  width: 100%;
   height: 50%;
-  object-fit: contain; /* Ensure the image scales correctly */
+  object-fit: contain;
 }
 
 .title-details {
   display: flex;
-  /* justify-content: space-between; */
-  align-items: center; /* Vertically align the image and text */
-  width: 50%; /* Set the container width */
-  gap: 20px; /* Add a consistent gap between elements */
+  align-items: center;
+  width: 50%;
+  gap: 20px;
 }
 
 .imagebox {
-  flex-shrink: 0; /* Prevent the image from shrinking */
+  flex-shrink: 0;
 }
 
 .doctor-image {
-  width: 80px; /* Set the image swidth */
-  height: 80px; /* Set the image height */
-  object-fit: cover; /* Ensure the image covers the box without distortion */
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
 }
 
 .doc-details {
   display: flex;
-  flex-direction: column; /* Stack name and specialization vertically */
+  flex-direction: column;
 }
 
 .doctor-name {
-  font-size: 16px; /* Adjust font size */
-  font-weight: bold; /* Make the name bold */
-  color: #333; /* Text color */
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
 }
 
 .doctor-specialization {
-  font-size: 14px; /* Adjust font size */
-  color: #666; /* Text color */
+  font-size: 14px;
+  color: #666;
 }
 
 .doctor-time {
-  font-size: 16px; /* Adjust the font size */
-  font-weight: normal; /* Set font weight */
-  color: #555; /* Adjust text color */
-  margin-top: 5px; /* Optional: Add some spacing above */
+  font-size: 16px;
+  font-weight: normal;
+  color: #555;
+  margin-top: 5px;
 }
-.medicine-image{
-	width: 50px; /* Set the image swidth */
-	height: 50px; /* Set the image height */
-	object-fit: cover; /* Ensure the image covers the box without distortion */
+
+.medicine-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+
 }
 
 .top {
@@ -347,5 +361,86 @@ export default {
   font-weight: bold; /* Make the title bold */
   color: #333; /* Title color */
   text-align: left; /* Align the title to the left */
+}
+
+.floating-button {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #007bff;
+  color: white;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  width: 400px;
+  background: linear-gradient(145deg, #1b262b, #29353d);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  color: white;
+}
+
+.modal-header {
+  font-size: 18px;
+  font-weight: bold;
+  padding: 16px;
+  border-bottom: 1px solid #ddd;
+  color: #58ffcf;
+}
+
+.modal-body {
+  padding: 16px;
+  font-size: 16px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-around;
+  padding: 16px;
+}
+
+.modal-btn {
+  padding: 0px 18px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-btn.cancel {
+  background-color: red;
+  color: white;
+}
+
+.modal-btn.close {
+  background-color: gray;
+  color: white;
+}
+
+.modal-btn:hover {
+  opacity: 0.9;
 }
 </style>
