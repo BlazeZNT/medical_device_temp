@@ -186,7 +186,7 @@ onMounted(async () => {
   let userName = options.userName || 'Debra Robertson';
 
   uni.request({
-    url: "http://192.168.1.190:8080/api/loginByVideo?userId=" + userId,
+    url: "http://192.168.1.105:8080/api/loginByVideo?userId=" + userId,
     success: async (res) => {
       console.log(res);
       token.value = res.data

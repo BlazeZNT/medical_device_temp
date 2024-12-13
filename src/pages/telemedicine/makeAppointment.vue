@@ -18,14 +18,14 @@
           </view>
           <view v-else class="column">
             <uni-forms-item label="Tell your health complaints" name="healthComplaints">
-              <div class="textarea-container">
-                <div class="textarea-content" contenteditable="true" @input="handleTextChange">{{ transcript }}</div>
+             <div class="textarea-container">
+                <!-- <div class="textarea-content" contenteditable="true" @input="handleTextChange">{{ transcript }}</div>
                 <button class="record-button" @click="ToggleMic">Record</button>
                   <div v-if="isRecording" class="sound-wave">
                     <span class="wave"></span>
                     <span class="wave"></span>
                     <span class="wave"></span>
-                  </div>
+                  </div> -->
               </div>
             </uni-forms-item>
           </view>
@@ -93,64 +93,64 @@ const appStore = useAppStore(); // Access the Pinia store
 const transcript = ref('')
 const isRecording = ref(false)
 
-const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition
-const sr = new Recognition()
+// const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition
+// const sr = new Recognition()
 
 const times = ["08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00", "21:00", "22:00", "22:30", "23:00", "23:30"]; 
 const clickedButton = ref(null);
 
 
-onMounted(() => {
-	sr.continuous = true
-	sr.interimResults = true
+// onMounted(() => {
+// 	sr.continuous = true
+// 	sr.interimResults = true
 
-	sr.onstart = () => {
-		console.log('SR Started')
-		isRecording.value = true
-	}
+// 	sr.onstart = () => {
+// 		console.log('SR Started')
+// 		isRecording.value = true
+// 	}
 
-	sr.onend = () => {
-		console.log('SR Stopped')
-		isRecording.value = false
-	}
+// 	sr.onend = () => {
+// 		console.log('SR Stopped')
+// 		isRecording.value = false
+// 	}
 
-	sr.onresult = (evt) => {
-		for (let i = 0; i < evt.results.length; i++) {
-			const result = evt.results[i]
+// 	sr.onresult = (evt) => {
+// 		for (let i = 0; i < evt.results.length; i++) {
+// 			const result = evt.results[i]
 
-			if (result.isFinal) CheckForCommand(result)
-		}
+// 			if (result.isFinal) CheckForCommand(result)
+// 		}
 
-		const t = Array.from(evt.results)
-			.map(result => result[0])
-			.map(result => result.transcript)
-			.join('')
+// 		const t = Array.from(evt.results)
+// 			.map(result => result[0])
+// 			.map(result => result.transcript)
+// 			.join('')
 		
-		transcript.value = t
-	}
-})
+// 		transcript.value = t
+// 	}
+// })
 
-const CheckForCommand = (result) => {
-	const t = result[0].transcript;
-	if (t.includes('stop recording')) {
-		sr.stop()
-	} else if (
-		t.includes('what is the time') ||
-		t.includes('what\'s the time')
-	) {
-		sr.stop()
-		alert(new Date().toLocaleTimeString())
-		setTimeout(() => sr.start(), 100)
-	}
-}
+// const CheckForCommand = (result) => {
+// 	const t = result[0].transcript;
+// 	if (t.includes('stop recording')) {
+// 		sr.stop()
+// 	} else if (
+// 		t.includes('what is the time') ||
+// 		t.includes('what\'s the time')
+// 	) {
+// 		sr.stop()
+// 		alert(new Date().toLocaleTimeString())
+// 		setTimeout(() => sr.start(), 100)
+// 	}
+// }
 
-const ToggleMic = () => {
-	if (isRecording.value) {
-		sr.stop()
-	} else {
-		sr.start()
-	}
-}
+// const ToggleMic = () => {
+// 	if (isRecording.value) {
+// 		sr.stop()
+// 	} else {
+// 		sr.start()
+// 	}
+// }
 
 // const ToggleMic = () => {
 //   if (isRecording.value) {

@@ -66,10 +66,10 @@ const handleClickBack = () => {
 const handleClickCard = (type) => {
   switch (type) {
     case 1:
-      slibrary.$router.go("/pages/telemedicine/videocall");
+      slibrary.$router.go("/pages/telemedicine/consultNow");
       break;
     case 2:
-      slibrary.$router.go("/pages/telemedicine/doctorvideocall");
+      slibrary.$router.go("/pages/telemedicine/current");
       break;
 	case 3:
 		slibrary.$router.go("/pages/telemedicine/consultHistory");
