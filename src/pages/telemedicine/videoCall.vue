@@ -48,11 +48,15 @@
               :muted="playVideoMuted"
           ></video>
           <!-- #endif -->
+		  <view class="appointment-button-container" >
+		    <button v-if = "startVid" class="appointment-button videoEndBtn" @click="call()"><img src="@/static/video.png" alt="Back Icon" class="icon" /></button>
+			<button v-else class="appointment-button videoStartBtn" @click="call()"><img src="@/static/no-video.png" alt="Back Icon" class="icon" /></button>
+			<button class="appointment-button endCall" ><img src="@/static/telephone.png" alt="Back Icon" class="icon2" /></button>
+		  </view>
         </view>
+		
       </view>
-	  <view class="appointment-button-container" >
-	    <button class="appointment-button" @click="call()">Call the doctor</button>
-	  </view>
+	  
     </view>
 	</view>
   </view>
@@ -143,9 +147,17 @@ watch(
   { deep: true }
 );
 
+const startVid = ref(false); 
+
 const call = () => {
   onClickPublish()
   // onClickPlay()
+  
+  if (startVid.value === false) {
+    startVid.value = true;
+  } else {
+    startVid.value = false;
+  }
 }
 
 const addListeners = () => {
@@ -266,14 +278,15 @@ const handleItemClick = (type) => {
 	  flex-direction: column;
       width: 100%;
       height: 100%;
+	  
 
       .self {
         position: absolute;
-        bottom: 20px;
-        right: 20px;
-        width: 200px;
-        height: 200px;
-        z-index: 999;
+		right: 226px;
+		width: 200px;
+		height: 200px;
+		z-index: 999;
+		top: 70;
       }
 	  .consultation-details {
 	          margin-top: 20px;
@@ -281,25 +294,64 @@ const handleItemClick = (type) => {
 	          color: #ffffff;
 		}
     }
-	.appointment-button-container{
-		width: 80%;
-		margin-top: 12px;
-		align-self: center;
+	.appointment-button-container {
+		display: flex;
+		justify-content: space-around;
+		width: 100%;
+		margin-top: 15px;
+		margin-bottom: 15px;
+		align-items: center;
 		text-align: center;
-		button{
-			width: 70%
+	
+		button {
+			width: auto; // Adjust width to fit content or customize as needed
+			margin: 0; // Remove margins to ensure even spacing
 		}
+	}
+	
+	.videoStartBtn {
+	  display: flex;
+	  align-items: center; /* Align image and text */
+	  gap: 8px; /* Space between the image and text */
+	  background-color: red;
+	}
+	
+	.videoEndBtn{
+		display: flex;
+		align-items: center; /* Align image and text */
+		gap: 8px; /* Space between the image and text */
+		background-color: royalblue;
+	}
+	
+	.endCall{
+		display: flex;
+		align-items: center; /* Align image and text */
+		gap: 8px; /* Space between the image and text */
+		background-color: royalblue;
+		padding-top: 2.5px;
+		padding-bottom: 2.5px;
+		border-radius: 100px;
+		background-color: red;
+	}
+	
+	.icon {
+	  width: 40px; /* Adjust the size of the image */
+	  height: 40px;
+	}
+	.icon2 {
+	  width: 35px; /* Adjust the size of the image */
+	  height: 35px;
 	}
 
     .content-border-box {
       width: 80%;
       align-self: center;
-      height: 100%;
+      height: 550px;
       margin-top: 0.2rem;
       overflow: hidden;
       background: linear-gradient(238deg, rgba(88, 255, 207, 1), rgba(27, 48, 42, 1));
       border-radius: 24px;
-      padding: 20px;
+      // padding: 20px;
 
       .leftback,
       .rightback {
@@ -320,4 +372,6 @@ const handleItemClick = (type) => {
     }
   }
 }
+
+
 </style>
