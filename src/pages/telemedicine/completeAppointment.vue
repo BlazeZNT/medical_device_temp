@@ -48,6 +48,9 @@
 	import Header from "@/components/Layout/Header.vue";
 	import slibrary from "@/slibrary/index.js";
 	import BasicButton from "@/components/BasicButton/index.vue";
+	import { useAppStore } from "@/stores/app"; // Import the Pinia store
+	
+	const appStore = useAppStore(); // Access the store
 
 	// Example data (to be replaced with API calls)
 	const doctors = ref([]);
@@ -82,6 +85,20 @@
 	  if (doctors.value.length > 0) {
 	    const doctor = doctors.value[0];
 		// console.log("Testing : " ,doctor.name,doctor.specialization,doctor.date,doctor.time)
+		
+		    // Add notification to the Pinia store
+		appStore.addNotification({
+			id: doctor.id,
+			name: doctor.name,
+			date: decodeURIComponent(doctor.date || 'No date provided'),
+			year: decodeURIComponent(doctor.year || 'No year'),
+			time: decodeURIComponent(doctor.time || 'No time'),
+			image: decodeURIComponent(doctor.image || 'No time'),
+			message: `Appointment with Dr. ${doctor.name} is confirmed for ${doctor.date} at ${doctor.time}.`,
+			source: "complete",
+		});
+			
+			
 	    uni.navigateTo({
 	      url: `/pages/telemedicine/current?name=${encodeURIComponent(doctor.name)}&specialization=${encodeURIComponent(doctor.specialization)}&date=${encodeURIComponent(doctor.date)}&time=${encodeURIComponent(doctor.time)}&year=${encodeURIComponent(doctor.year)}&image=${encodeURIComponent(doctor.image)}`,
 	    });
@@ -275,6 +292,21 @@
       }
     }
   }
+}
+h4{
+	color: white;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+.notification-message{
+	color: white;
+	font-size: 14px;
+}
+
+.currenttime {
+  font-size: 12px;         
+  color: rgba(255, 255, 255, 0.6); 
 }
 </style>
 

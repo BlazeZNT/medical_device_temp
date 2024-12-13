@@ -18,7 +18,15 @@
           </view>
           <view v-else class="column">
             <uni-forms-item label="Tell your health complaints" name="healthComplaints">
-              <uni-easyinput type="textarea" v-model="state.userInfo.name" placeholder="Name" />
+              <div class="textarea-container">
+                <div class="textarea-content" contenteditable="true" @input="handleTextChange">{{ transcript }}</div>
+                <button class="record-button" @click="ToggleMic">Record</button>
+                  <div v-if="isRecording" class="sound-wave">
+                    <span class="wave"></span>
+                    <span class="wave"></span>
+                    <span class="wave"></span>
+                  </div>
+              </div>
             </uni-forms-item>
           </view>
           <view class="column">
@@ -77,11 +85,84 @@ import slibrary from "@/slibrary/index.js";
 import BasicButton from "@/components/BasicButton/index.vue";
 import CustomCalendar from "@/components/customCalendar/index.vue";
 import { createAppointment, updateAppointment } from "@/utils/auth.ts"; 
+import { ref, reactive, onMounted } from "vue";
+import { useAppStore } from "@/stores/app"; // Import the store
 
-import { ref, reactive } from "vue";
+const appStore = useAppStore(); // Access the Pinia store
+
+const transcript = ref('')
+const isRecording = ref(false)
+
+const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition
+const sr = new Recognition()
 
 const times = ["08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00", "21:00", "22:00", "22:30", "23:00", "23:30"]; 
 const clickedButton = ref(null);
+
+
+onMounted(() => {
+	sr.continuous = true
+	sr.interimResults = true
+
+	sr.onstart = () => {
+		console.log('SR Started')
+		isRecording.value = true
+	}
+
+	sr.onend = () => {
+		console.log('SR Stopped')
+		isRecording.value = false
+	}
+
+	sr.onresult = (evt) => {
+		for (let i = 0; i < evt.results.length; i++) {
+			const result = evt.results[i]
+
+			if (result.isFinal) CheckForCommand(result)
+		}
+
+		const t = Array.from(evt.results)
+			.map(result => result[0])
+			.map(result => result.transcript)
+			.join('')
+		
+		transcript.value = t
+	}
+})
+
+const CheckForCommand = (result) => {
+	const t = result[0].transcript;
+	if (t.includes('stop recording')) {
+		sr.stop()
+	} else if (
+		t.includes('what is the time') ||
+		t.includes('what\'s the time')
+	) {
+		sr.stop()
+		alert(new Date().toLocaleTimeString())
+		setTimeout(() => sr.start(), 100)
+	}
+}
+
+const ToggleMic = () => {
+	if (isRecording.value) {
+		sr.stop()
+	} else {
+		sr.start()
+	}
+}
+
+// const ToggleMic = () => {
+//   if (isRecording.value) {
+//     sr.stop();
+//   } else {
+//     sr.start();
+//   }
+// };
+
+const handleTextChange = (event) => {
+  transcript.value = event.target.innerText;
+};
 
 const handleClick = (index, time) => {
   clickedButton.value = index;
@@ -124,12 +205,19 @@ const currentDocID = ref(0)
 const currentDocImg = ref('')
 const currentDocName = ref('')
 const currentDocSpec = ref('')
+const currentDocDate = ref('')
+const currentDocYear = ref('')
+const currentDocTime = ref('')
 const potato = [];
 onLoad((options) => {
 	currentDocID.value = decodeURIComponent(options.id);  // console.log("Routed Data:", options);
 	currentDocImg.value = decodeURIComponent(options.image);  // console.log("Routed Data:", options);
 	currentDocName.value = decodeURIComponent(options.name);  // console.log("Routed Data:", options);
 	currentDocSpec.value = decodeURIComponent(options.specialization);  // console.log("Routed Data:", options);
+	currentDocDate.value = decodeURIComponent(options.date);  // console.log("Routed Data:", options);
+	currentDocYear.value = decodeURIComponent(options.year);  // console.log("Routed Data:", options);
+	currentDocTime.value = decodeURIComponent(options.time);
+	
   // Check if options exist and have values
     if (options && Object.keys(options).length > 0) {
       // console.log("Routed Data:", options);
@@ -190,6 +278,21 @@ const isLoading = ref(false); // Loading state
 		const response = await updateAppointment(currentDocID.value, request);
 		if(response){
 			console.log(response);
+			
+			 appStore.addNotification({
+				id: currentDocName.id,
+				name: currentDocName.value,
+				olddate: currentDocDate.value,
+				oldtime: currentDocTime.value,
+				olddyear: currentDocYear.value,
+				date: decodeURIComponent(potato.date || 'No date provided'),
+				year: decodeURIComponent(potato.year || 'No year'),
+				time: decodeURIComponent(potato.time || 'No time'),
+				image: decodeURIComponent(currentDocName.image || 'No time'),
+				message: `Appointment with Dr. ${currentDocName.value} has been updated to ${potato[0].date} at ${potato[0].time}.`,
+				source: "update"
+			      });
+				  
 			isLoading.value = false;
 			slibrary.$router.go("/pages/telemedicine/current");
 			
@@ -247,7 +350,10 @@ const handleClickChat = () => {
 		.map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
 		.join("&")}`,
 	});	
+	// slibrary.$router.go("/pages/telemedicine/aiChat");
+	
 }
+
 
 </script>
 
@@ -396,4 +502,91 @@ const handleClickChat = () => {
 	margin-left: 20px;
 }
 
+.textarea-container {
+  display: flex;
+  position: relative; /* Set relative positioning for the parent */
+  border: 1px solid #d8d8d8;
+  border-radius: 5px;
+  padding: 8px;
+  background-color: #29353d;
+  color: white;
+  min-height: 100px;
+  width: 100%;
+}
+
+.textarea-content {
+  flex: 1;
+  outline: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+  color: white;
+  overflow-y: auto;
+  max-height: 150px;
+}
+
+.record-button {
+  position: absolute; /* Position the button absolutely within the container */
+  bottom: 8px; /* Align to the bottom of the container */
+  right: 8px; /* Align to the right side of the container */
+  background-color: #58ffcf;
+  color: black;
+  border: none;
+  border-radius: 3px; /* Slightly smaller border radius */
+  padding: 3px 6px; /* Reduce padding to make the button smaller */
+  font-size: 12px; /* Smaller font size */
+  cursor: pointer;
+}
+
+.sound-wave {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.wave {
+  width: 4px;
+  height: 10px;
+  background-color: #58ffcf;
+  border-radius: 2px;
+  animation: wave-animation 1s infinite ease-in-out;
+}
+
+.wave:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.wave:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes wave-animation {
+  0%, 100% {
+    height: 10px;
+  }
+  50% {
+    height: 20px;
+  }
+}
+
+h4{
+	color: white;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+.notification-message{
+	color: white;
+	font-size: 14px;
+}
+
+.currenttime {
+  font-size: 12px;         
+  color: rgba(255, 255, 255, 0.6); 
+}
 </style>
