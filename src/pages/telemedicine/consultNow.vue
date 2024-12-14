@@ -109,7 +109,7 @@ onMounted(() => {
 const handleItemClick = (type) => {
   switch (type) {
     case 1:
-      slibrary.$router.go("/pages/telemedicine/videoCall");
+      slibrary.$router.go("/pages/telemedicine/videocall");
       break;
 	case 2:
 	  slibrary.$router.go("/pages/telemedicine/choicePage");

@@ -1,168 +1,96 @@
 <template>
   <LayoutContent>
-    <view class="pageView">
-      <!-- <view class="pageView-title">Past Consultation</view> -->
-      <view class="form">
-        <uni-forms label-position="top" label-width="120rpx" :border="false" :modelValue="state.userInfo">
-			<view class="content-border-box">
-			  <view class="contentBox">
-				<view class="column">
-				  <view class="doctor-card">
-				    <div class="leftItems">
-				      <image :src="'data:image/jpeg;base64,' + doctorDetails.image" class="doctor-image" />
-				      <view class="doctor-info">
-				        <div class="doc-details">
-				          <view class="doctor-name">{{ doctorDetails.name }}</view>
-				          <view class="doctor-specialization">{{ doctorDetails.specialization }}</view>
-				        </div>       
-				      </view>
-				    </div>
-				    <button class='recordBtn' @click = "handleClickHome()">FINISH</button>
-				  </view>
-				 <view class="divider"></view>
-				</view>
-				<view class="chatContainer" ref="chatContainer">
-					<view
-					  v-for="(message, index) in chatMessages.slice(0,2)"
-					  :key="index"
-					  class="chat-bubble"
-					>	
-					  {{ message }}
-					</view>
-					<view class="column">
-					  <view class="action-button" @click = "runReschedule()">
-						  <image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
-						  <text class="button-text">Reschedule My Appointment</text>
-						</view>
-					</view>
-					<view class="column">
-					  <view class="action-button">
-						  <image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
-						  <text class="button-text">View Doctor's Schedule</text>
-						</view>
-					</view>
-					<view v-if="rescheduleClick"
-					  v-for="(message, index) in chatMessages.slice(2,3)"
-					  :key="index"
-					  class="chat-bubble reply-bubble"
-					>	
-					  {{ message }}
-					</view>
-					
-					<view v-if="rescheduleClick"
-					  v-for="(message, index) in chatMessages.slice(3,5)"
-					  :key="index"
-					  class="chat-bubble"
-					>
-					  {{ message }}
-					</view>
-					
-					<view class="column" v-if="rescheduleClick" @click = "showDateFun()">
-					  <view class="action-button">
-						  <image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
-						  <text class="button-text">View Doctor's Schedule</text>
-						</view>
-					</view>
-					
-					<view class="column" v-if="showDates" @click = "selectDate()">
-					  <view class="action-button">
-						  <image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
-						  <text class="button-text">Dec 7</text>
-						</view>
-						<view class="action-button dec8">
-						  <image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
-						  <text class="button-text">Dec 8</text>
-						</view>
-					</view>
-					
-					<view v-if="hoho"
-					  v-for="(message, index) in chatMessages.slice(5,6)"
-					  :key="index"
-					  class="chat-bubble reply-bubble"
-					>
-					  {{ message }}
-					</view>
-					
-					<view v-if="hoho"
-					  v-for="(message, index) in chatMessages.slice(6,7)"
-					  :key="index"
-					  class="chat-bubble"
-					>
-					  {{ message }}
-					</view>
-					
-					<view class="column" v-if="hoho" @click = "timu()">
-					  <view class="action-button">
-						  <image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
-						  <text class="button-text">11 Am</text>
-						</view>
-						<view class="action-button dec8">
-						  <image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
-						  <text class="button-text"> 1 PM</text>
-						</view>
-						<view class="action-button dec8">
-						  <image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
-						  <text class="button-text">5 PM</text>
-						</view>
-					</view>
-					
-					<view v-if="completo"
-					  v-for="(message, index) in chatMessages.slice(7,8)"
-					  :key="index"
-					  class="chat-bubble reply-bubble"
-					>
-					  {{ message }}
-					</view>
-					
-					<view v-if="completo"
-					  v-for="(message, index) in chatMessages.slice(8,9)"
-					  :key="index"
-					  class="chat-bubble"
-					>
-					  {{ message }}
-					</view>
-					
-					<view class="column" v-if="completo" @click = "choic()">
-						<view class="action-button dec8">
-						  <image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
-						  <text class="button-text"> YES </text>
-						</view>
-						<view class="action-button dec8">
-						  <image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
-						  <text class="button-text"> NO </text>
-						</view>
-					</view>
-					
-					<view v-if="fullchoice"
-					  v-for="(message, index) in chatMessages.slice(9,10)"
-					  :key="index"
-					  class="chat-bubble reply-bubble"
-					>
-					  {{ message }}
-					</view>
-					
-					<view v-if="fullchoice"
-					  v-for="(message, index) in chatMessages.slice(10,11)"
-					  :key="index"
-					  class="chat-bubble"
-					>
-					  {{ message }}
-					</view>
-					
-					
-				</view>
-				<view class="divider"></view>
-					<view class="speech-button">	
-					    <image class="icon" src="@/static/mic.png" alt="Microphone Icon" />
-					    <text class="button-text">SPEECH TO CHAT</text>
-					 </view>
+	  <view class="messageBox">
+		<view class="column">
+		  <view class="doctor-card">
+			<div class="leftItems">
+			  <image :src="'data:image/jpeg;base64,' + doctorDetails.image" class="doctor-image" />
+			  <view class="doctor-info">
+				<div class="doc-details">
+				  <view class="doctor-name">{{ doctorDetails.name }}</view>
+				  <view class="doctor-specialization">{{ doctorDetails.specialization }}</view>
+				</div>       
 			  </view>
-			  
+			</div>
+			<button class='recordBtn' @click = "handleClickHome()">FINISH</button>
+		  </view>
+		 <view class="divider"></view>
+		</view>
+		<view class="chatContainer" ref="chatContainer">
+			
+			<view
+			  v-for="(message, index) in chatMessages"
+			  :key="index"
+			  :class="[message.className || 'chat-bubble']"
+			>
+			  <template v-if="message.type === 'text'">
+			    {{ message.content }}
+			  </template>
+			  <template v-else-if="message.type === 'button'">
+			    <view class="action-button" @click="buttoncase(1)">
+			      <image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
+			      <text class="button-text">View Doctor's Schedule</text>
+			    </view>
+			  </template>
+			  <template v-else-if="message.type === 'rescheduleBtn'">
+			    <view class="action-button" @click="buttoncase(2)">
+			      <image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
+			      <text class="button-text">Reschedule my appointment</text>
+			    </view>
+			  </template>
+			  <template v-else-if="message.type === 'datesBtnGroup'">
+			    <view class="dates-btn-group">
+			      <view
+			        v-for="(date, index) in message.dates"
+			        :key="index"
+			        class="action-button"
+			        @click="buttoncase(4, date, 'December')"
+			      >
+			        <text class="button-text">{{ date }}</text>
+			      </view>
+			    </view>
+			  </template>
+			  <template v-else-if="message.type === 'current'">
+			    <view class="action-button" @click="buttoncase(4, doctorDetails.date)">
+			      <image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
+			      <text class="button-text">Currently Selected</text>
+			    </view>
+			  </template>
+			  <template v-else-if="message.type === 'timesBtnGroup'">
+			    <view class="dates-btn-group">
+			      <view
+			        v-for="(time, index) in message.dates"
+			        :key="index"
+			        class="action-button"
+			        @click="buttoncase(6, time)"
+			      >
+			        <text class="button-text">{{ time }}</text>
+			      </view>
+			    </view>
+			  </template>
+			  <template v-else-if="message.type === 'yesorno'">
+			    <view class="dates-btn-group">
+			      <view
+			        v-for="(option, index) in message.options || []" 
+			        :key="index"
+			        class="action-button"
+			        @click="buttoncase(8, option)"
+			      >
+			        <text class="button-text">{{ option }}</text>
+			      </view>
+			    </view>
+			  </template>
 			</view>
-        </uni-forms>
-      </view>
-    </view>
-  </LayoutContent>
+				
+		</view>
+	<!-- 				<view class="divider"></view>
+			<view class="speech-button">	
+				<image class="icon" src="@/static/mic.png" alt="Microphone Icon" />
+				<text class="button-text">SPEECH TO CHAT</text>
+			 </view> -->
+	  </view>
+					  
+ </LayoutContent>
 </template>
 
 <script setup>
@@ -170,6 +98,7 @@ import LayoutContent from "@/components/Layout/Content.vue";
 import slibrary from "@/slibrary/index.js";
 import { ref, reactive, onMounted } from "vue";
 import { watch } from "vue";
+import { createAppointment, updateAppointment } from "@/utils/auth.ts"; 
 
 const rescheduleClick = ref(false);
 const showDates = ref(false);
@@ -184,11 +113,11 @@ const state = reactive({
     date: "",
     time: "",
     year: "2024",
-  }
+  },
 });
 
 const doctorDetails = reactive({
-  name: "",	
+  name: "",
   specialization: "",
   date: "",
   time: "",
@@ -197,26 +126,34 @@ const doctorDetails = reactive({
 });
 
 // Reactive chat messages array
-const chatMessages = ref([
-  "Good Morning! I am Doctor Richardson's bot assistant.",
-  "What can I help you today?",
-  "Reschedule My Appointment",
-  "Select your new Appointment Date",
-  "Here are some recommendations for this week",
-  "Dec 8",
-  "Pick a Time Slot",
-  "11 AM",
-  "Do you want to change you date to Dec 8 11 AM ?",
-  "YES",
-  "Thank You! Date successfully Changed to DEC 8 / 11 AM"
-]);	
-
-
+const chatMessages = ref([]);
+const date = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+const month = [
+  "Janurary",
+  "Feburary",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "Auguse",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+const time = ["10:30","11:30","12:30","14:30","15:30","16:30","17:30","17:00","19:00"]
+const replies = ref([
+  {
+    greeting: "Good Morning! I am { doctorDetails.name }'s bot assistant. How can I help you today?",
+  },
+]);
+const input = ref([]);
 
 // Populate doctor details from the route on load
 onLoad((options) => {
   console.log("Routed Data:", options);
-
+  doctorDetails.id = decodeURIComponent(options.id || "Unknown");
   doctorDetails.name = decodeURIComponent(options.name || "Unknown");
   doctorDetails.specialization = decodeURIComponent(options.specialization || "Unknown");
   doctorDetails.date = decodeURIComponent(options.date || "No date provided");
@@ -232,30 +169,10 @@ const handleClickHome = () => {
 
 // Function to add messages dynamically
 const addMessage = (newMessage) => {
-  chatMessages.value.push(newMessage);
-  scrollToBottom();	
+  chatMessages.value.push(newMessage); // Push the new message
+  scrollToBottom(); // Scroll to the bottom of the chat
 };
 
-
-const runReschedule = () => {
-	rescheduleClick.value = true;
-}
-
-const showDateFun = () => {
-	showDates.value = true;
-}
-
-const selectDate = () => {
-	hoho.value = true;
-}
-
-const timu = () => {
-	completo.value = true;
-}
-
-const choic = () => {
-	fullchoice.value = true;
-}
 // Scroll to the bottom of the chat container
 const scrollToBottom = () => {
   const chatContainer = document.querySelector(".chatContainer");
@@ -264,88 +181,234 @@ const scrollToBottom = () => {
   }
 };
 
-watch(rescheduleClick, (newVal) => {
-  if (newVal) {
-    nextTick(() => {
-      scrollToBottom();
-    });
-  }
+onMounted(() => {
+    chatMessages.value.push(
+      {
+        type: "text",
+        content: `Good Morning! I am ${doctorDetails.name || "Doctor"}'s bot assistant. How can I help you today?`,
+      },
+      {
+        type: "rescheduleBtn",
+        content: null, // Button will be rendered directly in the template
+      },
+      {
+        type: "button",
+        content: null, // Button will be rendered directly in the template
+      }
+    );
 });
 
-watch(showDates, (newVal) => {
-  if (newVal) {
-    nextTick(() => {
-      scrollToBottom();
-    });
-  }
-});
 
-watch(hoho, (newVal) => {
-  if (newVal) {
-    nextTick(() => {
-      scrollToBottom();
-    });
-  }
-});
+const rescheduleDate = async () => {
+		try{
+			
+			const request = {  
+				id: doctorDetails.id,
+				imageBase64: doctorDetails.image,
+				name: doctorDetails.name,
+				specialization: doctorDetails.specialization,
+				year: state.userInfo.year,
+				date: state.userInfo.date,
+				time: state.userInfo.time
+			};
+			console.log('Request:', request);
+			
+			const response = await updateAppointment(doctorDetails.id, request);
+			if(response){
+				console.log(response);
+			}
+		}catch(e){
+			console.error("Failed to update appointment:", e);
+	}
+};
 
-watch(completo, (newVal) => {
-  if (newVal) {
-    nextTick(() => {
-      scrollToBottom();
-    });
-  }
-});
+const generateRandomDates = () => {
+  // Convert doctorDetails.date to a number for comparison
+  const doctorDate = parseInt(doctorDetails.date || "0");
 
-watch(fullchoice, (newVal) => {
-  if (newVal) {
-    nextTick(() => {
-      scrollToBottom();
-    });
+  // Filter dates greater than doctorDetails.date
+  const availableDates = date.filter((d) => d > doctorDate);
+	
+  // Shuffle the filtered dates and take 3 random dates
+  const shuffledDates = availableDates.sort(() => 0.5 - Math.random());
+  console.log(shuffledDates)
+  return shuffledDates.slice(0, 3);	
+};
+
+const getRandomTimes = (timeArray, count) => {
+  // Copy the original array to avoid modifying it
+  const shuffled = [...timeArray];
+
+  // Fisher-Yates Shuffle
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; // Swap elements
   }
-});
-// Add dynamic messages every 3 seconds
-// onMounted(() => {
-//   setInterval(() => {
-//     addMessage("This is a new message added to the chat!");
-//   }, 7000);
-// });	
+  console.log(shuffled.slice(0,3))
+
+  return shuffled.slice(0, 3); // Take the first `count` elements
+};
+
+const buttoncase = (type,data,data2 = '') => {
+  let message; // Declare the variable outside the switch
+  switch (type) {
+    case 1:
+      message = {
+        type: "text",
+        content: `View Doctor's Schedule`,
+        className: "reply-bubble", // Add a custom class
+      };
+      chatMessages.value.push(message);
+      input.value.push(message);
+      break;
+    case 2:
+      message = {
+        type: "text",
+        content: `Reschedule my appointment`,
+        className: "reply-bubble", // Add a custom class
+		category: "Reschedule"
+      };
+      chatMessages.value.push(message);
+      input.value.push(message);
+      break;
+	case 3:
+	 chatMessages.value.push(
+	   {
+		 type: "text",
+		 content: `Your current appointment is on ${doctorDetails.date || "Doctor"} ${doctorDetails.year || "Doctor"} at ${doctorDetails.time || "Doctor"}  `,
+	   },
+	   {
+	   	 type: "text",
+	   	 content: `Here are some recommended dates`,
+	   },
+	   {
+	         type: "datesBtnGroup",
+	         dates: generateRandomDates(), // Add the random dates array
+			 category: "Reschedule2"
+	    },
+		{
+		      type: "current",
+		      content: null, // Add the random dates array
+			  category: "Reschedule2"
+		},
+		
+	 );
+	  break;
+	  case 4:
+		message = {
+		  type: "text",
+		  content: `${data} ${data2}`,
+		  className: "reply-bubble", // Add a custom class
+		  category: "Reschedule2"
+		};
+		chatMessages.value.push(message);
+		input.value.push(message);
+		break;
+		
+		case 5:
+		 chatMessages.value.push(
+			 {
+				 type: "text",
+				 content: `Here are some recommended times`,
+			 },
+			 {
+				   type: "timesBtnGroup",
+				   dates: getRandomTimes(time), // Add the random dates array
+				   category: "Reschedule3"
+			},
+				
+		 );
+		 break;
+		 case 6:
+		   message = {
+		     type: "text",
+		     content: `${data}`,
+		     className: "reply-bubble", // Add a custom class
+		     category: "Reschedule3",
+		   };
+		   chatMessages.value.push(message); // Works correctly
+		   input.value.push(message);       // Works correctly
+		   break;
+		
+		case 7:
+		  chatMessages.value.push(
+		    {
+		      type: "text",
+		      content: `Would you like to change your appointment to ${state.userInfo.date || "a selected date"} at ${state.userInfo.time || "a selected time"}?`,
+		    },
+		    {
+		      type: "yesorno",
+		      options: ["yes", "no"], // Ensure it's options, not content
+		      category: "Reschedule4",
+		    }
+		  );
+		  break;
+		 case 8:
+		 		message = {
+		 		  type: "text",
+		 		  content: `${data}`,
+		 		  className: "reply-bubble", // Add a custom class
+		 		  category: "Reschedule4"
+		 		};
+		 		chatMessages.value.push(message);
+		 		input.value.push(message);
+		 		break;
+		case 9:
+		  chatMessages.value.push(
+		    {
+		      type: "text",
+		      content: `Congrats! Your appointment has been changed to ${state.userInfo.date || "a selected date"} at ${state.userInfo.time || "a selected time"}. Would you like to view it ??`,
+		    }
+		  );
+		 
+    default:
+      console.error("Invalid type passed to buttoncase");
+  }
+
+};
+
+watch(input, (newMessages, oldMessages) => {
+  // Get the newly added message (if any)
+  const newMessage = newMessages[newMessages.length - 1];
+
+  // Check if the new message exists and has the specific content
+  if (newMessage?.category === "Reschedule") {
+    // You can add your logic here, such as calling another function
+	buttoncase(3);
+  }else if (newMessage?.category === "Reschedule2") {
+	  // state.userInfo.date = 
+	state.userInfo.date = newMessage.content; // Use only the content of the latest message
+	console.log("Updated userInfo date:", state.userInfo.date); // Debugging
+	buttoncase(5)
+  }if (newMessage?.category === "Reschedule3") {
+    // You can add your logic here, such as calling another functio
+	state.userInfo.time = newMessage.content
+	console.log("Upudateadf", state.userInfo.time)
+	buttoncase(7)
+	
+  }if (newMessage?.category === "Reschedule4") {
+    // You can add your logic here, such as calling another functio
+	rescheduleDate()
+	buttoncase(9)
+	// buttoncase(8)
+	console.log("happened")
+	}
+}, { deep: true });
+
 </script>
 
 <style lang="scss" scoped>
-.pageView {
-  width: 100%;
-  height: 100%;
+.messageBox {
+  flex: 1; /* Allows the message box to grow and fill available space */
+  width: 100%; /* Full width */
+  height: 100%; /* Full height of parent container */
+  background: linear-gradient(181deg, rgb(44, 56, 65) 0%, rgb(27, 32, 40) 100%);
+  border-radius: 15px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.pageView-title{
-    font-family: FB;
-    color: #fff;
-    font-size: 20px;
-	// margin-top: 25px;
-}
-.content-border-box{
-    padding: 1px;
-    width: 100%;
-    align-self: center;
-    height: 100%;
-    margin-top: 0.2rem;
-    overflow: hidden;
-    background: linear-gradient(238deg, rgb(88, 255, 207), rgb(27, 48, 42));
-    border-radius: 15px;
-}
-.contentBox{
-	background: linear-gradient(181deg, rgb(44,56,65) 0%, rgb(27, 32, 40) 100%);
-	border-radius: 15px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	padding-right: 20px;
-	padding-left: 20px;
-	padding-top: 20px;
-	padding-bottom: 10px;
+  justify-content: flex-start; /* Align chat bubbles at the top */
+  padding: 20px; /* Add padding for content */
+  box-sizing: border-box; /* Include padding in height calculations */
 }
 
 .image-responsive {
@@ -469,12 +532,11 @@ watch(fullchoice, (newVal) => {
 }
 
 .chatContainer {
-  height: 300px; /* Set a fixed height */
-  overflow: hidden; /* Hide content outside the container */
+  flex: 1; /* Fill the remaining height of the messageBox */
+  overflow-y: auto; /* Add scrolling if content overflows */
   display: flex;
   flex-direction: column;
   gap: 10px; /* Space between chat bubbles */
-  // border: 1px solid rgba(0, 0, 0, 0.2); /* Optional: Add a border */
   border-radius: 10px;
   background-color: transparent; /* Match theme */
   padding: 10px;
@@ -508,6 +570,11 @@ watch(fullchoice, (newVal) => {
   animation: slideInFromRight 0.5s ease-out forwards; /* Slide in animation */
 }
 
+.chat-bubble,
+.reply-bubble {
+  max-width: 70%; /* Adjust to fit inside the container */
+}
+
 @keyframes slideInFromRight {
   0% {
     opacity: 0;
@@ -520,9 +587,16 @@ watch(fullchoice, (newVal) => {
 }
 
 
+.dates-btn-group {
+  display: flex;
+  flex-direction: row; /* Arrange items in a row */
+  justify-content: space-around; /* Space evenly between buttons */
+  gap: 10px; /* Add spacing between buttons */
+  margin-top: 10px;
+}
 
 .action-button {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   background-color: #1e1e2e;
@@ -531,9 +605,12 @@ watch(fullchoice, (newVal) => {
   padding: 10px 15px;
   color: white;
   cursor: pointer;
-  opacity: 0; /* Initially hidden */
-  transform: translateX(-100%); /* Start off-screen to the left */
-  animation: slideInFromLeft 1s ease-out 2s forwards; /* Slide in animation */
+  transition: transform 0.2s ease;
+}
+
+.action-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 
@@ -597,7 +674,4 @@ watch(fullchoice, (newVal) => {
 .dec8{
 	margin-left: 10px;
 }
-
-
-
 </style>

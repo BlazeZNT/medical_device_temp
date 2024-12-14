@@ -227,6 +227,7 @@ onLoad((options) => {
       if (options.sourcePage === "current") {
 
 			potato.push({
+			  id: decodeURIComponent(options.id || "Unknown"),
 			  name: decodeURIComponent(options.name || "Unknown"),
 			  specialization: decodeURIComponent(options.specialization || "Unknown"),
 			  year: decodeURIComponent(options.year || "2024"),
@@ -239,6 +240,7 @@ onLoad((options) => {
       } else {
         // Push the routed data into the potato array
         potato.push({
+		  id: decodeURIComponent(options.id || "Unknown"),
           name: decodeURIComponent(options.name || "Unknown"),
           specialization: decodeURIComponent(options.specialization || "Unknown"),
           year: decodeURIComponent(options.year || "2024"),
