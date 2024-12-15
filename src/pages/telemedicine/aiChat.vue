@@ -16,79 +16,123 @@
 		  </view>
 		 <view class="divider"></view>
 		</view>
-		<view class="chatContainer" ref="chatContainer">
-			
-			<view
-			  v-for="(message, index) in chatMessages"
-			  :key="index"
-			  :class="[message.className || 'chat-bubble']"
-			>
-			  <template v-if="message.type === 'text'">
-			    {{ message.content }}
-			  </template>
-			  <template v-else-if="message.type === 'button'">
-			    <view class="action-button" @click="buttoncase(1)">
-			      <image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
-			      <text class="button-text">View Doctor's Schedule</text>
-			    </view>
-			  </template>
-			  <template v-else-if="message.type === 'rescheduleBtn'">
-			    <view class="action-button" @click="buttoncase(2)">
-			      <image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
-			      <text class="button-text">Reschedule my appointment</text>
-			    </view>
-			  </template>
-			  <template v-else-if="message.type === 'datesBtnGroup'">
-			    <view class="dates-btn-group">
-			      <view
-			        v-for="(date, index) in message.dates"
-			        :key="index"
-			        class="action-button"
-			        @click="buttoncase(4, date, 'December')"
-			      >
-			        <text class="button-text">{{ date }}</text>
-			      </view>
-			    </view>
-			  </template>
-			  <template v-else-if="message.type === 'current'">
-			    <view class="action-button" @click="buttoncase(4, doctorDetails.date)">
-			      <image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
-			      <text class="button-text">Currently Selected</text>
-			    </view>
-			  </template>
-			  <template v-else-if="message.type === 'timesBtnGroup'">
-			    <view class="dates-btn-group">
-			      <view
-			        v-for="(time, index) in message.dates"
-			        :key="index"
-			        class="action-button"
-			        @click="buttoncase(6, time)"
-			      >
-			        <text class="button-text">{{ time }}</text>
-			      </view>
-			    </view>
-			  </template>
-			  <template v-else-if="message.type === 'yesorno'">
-			    <view class="dates-btn-group">
-			      <view
-			        v-for="(option, index) in message.options || []" 
-			        :key="index"
-			        class="action-button"
-			        @click="buttoncase(8, option)"
-			      >
-			        <text class="button-text">{{ option }}</text>
-			      </view>
-			    </view>
-			  </template>
-			</view>
-				
+<!-- 		<view class="uni-title uni-common-mt">
+			Vertical Scroll
+			<text>\n纵向滚动</text>
 		</view>
-	<!-- 				<view class="divider"></view>
+		<view @tap="goTop" class="uni-link uni-center uni-common-mt">
+			点击这里返回顶部
+		</view> -->
+<!-- 		<view>
+			<scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scrolltoupper="upper"
+				@scrolltolower="lower" @scroll="scroll">
+				<view id="demo1" class="scroll-view-item uni-bg-red">A</view>
+				<view id="demo2" class="scroll-view-item uni-bg-green">B</view>
+				
+				<view class="flex-wrapper">
+				  <view
+					v-for="(message, index) in chatMessages"
+					:key="index"
+					:class="[message.className || 'chat-bubble']"
+				  >
+					<template class="scroll-view-item" v-if="message.type === 'text'">
+					  {{ message.content }}
+					</template>
+				 </view>
+				</view>
+				<view id="demo3" class="scroll-view-item uni-bg-blue">C</view>
+			</scroll-view>
+		</view> -->
+		<scroll-view
+		  class="chatContainer scroll-Y"
+		  scroll-y
+		  :scroll-top="scrollTop"
+		  ref="chatContainer"
+		  @scroll="scroll"
+		>
+			<view class="flex-wrapper">
+			  <view
+				v-for="(message, index) in chatMessages"
+				:key="index"
+				:class="[message.className || 'chat-bubble']"
+			  >
+				<template class="scroll-view-item" v-if="message.type === 'text'">
+				  {{ message.content }}
+				</template>
+				<template v-else-if="message.type === 'calendar'">
+				  <CustomCalendar />
+				</template>
+				<template v-else-if="message.type === 'button'">
+				  <view class="action-button" @click="buttoncase(1)">
+					<image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
+					<text class="button-text">View Doctor's Schedule</text>
+				  </view>
+				</template>
+				<template v-else-if="message.type === 'rescheduleBtn'">
+				  <view class="action-button" @click="buttoncase(2)">
+					<image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
+					<text class="button-text">Reschedule my appointment</text>
+				  </view>
+				</template>
+				<template v-else-if="message.type === 'datesBtnGroup'">
+				  <view class="dates-btn-group">
+					<view
+					  v-for="(date, index) in message.dates"
+					  :key="index"
+					  class="action-button"
+					  @click="buttoncase(4, date, 'December')"
+					>
+					  <text class="button-text">{{ date }}</text>
+					</view>
+				  </view>
+				</template>
+				<template v-else-if="message.type === 'current'">
+				  <view class="action-button" @click="buttoncase(4, doctorDetails.date)">
+					<image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
+					<text class="button-text">Currently Selected</text>
+				  </view>
+				</template>
+				<template v-else-if="message.type === 'timesBtnGroup'">
+				  <view class="dates-btn-group">
+					<view
+					  v-for="(time, index) in message.dates"
+					  :key="index"
+					  class="action-button"
+					  @click="buttoncase(6, time)"
+					>
+					  <text class="button-text">{{ time }}</text>
+					</view>
+				  </view>
+				</template>
+				<template v-else-if="message.type === 'yesorno'">
+				  <view class="dates-btn-group">
+					<view
+					  v-for="(option, index) in message.options || []"
+					  :key="index"
+					  class="action-button"
+					  @click="buttoncase(8, option, message.item)"
+					>
+					  <text class="button-text">{{ option }}</text>
+					</view>
+				  </view>
+				</template>
+			  </view>
+			</view>
+			
+		</scroll-view>
+		
+		<!-- <view class="divider"></view>
 			<view class="speech-button">	
 				<image class="icon" src="@/static/mic.png" alt="Microphone Icon" />
 				<text class="button-text">SPEECH TO CHAT</text>
 			 </view> -->
 	  </view>
+	  <!-- Popup Modal -->
+	      <div v-if="showPopup" class="popup">
+	        <div class="popup-content">
+	          <p>Connecting... to your appointments</p>
+	        </div>
+	      </div>
 					  
  </LayoutContent>
 </template>
@@ -96,15 +140,17 @@
 <script setup>
 import LayoutContent from "@/components/Layout/Content.vue";
 import slibrary from "@/slibrary/index.js";
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, nextTick } from "vue";
 import { watch } from "vue";
 import { createAppointment, updateAppointment } from "@/utils/auth.ts"; 
+import CustomCalendar from "@/components/customCalendar2/index.vue";
 
 const rescheduleClick = ref(false);
 const showDates = ref(false);
 const hoho = ref(false);
 const completo = ref(false);
 const fullchoice = ref(false);
+
 
 // State for user and doctor details
 const state = reactive({
@@ -149,10 +195,11 @@ const replies = ref([
   },
 ]);
 const input = ref([]);
+const showPopup = ref(false);
 
 // Populate doctor details from the route on load
 onLoad((options) => {
-  console.log("Routed Data:", options);
+  // console.log("Routed Data:", options);
   doctorDetails.id = decodeURIComponent(options.id || "Unknown");
   doctorDetails.name = decodeURIComponent(options.name || "Unknown");
   doctorDetails.specialization = decodeURIComponent(options.specialization || "Unknown");
@@ -168,35 +215,44 @@ const handleClickHome = () => {
 };
 
 // Function to add messages dynamically
-const addMessage = (newMessage) => {
-  chatMessages.value.push(newMessage); // Push the new message
-  scrollToBottom(); // Scroll to the bottom of the chat
-};
+
+
 
 // Scroll to the bottom of the chat container
-const scrollToBottom = () => {
-  const chatContainer = document.querySelector(".chatContainer");
-  if (chatContainer) {
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-  }
+
+const addMessage = (newMessage) => {
+  setTimeout(() => {
+    chatMessages.value.push(newMessage);
+  }, 1000);
 };
 
+
 onMounted(() => {
-    chatMessages.value.push(
-      {
-        type: "text",
-        content: `Good Morning! I am ${doctorDetails.name || "Doctor"}'s bot assistant. How can I help you today?`,
-      },
-      {
-        type: "rescheduleBtn",
-        content: null, // Button will be rendered directly in the template
-      },
-      {
-        type: "button",
-        content: null, // Button will be rendered directly in the template
-      }
-    );
+	buttoncase(10);
 });
+
+// Reactive state
+const scrollTop = ref(0);
+const oldScrollTop = ref(0);
+
+
+const scroll = (e) => {
+  oldScrollTop.value = e.detail.scrollTop; // Update old scroll position
+};
+
+const goTop = () => {
+  // Resolve view synchronization issues
+  scrollTop.value = oldScrollTop.value;
+  nextTick(() => {
+    scrollTop.value = 9999; // Reset scroll position to top
+  });
+};
+
+watch(chatMessages, () => {
+  console.log("New message added, lastMessageId:");
+  goTop();
+}, { deep: true });
+
 
 
 const rescheduleDate = async () => {
@@ -211,7 +267,7 @@ const rescheduleDate = async () => {
 				date: state.userInfo.date,
 				time: state.userInfo.time
 			};
-			console.log('Request:', request);
+			// console.log('Request:', request);
 			
 			const response = await updateAppointment(doctorDetails.id, request);
 			if(response){
@@ -231,7 +287,7 @@ const generateRandomDates = () => {
 	
   // Shuffle the filtered dates and take 3 random dates
   const shuffledDates = availableDates.sort(() => 0.5 - Math.random());
-  console.log(shuffledDates)
+  // console.log(shuffledDates)
   return shuffledDates.slice(0, 3);	
 };
 
@@ -244,7 +300,7 @@ const getRandomTimes = (timeArray, count) => {
     const j = Math.floor(Math.random() * (i + 1));
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; // Swap elements
   }
-  console.log(shuffled.slice(0,3))
+  // console.log(shuffled.slice(0,3))
 
   return shuffled.slice(0, 3); // Take the first `count` elements
 };
@@ -257,6 +313,7 @@ const buttoncase = (type,data,data2 = '') => {
         type: "text",
         content: `View Doctor's Schedule`,
         className: "reply-bubble", // Add a custom class
+		category: "Schedule"
       };
       chatMessages.value.push(message);
       input.value.push(message);
@@ -272,27 +329,26 @@ const buttoncase = (type,data,data2 = '') => {
       input.value.push(message);
       break;
 	case 3:
-	 chatMessages.value.push(
-	   {
-		 type: "text",
-		 content: `Your current appointment is on ${doctorDetails.date || "Doctor"} ${doctorDetails.year || "Doctor"} at ${doctorDetails.time || "Doctor"}  `,
-	   },
-	   {
-	   	 type: "text",
-	   	 content: `Here are some recommended dates`,
-	   },
-	   {
-	         type: "datesBtnGroup",
-	         dates: generateRandomDates(), // Add the random dates array
-			 category: "Reschedule2"
+	  [
+	    {
+	      type: "text",
+	      content: `Your current appointment is on ${doctorDetails.date || "Doctor"} ${doctorDetails.year || "Doctor"} at ${doctorDetails.time || "Doctor"}`,
 	    },
-		{
-		      type: "current",
-		      content: null, // Add the random dates array
-			  category: "Reschedule2"
-		},
-		
-	 );
+	    {
+	      type: "text",
+	      content: `Here are some recommended dates`,
+	    },
+	    {
+	      type: "datesBtnGroup",
+	      dates: generateRandomDates(), // Add the random dates array
+	      category: "Reschedule2",
+	    },
+	    {
+	      type: "current",
+	      content: null, // Add the random dates array
+	      category: "Reschedule2",
+	    },
+	  ].forEach(addMessage);
 	  break;
 	  case 4:
 		message = {
@@ -306,19 +362,18 @@ const buttoncase = (type,data,data2 = '') => {
 		break;
 		
 		case 5:
-		 chatMessages.value.push(
-			 {
-				 type: "text",
-				 content: `Here are some recommended times`,
-			 },
-			 {
-				   type: "timesBtnGroup",
-				   dates: getRandomTimes(time), // Add the random dates array
-				   category: "Reschedule3"
-			},
-				
-		 );
-		 break;
+		  [
+		    {
+		      type: "text",
+		      content: `Here are some recommended times`,
+		    },
+		    {
+		      type: "timesBtnGroup",
+		      dates: getRandomTimes(time), // Add the random dates array
+		      category: "Reschedule3",
+		    },
+		  ].forEach(addMessage);
+		  break;
 		 case 6:
 		   message = {
 		     type: "text",
@@ -331,7 +386,7 @@ const buttoncase = (type,data,data2 = '') => {
 		   break;
 		
 		case 7:
-		  chatMessages.value.push(
+		  [
 		    {
 		      type: "text",
 		      content: `Would you like to change your appointment to ${state.userInfo.date || "a selected date"} at ${state.userInfo.time || "a selected time"}?`,
@@ -340,26 +395,83 @@ const buttoncase = (type,data,data2 = '') => {
 		      type: "yesorno",
 		      options: ["yes", "no"], // Ensure it's options, not content
 		      category: "Reschedule4",
-		    }
-		  );
+		      item: "",
+		    },
+		  ].forEach(addMessage);
 		  break;
 		 case 8:
 		 		message = {
 		 		  type: "text",
 		 		  content: `${data}`,
 		 		  className: "reply-bubble", // Add a custom class
-		 		  category: "Reschedule4"
+		 		  category: "Reschedule4",
+				  item: `${data2}`,
 		 		};
 		 		chatMessages.value.push(message);
 		 		input.value.push(message);
 		 		break;
 		case 9:
-		  chatMessages.value.push(
+		  [
 		    {
 		      type: "text",
-		      content: `Congrats! Your appointment has been changed to ${state.userInfo.date || "a selected date"} at ${state.userInfo.time || "a selected time"}. Would you like to view it ??`,
-		    }
-		  );
+		      content: `Congratulations! Your appointment has been changed to ${state.userInfo.date || "a selected date"} at ${state.userInfo.time || "a selected time"}.`,
+		    },
+		    {
+		      type: "text",
+		      content: `Would you like to view it in your Appointments?`,
+		    },
+		    {
+		      type: "yesorno",
+		      options: ["yes", "no"], // Ensure it's options, not content
+		      category: "Reschedule4",
+		      item: "view",
+		    },
+		  ].forEach(addMessage);
+		  break;
+		case 10:
+		  [
+		    {
+		      type: "text",
+		      content: `I am ${doctorDetails.name || "Doctor"}'s bot assistant. How can I help you?`,
+		    },
+		    {
+		      type: "rescheduleBtn",
+		      content: null, // Button will be rendered directly in the template
+		    },
+		    {
+		      type: "button",
+		      content: null, // Button will be rendered directly in the template
+		    },
+		  ].forEach(addMessage);
+		  break;
+		 case 11:
+		   [
+		     {
+		       type: "text",
+		       content: `What else can I help you with?`,
+		     },
+		     {
+		       type: "rescheduleBtn",
+		       content: null, // Button will be rendered directly in the template
+		     },
+		     {
+		       type: "button",
+		       content: null, // Button will be rendered directly in the template
+		     },
+		   ].forEach(addMessage);
+		   break;
+		 case 12:
+		   [
+		     {
+		       type: "calendar",
+		       content: null,
+		     },
+		     {
+		       type: "text",
+		       content: `These above are some available dates for ${doctorDetails.name || "Doctor"}`,
+		     },
+		   ].forEach(addMessage);
+		   break;
 		 
     default:
       console.error("Invalid type passed to buttoncase");
@@ -375,29 +487,59 @@ watch(input, (newMessages, oldMessages) => {
   if (newMessage?.category === "Reschedule") {
     // You can add your logic here, such as calling another function
 	buttoncase(3);
+  }else if (newMessage?.category === "Schedule"){
+	  buttoncase(12);
+	  setTimeout(() => {
+	    buttoncase(11);
+	  }, 2000); // Delay of 2000ms (2 seconds)
   }else if (newMessage?.category === "Reschedule2") {
 	  // state.userInfo.date = 
 	state.userInfo.date = newMessage.content; // Use only the content of the latest message
 	console.log("Updated userInfo date:", state.userInfo.date); // Debugging
 	buttoncase(5)
-  }if (newMessage?.category === "Reschedule3") {
+  }else if (newMessage?.category === "Reschedule3") {
     // You can add your logic here, such as calling another functio
 	state.userInfo.time = newMessage.content
 	console.log("Upudateadf", state.userInfo.time)
 	buttoncase(7)
 	
-  }if (newMessage?.category === "Reschedule4") {
-    // You can add your logic here, such as calling another functio
-	rescheduleDate()
-	buttoncase(9)
-	// buttoncase(8)
-	console.log("happened")
+  }else if (newMessage?.category === "Reschedule4") {
+	if (newMessage?.content === "yes") {
+	  if (!newMessage.item) {
+	    // Case where content is "yes" but item is empty
+	    rescheduleDate();
+	    buttoncase(9);
+	    console.log("Rescheduling happened with no item specified.");
+	  } else if (newMessage.item === "view") {
+	    // Case where content is "yes" and item is "view"
+		showPopup.value = true;
+	    setTimeout(() => {
+	      slibrary.$router.go("/pages/telemedicine/current");
+	    }, 2000); // 1000ms = 1 second delay
+	    // Perform input logic or prompt for additional input
+	  }
+	} else {
+	  // Handle the case where the response is not "yes"
+	  buttoncase(11); // Add a case for this in `buttoncase` for general fallback
+
 	}
+  }else{
+	  buttoncase(10);
+  }
 }, { deep: true });
+
 
 </script>
 
 <style lang="scss" scoped>
+	
+.flex-wrapper {
+  display: flex; /* Enable flexbox for children */
+  flex-direction: column; /* Arrange children vertically */
+  gap: 10px; /* Add spacing between children */
+  width: 100%; /* Ensure full width */
+}
+
 .messageBox {
   flex: 1; /* Allows the message box to grow and fill available space */
   width: 100%; /* Full width */
@@ -532,14 +674,16 @@ watch(input, (newMessages, oldMessages) => {
 }
 
 .chatContainer {
-  flex: 1; /* Fill the remaining height of the messageBox */
-  overflow-y: auto; /* Add scrolling if content overflows */
-  display: flex;
-  flex-direction: column;
-  gap: 10px; /* Space between chat bubbles */
-  border-radius: 10px;
-  background-color: transparent; /* Match theme */
-  padding: 10px;
+	flex: 1; /* Fills available space */
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 10px;
+	height: 100%;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch; /* Smooth scrolling on WebView */;
+	
+  
 }
 
 .chat-bubble {
@@ -674,4 +818,55 @@ watch(input, (newMessages, oldMessages) => {
 .dec8{
 	margin-left: 10px;
 }
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Transparent background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.calendar-container{
+	margin-bottom: 0;
+	margin-top: 0;
+}
+
+.scroll-Y {
+	height: 9999rpx;
+}
+.scroll-view_H {
+	white-space: nowrap;
+	width: 100%;
+}
+.scroll-view-item {
+	height: 300rpx;
+	line-height: 300rpx;
+	text-align: center;
+	font-size: 36rpx;
+}
+.scroll-view-item_H {
+	display: inline-block;
+	width: 60%;
+	height: 300rpx;
+	line-height: 300rpx;
+	text-align: center;
+	font-size: 36rpx;
+}
+
 </style>
