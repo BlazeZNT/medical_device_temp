@@ -654,17 +654,21 @@ watch(input, (newMessages, oldMessages) => {
 		}
 }
 .recordBtn {
-  margin: white;
-  background-color: red;
-  padding-left: 7px;
-  padding-right: 7px;
-  font-size: 14px; /* Adjust font size here */
-  color: white; /* Optional: Ensure text color is visible */
-  border-radius: 10px; /* Optional: Add rounded corners */
-  cursor: pointer; /* Optional: Show pointer cursor on hover */
-  margin: inherit;
+	// padding: 8px 16px;
+	font-size: 0.3rem;
+	// min-width: 156px;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+	font-weight: bold;
+	text-transform: uppercase;
+	transition: all 0.3s ease-in-out;
+	margin-right: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: white;
 }
-
 .divider {
 	width: 100vw; /* Full viewport width */
 	height: 1px;

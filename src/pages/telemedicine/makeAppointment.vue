@@ -60,7 +60,7 @@
             </uni-forms-item>
           </view>
           <!-- Conditionally render the button -->
-          <BasicButton v-if="doctorDataAvailable" @click="handleClickUpdate">
+          <BasicButton v-if="doctorDataAvailable" @click="openUpdateModal">
             Update
           </BasicButton>
           <BasicButton v-else @click="handleClickSubmit">
@@ -75,6 +75,18 @@
       <uni-icon type="loading" size="40" color="#58FFCF" />
       <view class="loading-text">Submitting...</view>
     </view>
+	<view v-if="showUpdateModal" class="modal-overlay">
+	  <view class="modal">
+	    <view class="modal-header">Confirm Update</view>
+	    <view class="modal-body">
+	      Are you sure you want to update the appointment details?
+	    </view>
+	    <view class="modal-footer">
+	      <button class="modal-btn confirm" @click="confirmUpdate">Yes</button>
+	      <button class="modal-btn cancel" @click="closeUpdateModal">No</button>
+	    </view>
+	  </view>
+	</view>
   </LayoutContent>
 </template>
 
@@ -279,7 +291,7 @@ const isLoading = ref(false); // Loading state
 		console.log('Request:', request);
 		const response = await updateAppointment(currentDocID.value, request);
 		if(response){
-			console.log(response);
+			console.log("This is the response", response);
 			
 			 appStore.addNotification({
 				id: currentDocName.id,
@@ -355,6 +367,21 @@ const handleClickChat = () => {
 	// slibrary.$router.go("/pages/telemedicine/aiChat");
 	
 }
+
+const showUpdateModal = ref(false); // State to control modal visibility
+
+const openUpdateModal = () => {
+  showUpdateModal.value = true;
+};
+
+const closeUpdateModal = () => {
+  showUpdateModal.value = false;
+};
+
+const confirmUpdate = async () => {
+  closeUpdateModal(); // Close modal after confirmation
+  await handleClickUpdate(); // Call the original update function
+};
 
 
 </script>
@@ -590,5 +617,68 @@ h4{
 .currenttime {
   font-size: 12px;         
   color: rgba(255, 255, 255, 0.6); 
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  width: 400px;
+  background: linear-gradient(145deg, #1B262B, #29353D);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  color: white;
+}
+
+.modal-header {
+  font-size: 18px;
+  font-weight: bold;
+  padding: 16px;
+  border-bottom: 1px solid #ddd;
+  color: #58FFCF;
+}
+
+.modal-body {
+  padding: 16px;
+  font-size: 16px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-around;
+  padding: 16px;
+}
+
+.modal-btn {
+  padding: 0px 18px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-btn.cancel {
+  background-color: red;
+  color: white;
+}
+
+.modal-btn.close {
+  background-color: gray;
+  color: white;
+}
+
+.modal-btn:hover {
+  opacity: 0.9;
 }
 </style>

@@ -94,8 +94,10 @@ const handleClickCard = (type) => {
   &-title {
     font-family: FB;
     color: #fff;
-    font-size: 30px;
+    font-size: 20px;
     margin-bottom: 70px;
+	margin-left: 30px;
+	// DO i change the font to 20 or 30 px
 
     i {
       color: #06ffb8;

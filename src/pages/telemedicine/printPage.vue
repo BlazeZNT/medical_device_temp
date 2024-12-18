@@ -21,7 +21,7 @@
       </view>
       <view class="top">
         <view class="leftback">
-          <image src="@/static/back.png" class="image-link" @click="handleBackClick" />
+          <image src="@/static/backarrow.png" class="image-link" @click="handleBackClick" />
         </view>
         <view class="page-title">
           <text class="title">Post Consultation</text>
@@ -33,7 +33,7 @@
             <image :src="`data:image/jpeg;base64,${doctorDetails.image}`" class="doctor-image" />
           </view>
           <div class="doc-details">
-            <view class="doctor-name">{{ doctorDetails.name }}</view>
+            <view class="doctore-init">{{ doctorDetails.name }}</view>
             <view class="doctor-specialization">{{ doctorDetails.specialization }}</view>
           </div>
         </view>
@@ -76,7 +76,7 @@
             <image src="@/static/medi1.png" class="medicine-image" />
           </view>
           <div class="doc-details">
-            <view class="doctor-name">Antacids</view>
+            <view class="doctore-init">Antacids</view>
             <view class="doctor-specialization">1 morning, 1 night (before food)</view>
           </div>
         </view>
@@ -87,12 +87,20 @@
             <image src="@/static/medi2.png" class="medicine-image" />
           </view>
           <div class="doc-details">
-            <view class="doctor-name">Simetichone</view>
+            <view class="doctore-init">Simetichone</view>
             <view class="doctor-specialization">1 morning, 1 night (before food)</view>
           </div>
         </view>
       </view>
 	  <HealthDashboard :healthItems="healthData" />
+	 <view class="sectionsig">
+	     <!-- Signature Above Name -->
+	     <view class="signature-box">
+	       <view class="signature-name">Robertson</view>
+	     </view>
+	     <view class="doctor-title">Dr. Richardson, M.B.Bs</view>
+		 <view class="doctor-date">{{ doctorDetails.date }}, {{ doctorDetails.year }}</view>
+	 </view>
     </view>
 	<!-- Floating button -->
 	<div class="floating-button">+</div>
@@ -313,7 +321,7 @@ onLoad((options) => {
   flex-direction: column;
 }
 
-.doctor-name {
+.doctore-init {
   font-size: 16px;
   font-weight: bold;
   color: #333;
@@ -347,8 +355,8 @@ onLoad((options) => {
 
 
 .image-link {
-  width: 70px; /* Set the size of the back button */
-  height: 70px; /* Keep the width and height proportional */
+  width: 30px; /* Set the size of the back button */
+  height: 30px; /* Keep the width and height proportional */
   cursor: pointer; /* Show a pointer cursor on hover */
 }
 
@@ -442,5 +450,35 @@ onLoad((options) => {
 
 .modal-btn:hover {
   opacity: 0.9;
+}
+.sectionsig {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px;
+}
+
+.signature-box {
+  margin-bottom: 10px; /* Pull signature closer to the name */
+}
+
+.signature-name {
+  font-family: 'cursive', 'Brush Script MT', sans-serif; /* Cursive or handwritten font */
+  font-size: 24px;
+  font-weight: bold;
+  color: #000;
+  line-height: 1; /* Reduce spacing between lines */
+}
+
+.doctor-title {
+  font-family: Arial, sans-serif; /* Standard clean font */
+  font-size: 16px;
+  color: #333;
+}
+
+.doctor-date{
+	font-family: Arial, sans-serif; /* Standard clean font */
+	font-size: 8px;
+	color: #333;
 }
 </style>

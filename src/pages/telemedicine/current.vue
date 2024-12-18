@@ -375,6 +375,7 @@ const confirmCancel = () => {
 		margin-right: 10px;
 		display: flex;
 		justify-content: center;
+		align-items: center;
 	  }
 	  
 	  .join-now-btn {
@@ -394,8 +395,6 @@ const confirmCancel = () => {
 	    color: #ffffff;
 	    border: 1px solid #ffffff;
 		margin-left: 5px;
-		display: flex;
-		justify-content: center;
 	  }
 	  
 	  .reschedule-btn:hover {

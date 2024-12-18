@@ -38,7 +38,7 @@
         <view class="inputBox">
           <view class="label">Phone Number*</view>
           <view class="inputBox">
-            <view class="qianzhui">+86</view>
+            <view class="qianzhui">+91</view>
             <view class="input">
               <input type="text" v-model="phoneNumber" />
             </view>
@@ -95,7 +95,10 @@ const showModal = ref(false);
 
 const handleClickBack = () => {
   if (state.setp != 1) {
+	console.log("error")
     state.setp = state.setp - 1;
+  }else {
+	slibrary.$router.go("/pages/login/index");
   }
 };
 
