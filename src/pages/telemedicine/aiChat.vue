@@ -378,7 +378,7 @@ const buttoncase = (type,data,data2,data3 = '') => {
 		  [
 		    {
 		      type: "text",
-		      content: `Here are some recommended times`,
+		      content: `Here are some available times`,
 		    },
 		    {
 		      type: "timesBtnGroup",

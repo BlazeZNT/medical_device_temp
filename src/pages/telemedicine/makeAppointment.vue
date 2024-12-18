@@ -18,7 +18,11 @@
           </view>
           <view v-else class="column">
             <uni-forms-item label="Tell your health complaints" name="healthComplaints">
-             <div class="textarea-container">
+					<textarea 
+				       class="simple-textarea"
+				       placeholder="Tell us your symptoms"
+				       v-model="textInput"
+				     ></textarea>
                 <!-- <div class="textarea-content" contenteditable="true" @input="handleTextChange">{{ transcript }}</div>
                 <button class="record-button" @click="ToggleMic">Record</button>
                   <div v-if="isRecording" class="sound-wave">
@@ -26,7 +30,8 @@
                     <span class="wave"></span>
                     <span class="wave"></span>
                   </div> -->
-              </div>
+				<!--  <div class="textarea-container">
+					</div> -->
             </uni-forms-item>
           </view>
           <view class="column">
@@ -680,5 +685,21 @@ h4{
 
 .modal-btn:hover {
   opacity: 0.9;
+}
+
+.simple-textarea {
+  width: 100%;
+  height: 100px;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical; /* Allows resizing vertically */
+  outline: none;
+  color:white;
+}
+
+.simple-textarea::placeholder {
+  color: #aaa;
 }
 </style>
