@@ -62,6 +62,9 @@
 				<template v-else-if="message.type === 'calendar'">
 				  <CustomCalendar />
 				</template>
+				<template v-else-if="message.type === 'calendar2'">
+				  <CustomCalendar2 @update-date="updateDate"/>
+				</template>
 				<template v-else-if="message.type === 'button'">
 				  <view class="action-button" @click="buttoncase(1)">
 					<image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
@@ -80,16 +83,16 @@
 					  v-for="(date, index) in message.dates"
 					  :key="index"
 					  class="action-button"
-					  @click="buttoncase(4, date, 'December')"
+					  @click="buttoncase(4, date, 'December','Reschedule2')"
 					>
 					  <text class="button-text">{{ date }}</text>
 					</view>
 				  </view>
 				</template>
-				<template v-else-if="message.type === 'current'">
-				  <view class="action-button" @click="buttoncase(4, doctorDetails.date)">
+				<template v-else-if="message.type === 'another'">
+				  <view class="action-button" @click="buttoncase(4, 'Select another Date', '', 'Reschedule5')">
 					<image class="icon" src="@/static/calendar.png" alt="Calendar Icon" />
-					<text class="button-text">Currently Selected</text>
+					<text class="button-text">Select another Date</text>
 				  </view>
 				</template>
 				<template v-else-if="message.type === 'timesBtnGroup'">
@@ -144,6 +147,8 @@ import { ref, reactive, onMounted, nextTick } from "vue";
 import { watch } from "vue";
 import { createAppointment, updateAppointment } from "@/utils/auth.ts"; 
 import CustomCalendar from "@/components/customCalendar2/index.vue";
+import CustomCalendar2 from "@/components/customCalendar/index.vue";
+
 
 const rescheduleClick = ref(false);
 const showDates = ref(false);
@@ -305,7 +310,15 @@ const getRandomTimes = (timeArray, count) => {
   return shuffled.slice(0, 3); // Take the first `count` elements
 };
 
-const buttoncase = (type,data,data2 = '') => {
+const buttonLabel = ref(0);
+
+const updateDate = (formattedDate) => {
+  // console.log("Received formatted month and date:", formattedDate);
+  buttonLabel.value = formattedDate;
+  buttoncase(4,buttonLabel.value,"","Reschedule2")
+};
+
+const buttoncase = (type,data,data2,data3 = '') => {
   let message; // Declare the variable outside the switch
   switch (type) {
     case 1:
@@ -344,7 +357,7 @@ const buttoncase = (type,data,data2 = '') => {
 	      category: "Reschedule2",
 	    },
 	    {
-	      type: "current",
+	      type: "another",
 	      content: null, // Add the random dates array
 	      category: "Reschedule2",
 	    },
@@ -353,9 +366,9 @@ const buttoncase = (type,data,data2 = '') => {
 	  case 4:
 		message = {
 		  type: "text",
-		  content: `${data} ${data2}`,
+		  content: `${data} ${data2} `,
 		  className: "reply-bubble", // Add a custom class
-		  category: "Reschedule2"
+		  category: `${data3}`,
 		};
 		chatMessages.value.push(message);
 		input.value.push(message);
@@ -463,13 +476,21 @@ const buttoncase = (type,data,data2 = '') => {
 		 case 12:
 		   [
 		     {
-		       type: "calendar",
+		       type: `${data}`,
 		       content: null,
 		     },
 		     {
 		       type: "text",
 		       content: `These above are some available dates for ${doctorDetails.name || "Doctor"}`,
 		     },
+		   ].forEach(addMessage);
+		   break;
+		 case 13:
+		   [
+		     {
+		       type: `${data}`,
+		       content: null,
+		     }
 		   ].forEach(addMessage);
 		   break;
 		 
@@ -488,7 +509,7 @@ watch(input, (newMessages, oldMessages) => {
     // You can add your logic here, such as calling another function
 	buttoncase(3);
   }else if (newMessage?.category === "Schedule"){
-	  buttoncase(12);
+	  buttoncase(12,"calendar","text");
 	  setTimeout(() => {
 	    buttoncase(11);
 	  }, 2000); // Delay of 2000ms (2 seconds)
@@ -503,6 +524,9 @@ watch(input, (newMessages, oldMessages) => {
 	console.log("Upudateadf", state.userInfo.time)
 	buttoncase(7)
 	
+  }else if (newMessage?.category === "Reschedule5") {
+    // You can add your logic here, such as calling another functio
+	buttoncase(13,"calendar2")
   }else if (newMessage?.category === "Reschedule4") {
 	if (newMessage?.content === "yes") {
 	  if (!newMessage.item) {
