@@ -1,0 +1,26 @@
+<template>
+	<view class="videoBox">
+		<zego-local-view class="video-view"></zego-local-view>
+		<!-- <video style="width: 200rpx; height: 200rpx;" src="http://vjs.zencdn.net/v/oceans.mp4"></video> -->
+	</view>
+</template>
+
+<script setup>
+	import ZegoLocalView from "@/uni_modules/zego-ZegoExpressUniApp-JS/components/zego-ZegoExpressUniApp-JS/zego-view/ZegoLocalView.nvue";
+	import {
+		ref,
+		onMounted
+	} from 'vue';
+</script>
+
+<style lang="scss" scoped>
+	.videoBox {
+		width: 100rpx;
+		height: 100rpx;			
+	}
+
+	.video-view {
+		width: 80rpx;
+		height: 80rpx;
+	}
+</style>

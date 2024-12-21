@@ -191,7 +191,7 @@ onLoad(async (options) => {
   let userId = options.userId || 'Dr00001';
   let userName = options.userName || 'Dr. Robert Lee';
   uni.request({
-    url: "/api/loginByVideo?userId=" + userId,
+    url: "http://81.68.86.95:8099/api/loginByVideo?userId=" + userId,
     success: async (res) => {
       token.value = res.data
       await createEngine();

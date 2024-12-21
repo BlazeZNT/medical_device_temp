@@ -2,7 +2,7 @@
     "name" : "Medical-examination-machine",
     "appid" : "__UNI__4CA4DFA",
     "description" : "",
-    "versionName" : "1.2.1",
+    "versionName" : "1.2.2",
     "versionCode" : "100",
     "transformPx" : false,
     "app-plus" : {
@@ -18,7 +18,9 @@
             "autoclose" : true,
             "delay" : 0
         },
-        "modules" : {},
+        "modules" : {
+            "VideoPlayer" : {}
+        },
         "optimization" : {
             "subPackages" : true
         },

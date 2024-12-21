@@ -1,0 +1,107 @@
+<template>
+	<view class="footer">
+		<view class="leftInfo">
+			<view class="time">
+				<view class="dot"></view>
+				<text style="font-size: 8rpx;">06:11</text>
+			</view>
+			<view class="name">
+				<text style="font-size: 20rpx; color: #fff; font-weight: bold;">Dr. Richardson</text>
+			</view>
+			<view class="desc">
+				<text style="font-size: 12rpx; color: rgba(255,255,255,0.4)">Immunologist</text>
+			</view>
+		</view>
+		<view class="center">
+			<view class="offIcon">
+				<image style="width: 40rpx; height: 40rpx;" :src="slibrary.$url.static('/static/guaduan.png')"></image>
+			</view>
+		</view>
+		<view class="rightVideo">
+		  
+		</view>
+	</view>
+</template>
+
+<script setup>
+	import ZegoLocalView from "@/uni_modules/zego-ZegoExpressUniApp-JS/components/zego-ZegoExpressUniApp-JS/zego-view/ZegoLocalView.nvue";
+	import slibrary from '@/slibrary/index.js'
+	
+</script>
+
+<style lang="scss">
+	.footer {
+		display: flex;
+		flex-direction: row;
+		// justify-content: space-between;
+	}
+	
+	.leftInfo {
+		flex: 1;
+		flex-shrink: 0;
+		.time {
+			display: flex;
+			flex-direction: row;
+			width: 43rpx;
+			height: 18rpx;
+			border-radius: 70rpx;
+			background: #fff;
+			justify-content: center;
+			align-items: center;
+			font-size: 8rpx;
+			.dot {
+				width: 4rpx;
+				height:4rpx;
+				border-radius: 100%;
+				background-color: #F2475E;
+				margin-right: 2rpx;
+			}
+		}
+		.name {
+			font-size: 20rpx;
+			color: #fff;
+			margin-top: 4rpx;
+			font-weight: bold;
+			text {
+				font-size: 20rpx;
+				color: #fff;
+				margin-top: 4rpx;
+				font-weight: bold;
+			}
+		}
+		.desc {
+			margin-top: 4rpx;
+		}
+	}
+	.center {
+		flex: 1;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		.offIcon {
+			width: 40rpx;
+			height: 40rpx;
+			// background: #F2475E;
+			border-radius: 122px;
+			image {
+				width: 40rpx;
+				height: 40rpx;
+			}
+		}
+	}
+	.rightVideo {
+		flex: 1;
+		flex-shrink: 0;
+		flex-direction: row;
+		justify-content: flex-end;
+		
+		
+		.video-view {
+			width: 72rpx;
+			height: 72rpx;
+			position: absolute;
+			z-index: 999;
+		}
+	}
+
+</style>

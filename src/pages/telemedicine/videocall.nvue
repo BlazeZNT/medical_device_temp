@@ -1,7 +1,7 @@
 <template>
-  <view class="page">
-<!--    <Header />-->
-    <scroll-view
+	<!-- <view class="page">
+		<Header /> -->
+	<!-- <scroll-view
         class="zego-log-view"
         scroll-y="true"
         :style="{ height: logHeight + 'rpx' }"
@@ -15,281 +15,283 @@
         展开
       </button>
       <text class="zego-log-text">{{ info }}</text>
-    </scroll-view>
+    </scroll-view> -->
+	<!-- <view class="content"></view>
+	</view> -->
+	<LayoutContent showBack>
+		<view class="doctor">
+			<view class="doctor">
+				<!-- #ifdef APP-PLUS -->
+				<zego-remote-view class="video-view" v-if="engine && doctorStreamID" :streamID="doctorStreamID">
+				</zego-remote-view>
 
-    <view class="content">
-      <view class="content-border-box">
-
-        <view class="doctor">
-          <view class="self">
-            <!-- #ifdef APP-PLUS -->
-            <zego-remote-view
-                class="video-view"
-                v-if="engine && doctorStreamID"
-                :streamID="doctorStreamID"
-            >
-            </zego-remote-view>
-            <!-- #endif -->
-            <!-- #ifdef H5 -->
-            <video
-                id="local_video"
-                class="video-view"
-                autoplay
-                playsinline
-                crossorigin="anonymous"
-            ></video>
-            <!-- #endif -->
-          </view>
-          <view class="doctor">
-            <!-- #ifdef APP-PLUS -->
-            <zego-local-view class="video-view"></zego-local-view>
-            <!-- #endif -->
-            <!-- #ifdef H5 -->
-            <video
-                id="remote_video"
-                class="video-view"
-                autoplay
-                playsinline
-                crossorigin="anonymous"
-                :muted="playVideoMuted"
-            ></video>
-            <!-- #endif -->
-          </view>
-        </view>
-      </view>
-      <view class="appointment-button-container" >
-        <button class="appointment-button" @click="call()">Call the doctor</button>
-      </view>
-    </view>
-  </view>
+				<!-- #endif -->
+				<!-- #ifdef H5 -->
+				<video id="remote_video" class="video-view" autoplay playsinline crossorigin="anonymous"
+					:muted="playVideoMuted"></video>
+				<!-- #endif -->
+			</view>
+		</view>
+		<view class="appointment-button-container">
+			<button class="appointment-button" @click="call()">Call the doctor</button>
+		</view>
+	</LayoutContent>
 </template>
 
 <script setup>
-import LayoutContent from "@/components/Layout/Content.vue";
-import Header from "@/components/Layout/Header.vue";
-import slibrary from "@/slibrary/index.js";
-import {useZego} from "@/composables/useZego";
-import {usePublish} from "@/composables/usePublish";
-import {usePlay} from "@/composables/usePlay";
-import {
-  ref,
-  onMounted
-} from 'vue';
-// #ifdef APP-PLUS
-import { requestAndroidPermission } from '@/js_sdk/wa-permission/permission.js';
-import ZegoRemoteView from "@/uni_modules/zego-ZegoExpressUniApp-JS/components/zego-ZegoExpressUniApp-JS/zego-view/ZegoRemoteView.nvue";
-import ZegoLocalView from "@/uni_modules/zego-ZegoExpressUniApp-JS/components/zego-ZegoExpressUniApp-JS/zego-view/ZegoLocalView.nvue";
-// #endif
+	import LayoutContent from "@/components/Layout/Content.vue";
+	import Header from "@/components/Layout/Header.vue";
+	import slibrary from "@/slibrary/index.js";
+	import {
+		useZego
+	} from "@/composables/useZego";
+	import {
+		usePublish
+	} from "@/composables/usePublish";
+	import {
+		usePlay
+	} from "@/composables/usePlay";
+	import {
+		ref,
+		onMounted
+	} from 'vue';
+	// #ifdef APP-PLUS
+	import {
+		requestAndroidPermission
+	} from '@/js_sdk/wa-permission/permission.js';
+	import ZegoRemoteView from "@/uni_modules/zego-ZegoExpressUniApp-JS/components/zego-ZegoExpressUniApp-JS/zego-view/ZegoRemoteView.nvue";
+	import ZegoLocalView from "@/uni_modules/zego-ZegoExpressUniApp-JS/components/zego-ZegoExpressUniApp-JS/zego-view/ZegoLocalView.nvue";
+	// #endif
 
-// Pages for pagination
-const token = ref('');
-const doctorStreamID = ref('');
-const {
-  info,
-  logHeight,
-  roomID,
-  userName,
-  isLogin,
-  isRequest,
-  engine,
-  // 方法
-  createEngine,
-  destroyEngine,
-  loginRoom,
-  logoutRoom,
-  changeLogViewSize,
-  appendActionInfo,
-  appendSuccessInfo,
-  appendFailureInfo,
-  appendCallbackInfo
-}  = useZego()
-const {
-  publishStreamID,
-  publishBtnName,
-  isPublishingStream,
-  localVideoElem,
-  pubVideoMuted,
-  startPublishingStream,
-  stopPublishingStream,
-  startPreview,
-  stopPreview,
-  onClickPublish,
-  addPublishListeners,
-} = usePublish({
-  engine,
-  appendActionInfo,
-  appendCallbackInfo,
-  appendSuccessInfo
-})
+	// Pages for pagination
+	const token = ref('');
+	const doctorStreamID = ref('');
+	const {
+		info,
+		logHeight,
+		roomID,
+		userName,
+		isLogin,
+		isRequest,
+		engine,
+		// 方法
+		createEngine,
+		destroyEngine,
+		loginRoom,
+		logoutRoom,
+		changeLogViewSize,
+		appendActionInfo,
+		appendSuccessInfo,
+		appendFailureInfo,
+		appendCallbackInfo
+	} = useZego()
+	const {
+		publishStreamID,
+		publishBtnName,
+		isPublishingStream,
+		localVideoElem,
+		pubVideoMuted,
+		startPublishingStream,
+		stopPublishingStream,
+		startPreview,
+		stopPreview,
+		onClickPublish,
+		addPublishListeners,
+	} = usePublish({
+		engine,
+		appendActionInfo,
+		appendCallbackInfo,
+		appendSuccessInfo
+	})
 
-const {
-  playStreamID,
-  playVideoElem,
-  isPlayingStream,
-  playBtnName,
-  playVideoMuted,
-  playStream,
-  onClickPlay,
-  startPlayingStream,
-  stopPlayingStream,
-  addPlayListeners,
-  playError
-} = usePlay({
-  engine,
-  appendActionInfo,
-  appendCallbackInfo,
-  appendSuccessInfo
-})
+	const {
+		playStreamID,
+		playVideoElem,
+		isPlayingStream,
+		playBtnName,
+		playVideoMuted,
+		playStream,
+		onClickPlay,
+		startPlayingStream,
+		stopPlayingStream,
+		addPlayListeners,
+		playError
+	} = usePlay({
+		engine,
+		appendActionInfo,
+		appendCallbackInfo,
+		appendSuccessInfo
+	})
 
-const addListeners = () => {
-  engine.value.on("apiCalledResult", (errorCode, funcName, info) => {
-    if (errorCode == 0) {
-      appendSuccessInfo(`[${funcName}]: ${info}`);
-    } else {
-      appendFailureInfo(
-          `[${errorCode}][${funcName}]: ${info}`
-      );
-    }
-  });
-  engine.value.on("roomStateChanged", (roomID, reason, errorCode, extendedData) => {
-    console.log(`roomStateChanged. roomID: ${roomID}, ${reason}, ${errorCode}`);
-  });
+	const addListeners = () => {
+		engine.value.on("apiCalledResult", (errorCode, funcName, info) => {
+			if (errorCode == 0) {
+				appendSuccessInfo(`[${funcName}]: ${info}`);
+			} else {
+				appendFailureInfo(
+					`[${errorCode}][${funcName}]: ${info}`
+				);
+			}
+		});
+		engine.value.on("roomStateChanged", (roomID, reason, errorCode, extendedData) => {
+			console.log(`roomStateChanged. roomID: ${roomID}, ${reason}, ${errorCode}`);
+		});
 
-  engine.value.on('roomStreamUpdate', (roomID, updateType, streamList) => {
-    // 用户状态更新，登录房间后，当房间内有用户新增或删除时，SDK会通过该回调通知
-    console.log('roomStreamUpdate',roomID, updateType, streamList)
-    doctorStreamID.value = streamList[0].streamID
-    startPlayingStream(doctorStreamID.value)
-    console.log(doctorStreamID.value)
-  });
+		engine.value.on('roomStreamUpdate', (roomID, updateType, streamList) => {
+			// 用户状态更新，登录房间后，当房间内有用户新增或删除时，SDK会通过该回调通知
+			console.log('roomStreamUpdate', roomID, updateType, streamList)
+			doctorStreamID.value = streamList[0].streamID
+			startPlayingStream(doctorStreamID.value)
+			console.log(doctorStreamID.value)
+			startPreview()
+		});
 
-  addPublishListeners();
-  addPlayListeners();
-}
-onMounted(async () => {
-  // #ifdef APP-PLUS
-  if (uni.getSystemInfoSync().platform === "android") {
-    await requestAndroidPermission(
-        "android.permission.RECORD_AUDIO"
-    );
-    await requestAndroidPermission(
-        "android.permission.CAMERA"
-    );
-  }
-  // #endif
-  // #ifdef H5
-  localVideoElem.value = document.querySelector("#local_video video");
-  playVideoElem.value = document.querySelector("#remote_video video");
-  // #endif
-  let options = {}
-  let userId = options.userId || 'uniapp';
-  let userName = options.userName || 'Debra Robertson';
+		addPublishListeners();
+		addPlayListeners();
+	}
+	onMounted(async () => {
+		// #ifdef APP-PLUS
+		if (uni.getSystemInfoSync().platform === "android") {
+			await requestAndroidPermission(
+				"android.permission.RECORD_AUDIO"
+			);
+			await requestAndroidPermission(
+				"android.permission.CAMERA"
+			);
+		}
+		// #endif
+		// #ifdef H5
+		localVideoElem.value = document.querySelector("#local_video video");
+		playVideoElem.value = document.querySelector("#remote_video video");
+		// #endif
+		let options = {}
+		let userId = options.userId || 'uniapp';
+		let userName = options.userName || 'Debra Robertson';
 
-  uni.request({
-    url: "http://192.168.1.190:8080/api/loginByVideo?userId=" + userId,
-    success: async (res) => {
-      console.log(res);
-      token.value = res.data
-      await createEngine();
-      loginRoom("R00001", userId, userName, res.data)
+		uni.request({
+			url: "http://81.68.86.95:8099/api/loginByVideo?userId=" + userId,
+			success: async (res) => {
+				console.log(res);
+				token.value = res.data
+				await createEngine();
+				loginRoom("R00001", userId, userName, res.data)
 
-      addListeners()
-      // engine.value.on('roomStreamUpdate', (roomID, updateType, streamList) => {
-      //   // 用户状态更新，登录房间后，当房间内有用户新增或删除时，SDK会通过该回调通知
-      //   console.log('roomStreamUpdate',roomID, updateType, streamList)
-      //   playStreamID.value = streamList[0].streamID
-      //   console.log(playStreamID.value)
-      //   onClickPlay()
-      // });
-      // addPublishListeners();
-      // addPlayListeners();
-    }
-  })
-})
+				addListeners()
+				// engine.value.on('roomStreamUpdate', (roomID, updateType, streamList) => {
+				//   // 用户状态更新，登录房间后，当房间内有用户新增或删除时，SDK会通过该回调通知
+				//   console.log('roomStreamUpdate',roomID, updateType, streamList)
+				//   playStreamID.value = streamList[0].streamID
+				//   console.log(playStreamID.value)
+				//   onClickPlay()
+				// });
+				// addPublishListeners();
+				// addPlayListeners();
+			}
+		})
+	})
 
-// Handle navigation based on the button type
-const handleClickBack = (type) => {
-  slibrary.$router.go("/pages/health/index");
-};
-const call = () => {
-  onClickPublish()
-  // onClickPlay()
-}
+	// Handle navigation based on the button type
+	const handleClickBack = (type) => {
+		slibrary.$router.go("/pages/health/index");
+	};
+	const call = () => {
+		onClickPublish()
+		// onClickPlay()
+	}
 </script>
 
 <style lang="scss" scoped>
-.page {
-  display: flex;
-  flex: 1;
-  background-image: url("@/static/bgImage.png");
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-color: #1f252c;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+	.self {
+		position: absolute;
+		bottom: 20rpx;
+		right: 20rpx;
+		z-index: 999;
+		height: 100rpx;
+		width: 100rpx;
+		overflow: hidden;
+	}
 
-  .content {
-    flex: 1;
-    display: flex;
+	.self video {
+		width: 100rpx;
+		height: 100rpx;
+	}
 
-    .doctor {
-      width: 400rpx;
-      height: 400rpx;
-      flex: 1;
+	.self .video-view {
+		height: 100rpx;
+		width: 100rpx;
+		flex: 1;
+		border: 1rpx solid #fff;
+		border-radius: 10rpx;
+	}
 
-      .self{
+	.page {
+		display: flex;
+		flex: 1;
+		background-image: url("@/static/bgImage.png");
+		background-size: 100% 100%;
+		background-repeat: no-repeat;
+		background-color: #1f252c;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		height: 100vh;
 
-        .video-view {
-          height: 200rpx;
-          flex: 1;
-        }
-      }
+		.content {
+			// flex: 1;
+			// display: flex;
+			// width: 750rpx;
+			display: flex;
 
-      .doctor {
-        .video-view {
-          height: 400rpx;
-          flex: 1;
-        }
-      }
-    }
-    .appointment-button-container{
-      width: 400rpx;
-      margin-top: 12px;
-      align-self: center;
-      text-align: center;
-      button{
-        width: 70%
-      }
-    }
+			.doctor {
+				width: 660rpx;
+				// height: 100vh;
+				flex: 1;
+				position: relative;
 
-    .content-border-box {
-      flex: 1;
-      align-self: center;
-      height: 100%;
-      margin-top: 0.2rem;
-      overflow: hidden;
-      background: linear-gradient(238deg, rgba(88, 255, 207, 1), rgba(27, 48, 42, 1));
-      border-radius: 24px;
-      padding: 20px;
 
-      .leftback,
-      .rightback {
-        position: absolute;
-        z-index: 2;
-        width: 50px;
-        height: 50px;
+				.doctor {
+					.video-view {
+						height: 400rpx;
+						flex: 1;
+					}
+				}
+			}
 
-        image {
-          width: 100%;
-          height: 100%;
-        }
-      }
-    }
-  }
-}
+			.appointment-button-container {
+				width: 400rpx;
+				margin-top: 12px;
+				align-self: center;
+				text-align: center;
 
+				button {
+					width: 70%
+				}
+			}
+
+			.content-border-box {
+				flex: 1;
+				align-self: center;
+				height: 100%;
+				margin-top: 0.2rem;
+				overflow: hidden;
+				background: linear-gradient(238deg, rgba(88, 255, 207, 1), rgba(27, 48, 42, 1));
+				border-radius: 24px;
+				padding: 20px;
+
+				.leftback,
+				.rightback {
+					position: absolute;
+					z-index: 2;
+					width: 50px;
+					height: 50px;
+
+					image {
+						width: 100%;
+						height: 100%;
+					}
+				}
+			}
+		}
+	}
+	
 </style>
-
-

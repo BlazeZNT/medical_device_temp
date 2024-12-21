@@ -1,52 +1,51 @@
 {
-    "easycom" : {
-        "autoscan" : true,
-        // 注意一定要放在custom里，否则无效，https://ask.dcloud.net.cn/question/131175
-        "custom" : {
-            "^u--(.*)" : "@/uni_modules/uview-plus/components/u-$1/u-$1.vue",
-            "^up-(.*)" : "@/uni_modules/uview-plus/components/u-$1/u-$1.vue",
-            "^u-([^-].*)" : "@/uni_modules/uview-plus/components/u-$1/u-$1.vue"
-        }
-    },
-    "pages" : [
-		{
-		    "path" : "pages/login/index",
-		    "style" : {
-		        "navigationBarTitleText" : "uni-app",
-		        "navigationStyle" : "custom",
-		        "disableScroll" : true,
-		        "topWindow" : true
-		    },
-		    "meta" : {
-		        "tabBar" : true,
-		        "ignoreAuth" : true
-		    }
+	"easycom": {
+		"autoscan": true,
+		// 注意一定要放在custom里，否则无效，https://ask.dcloud.net.cn/question/131175
+		"custom": {
+			"^u--(.*)": "@/uni_modules/uview-plus/components/u-$1/u-$1.vue",
+			"^up-(.*)": "@/uni_modules/uview-plus/components/u-$1/u-$1.vue",
+			"^u-([^-].*)": "@/uni_modules/uview-plus/components/u-$1/u-$1.vue"
+		}
+	},
+	"pages": [{
+			"path": "pages/login/index",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom",
+				"disableScroll": true,
+				"topWindow": true
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
+			}
 		},
 		{
-		    "path" : "pages/telemedicine/index",
-		    "style" : {
-		        "navigationBarTitleText" : "uni-app",
-		        "navigationStyle" : "custom",
-		        "disableScroll" : true,
-		        "topWindow" : true
-		    },
-		    "meta" : {
-		        "tabBar" : true,
-		        "ignoreAuth" : true
-		    }
+			"path": "pages/telemedicine/index",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom",
+				"disableScroll": true,
+				"topWindow": true
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
+			}
 		},
 		{
-		    "path" : "pages/telemedicine/makeAppointment",
-		    "style" : {
-		        "navigationBarTitleText" : "uni-app",
-		        "navigationStyle" : "custom",
-		        "disableScroll" : true,
-		        "topWindow" : true
-		    },
-		    "meta" : {
-		        "tabBar" : true,
-		        "ignoreAuth" : true
-		    }
+			"path": "pages/telemedicine/makeAppointment",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom",
+				"disableScroll": true,
+				"topWindow": true
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
+			}
 		},
 		{
 			"path": "pages/telemedicine/current",
@@ -63,7 +62,34 @@
 			"path": "pages/telemedicine/videocall",
 			"style": {
 				"navigationBarTitleText": "uni-app",
-				"navigationStyle": "custom"
+				"navigationStyle": "custom",
+				"app-plus": {
+					"subNVues": [{
+							"path": "pages/telemedicine/videocallSubNvuew/remoteVideo",
+							"id": "videoCallRemote",
+							"style": {
+								"width": "200rpx",
+								"height": "200rpx",
+								"right": "160rpx",
+								"bottom": "160rpx",
+								"zindex": 100001,
+								"background": "transparent" //"transparent",
+							}
+						},
+						{
+							"path": "pages/telemedicine/videocallSubNvuew/footer",
+							"id": "videoCallFooter",
+							"style": {
+								"bottom": "100rpx",
+								"height": "133px",
+								"left": "160rpx",
+								"right": "160rpx",
+								"background": "transparent", //"transparent",
+								"zindex": 10000
+							}
+						}
+					]
+				}
 			},
 			"meta": {
 				"tabBar": true,
@@ -169,140 +195,137 @@
 				"ignoreAuth": true
 			}
 		},
-        {
-            "path" : "pages/health/detection",
-            "style" : {
-                "navigationBarTitleText" : "uni-app",
-                "navigationStyle" : "custom"
-            },
-            "meta" : {
-                "tabBar" : true,
-                "ignoreAuth" : true
-            }
-        },
-        {
-            "path" : "pages/health/index",
-            "style" : {
-                "navigationBarTitleText" : "uni-app",
-                "navigationStyle" : "custom"
-            },
-            "meta" : {
-                "tabBar" : true,
-                "ignoreAuth" : true
-            }
-        },
-        {
-            "path" : "pages/registeration/index",
-            "style" : {
-                "navigationBarTitleText" : "uni-app",
-                "navigationStyle" : "custom"
-            },
-            "meta" : {
-                "tabBar" : true,
-                "ignoreAuth" : true
-            }
-        },
-        {
-            "path" : "pages/report/index",
-            "style" : {
-                "navigationBarTitleText" : "uni-app",
-                "navigationStyle" : "custom",
-                "disableScroll" : true
-            },
-            "meta" : {
-                "tabBar" : true,
-                "ignoreAuth" : true
-            }
-        },
-        {
-            "path" : "pages/report/report",
-            "style" : {
-                "navigationBarTitleText" : "uni-app",
-                "navigationStyle" : "custom",
-                "disableScroll" : true
-            },
-            "meta" : {
-                "tabBar" : true,
-                "ignoreAuth" : true
-            }
-        }
-    ],
-    "subPackages" : [
-        {
-            "root" : "pages/login",
-            "pages" : [
-                {
-                    "path" : "login",
-                    "style" : {
-                        "navigationBarTitleText" : "登录页",
-                        "navigationStyle" : "custom"
-                    },
-                    "meta" : {
-                        "tabBar" : true,
-                        "ignoreAuth" : true
-                    }
-                },
-                {
-                    "path" : "pin",
-                    "style" : {
-                        "navigationBarTitleText" : "获取验证码",
-                        "navigationStyle" : "custom"
-                    },
-                    "meta" : {
-                        "tabBar" : true,
-                        "ignoreAuth" : true
-                    }
-                },
-                {
-                    "path" : "consentForm",
-                    "style" : {
-                        "navigationBarTitleText" : "协议确认",
-                        "navigationStyle" : "custom"
-                    },
-                    "meta" : {
-                        "tabBar" : true,
-                        "ignoreAuth" : true
-                    }
-                },
-                {
-                    "path" : "info",
-                    "style" : {
-                        "navigationBarTitleText" : "登录信息",
-                        "navigationStyle" : "custom"
-                    },
-                    "meta" : {
-                        "tabBar" : true,
-                        "ignoreAuth" : true
-                    }
-                },
-                {
-                    "path" : "selectLogin",
-                    "style" : {
-                        "navigationBarTitleText" : "登录或者注册",
-                        "navigationStyle" : "custom"
-                    },
-                    "meta" : {
-                        "tabBar" : true,
-                        "ignoreAuth" : true
-                    }
-                }
-            ]
-        }
-    ],
-    "globalStyle" : {
-        "navigationBarTextStyle" : "black",
-        "navigationBarTitleText" : "uni-app",
-        "navigationBarBackgroundColor" : "#F8F8F8",
-        "backgroundColor" : "#0B0D2E",
-        // "pageOrientation": "landscape",
-        "navigationStyle" : "custom",
-        "rpxCalcMaxDeviceWidth" : 1440, // rpx 计算所支持的最大设备宽度，单位 px，默认值为 960
-        "rpxCalcBaseDeviceWidth" : 375, // rpx 计算使用的基准设备宽度，设备实际宽度超出 rpx 计算所支持的最大设备宽度时将按基准宽度计算，单位 px，默认值为 375
-        "rpxCalcIncludeWidth" : 750 // rpx 计算特殊处理的值，始终按实际的设备宽度计算，单位 rpx，默认值为 750
-    },
-    "condition" : {
-        //模式配置，仅开发期间生效
-        "current" : 0, //当前激活的模式(list 的索引项)
-        "list" : []
-    }
+		{
+			"path": "pages/health/detection",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom"
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
+			}
+		},
+		{
+			"path": "pages/health/index",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom"
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
+			}
+		},
+		{
+			"path": "pages/registeration/index",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom"
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
+			}
+		},
+		{
+			"path": "pages/report/index",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom",
+				"disableScroll": true
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
+			}
+		},
+		{
+			"path": "pages/report/report",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom",
+				"disableScroll": true
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
+			}
+		}
+	],
+	"subPackages": [{
+		"root": "pages/login",
+		"pages": [{
+				"path": "login",
+				"style": {
+					"navigationBarTitleText": "登录页",
+					"navigationStyle": "custom"
+				},
+				"meta": {
+					"tabBar": true,
+					"ignoreAuth": true
+				}
+			},
+			{
+				"path": "pin",
+				"style": {
+					"navigationBarTitleText": "获取验证码",
+					"navigationStyle": "custom"
+				},
+				"meta": {
+					"tabBar": true,
+					"ignoreAuth": true
+				}
+			},
+			{
+				"path": "consentForm",
+				"style": {
+					"navigationBarTitleText": "协议确认",
+					"navigationStyle": "custom"
+				},
+				"meta": {
+					"tabBar": true,
+					"ignoreAuth": true
+				}
+			},
+			{
+				"path": "info",
+				"style": {
+					"navigationBarTitleText": "登录信息",
+					"navigationStyle": "custom"
+				},
+				"meta": {
+					"tabBar": true,
+					"ignoreAuth": true
+				}
+			},
+			{
+				"path": "selectLogin",
+				"style": {
+					"navigationBarTitleText": "登录或者注册",
+					"navigationStyle": "custom"
+				},
+				"meta": {
+					"tabBar": true,
+					"ignoreAuth": true
+				}
+			}
+		]
+	}],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#0B0D2E",
+		// "pageOrientation": "landscape",
+		"navigationStyle": "custom",
+		"rpxCalcMaxDeviceWidth": 1440, // rpx 计算所支持的最大设备宽度，单位 px，默认值为 960
+		"rpxCalcBaseDeviceWidth": 375, // rpx 计算使用的基准设备宽度，设备实际宽度超出 rpx 计算所支持的最大设备宽度时将按基准宽度计算，单位 px，默认值为 375
+		"rpxCalcIncludeWidth": 750 // rpx 计算特殊处理的值，始终按实际的设备宽度计算，单位 rpx，默认值为 750
+	},
+	"condition": {
+		//模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": []
+	}
 }
