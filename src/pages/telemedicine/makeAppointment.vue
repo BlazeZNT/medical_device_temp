@@ -66,7 +66,7 @@
           </view>
           <!-- Conditionally render the button -->
           <BasicButton v-if="doctorDataAvailable" @click="openUpdateModal">
-            Update
+            UPDATE
           </BasicButton>
           <BasicButton v-else @click="handleClickSubmit">
             Submit

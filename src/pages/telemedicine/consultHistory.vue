@@ -50,7 +50,7 @@
         </swiper>
       </view>
       <view class="appointment-button-container">
-        <button class="appointment-button" @click="handleItemClick(2)">Book an Appointment</button>
+        <button class="appointment-button" @click="handleItemClick(2)">BOOK AN APPOINTMENT</button>
       </view>
     </view>
   </view>

@@ -1,5 +1,5 @@
 <template>
-	<LayoutContent showBack @back="handleClickCard(4)">>
+	<LayoutContent showBack @back="handleClickCard(4)">
 		<view class="pageView">
 			<view class="pageView-title">
 				<i>Welcome, Debra.</i> What do you need today?
