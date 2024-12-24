@@ -41,6 +41,7 @@ import Oximeter from "@/components/HealthStep/Oximeter.vue";
 import BloodPressure from "@/components/HealthStep/BloodPressure.vue";
 import Spirometer from "@/components/HealthStep/Spirometer.vue";
 import Egc from "@/components/HealthStep/Egc.vue";
+import BloodSugar from "@/components/HealthStep/Bloodsugar.vue"
 
 import { ref, reactive, shallowRef } from "vue"; 
 
@@ -79,6 +80,11 @@ const ProjectList = {
     icon: "../../static/health/icons/5.png",
     name: "Egc",
     component: Egc,
+  },
+  BloodSugar: {
+    icon: "../../static/health/icons/5.png",
+    name: "Blood Sugar",
+    component: BloodSugar,
   },
 };
 
