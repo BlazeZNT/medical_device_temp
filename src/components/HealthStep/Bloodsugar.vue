@@ -90,7 +90,7 @@
 	            clearInterval(interval);
 	        }
 	        updateChartData();
-	    }, 50); // Match the working example
+	    }, 80); // Match the working example
 	};
 	
 	// Update the level (high, normal, low) in demoData.level
