@@ -77,22 +77,21 @@
 		}, 300);
 	};
 	const handleClickStart = () => {
-		weightValue.value = Math.floor(Math.random() * 250);
+		weightValue.value = Math.min(Math.floor(Math.random() * 250), 250);
 		startDynamicUpdate();
 	};
 
 	let interval = null; // 定时器
 	// 开始动态更新数据
-	const startDynamicUpdate = (num) => {
-		interval = setInterval(() => {
-			demoData.value += 1; // 每次增加 1
-			updateLevel();
-			if (demoData.value > weightValue.value) {
-				clearInterval(interval); // 达到目标值后停止
-			}
-			updateChartData(); // 更新图表数据
-		}, 20); // 每 100 毫秒更新一次
-	}; // 更新图表数据
+	const startDynamicUpdate = () => {
+	    interval = setInterval(() => {
+	        demoData.value += 5; // Adjust increment for smoother updates
+	        if (demoData.value > weightValue.value) {
+	            clearInterval(interval);
+	        }
+	        updateChartData();
+	    }, 50); // Match the working example
+	};
 	
 	// Update the level (high, normal, low) in demoData.level
 	const updateLevel = () => {
@@ -106,9 +105,9 @@
 	};
 	
 	const updateChartData = () => {
-		myChart.value.setOption(option.value);
+	    demoData.value = Math.min(demoData.value, 250); // Clamp to 250
+	    myChart.value.setOption(option.value);
 	};
-	
 
 	// 在组件卸载前清理定时器
 	onBeforeUnmount(() => {
