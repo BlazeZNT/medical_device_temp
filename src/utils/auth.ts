@@ -3,7 +3,7 @@
 // Base URL for all API requests
 const BASE_URL = 'http://192.168.1.113:8080/api'; // Replace with your actual base URL
 const OPENAI_API_URL = 'https://api.openai.com/v1/audio/transcriptions';
-const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY.trim();
+const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY; // Use environment variable
 
 
 
