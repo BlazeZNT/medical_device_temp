@@ -30,7 +30,7 @@
 				</div>
             </uni-forms-item>
           </view>
-		  <view class="page">
+<!-- 		  <view class="page">
 		    <view class="controls">
 		      <button @click="playVoice" :disabled="!voicePath">Play Recording</button>
 		    </view>
@@ -42,7 +42,7 @@
 		  		  <h4>Transcription:</h4>
 		  		  <p>{{ transcription }}</p>
 		  	</view>
-		  </view>
+		  </view> -->
           <view class="column">
             <uni-forms-item label="Select Date" name="date">
               <BasicButton
@@ -161,7 +161,9 @@ const startRecord = () => {
 const endRecord = () => {
   console.log('Stop recording');
   recorderManager.stop();
-  isRecording.value = !isRecording.value
+
+  
+
   
 };
 
@@ -179,23 +181,22 @@ const transcribeRecording = async () => {
     try {
       console.log('Uploading audio for transcription...');
       transcription.value = await transcribeAudio(voicePath.value); // Update the reactive variable
+	  isRecording.value = !isRecording.value
       console.log('Transcription:', transcription.value);
-      uni.showToast({
-        title: 'Transcription successful',
-        icon: 'success',
-      });
     } catch (err) {
       console.error('Error during transcription:', err);
       uni.showToast({
         title: 'Transcription failed',
         icon: 'none',
       });
+	  isRecording.value = !isRecording.value
     }
   } else {
     uni.showToast({
       title: 'No audio to transcribe',
       icon: 'none',
     });
+	isRecording.value = !isRecording.value
   }
 };
 

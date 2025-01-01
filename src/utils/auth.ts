@@ -1,9 +1,11 @@
 // src/utils/auth.js
 
 // Base URL for all API requests
-const BASE_URL = 'http://172.20.10.5:8080/api'; // Replace with your actual base URL
+const BASE_URL = 'http://192.168.1.113:8080/api'; // Replace with your actual base URL
 const OPENAI_API_URL = 'https://api.openai.com/v1/audio/transcriptions';
-const OPENAI_API_KEY = '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'; // Replace with your OpenAI API Key
+const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY.trim();
+
+
 
 // Helper function for making a request
 const makeRequest = (method, url, data = {}, headers = {}) => {
@@ -34,6 +36,8 @@ const makeRequest = (method, url, data = {}, headers = {}) => {
 
 const transcribeAudio = (audioPath) => {
   return new Promise((resolve, reject) => {
+	console.log('API Key:', OPENAI_API_KEY);
+	console.log('API Key Length:', OPENAI_API_KEY.length);  
     uni.uploadFile({
       url: OPENAI_API_URL,
       filePath: audioPath, // Path to the audio file
