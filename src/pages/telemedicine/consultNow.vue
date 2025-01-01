@@ -54,6 +54,17 @@
       <view class="appointment-button-container">
         <button class="appointment-button" @click="handleItemClick(3)">Book an Appointment</button>
       </view>
+	   	  <view class="page">
+	   	    <view class="controls">
+	   	      <button @click="startRecord">Start Recording</button>
+	   	      <button @click="endRecord">Stop Recording</button>
+	   	      <button @click="playVoice" :disabled="!voicePath">Play Recording</button>
+	   	    </view>
+	   	    <view v-if="voicePath">
+	   	      <h4>Recorded File Path:</h4>
+	   	      <p>{{ voicePath }}</p>
+	   	    </view>
+	   	  </view>
     </view>
   </view>
 </template>
@@ -63,6 +74,82 @@ import { ref, onMounted, watch } from 'vue';
 import Header from "@/components/Layout/Header.vue";
 import slibrary from "@/slibrary/index.js";
 import { getLiveDoctors } from "@/utils/auth.ts"; // Import the API function
+const isRecording = ref(false); // Tracks if recording is in progress
+const recordingPath = ref(''); // Stores the path of the recorded audio
+
+
+
+// Initialize recorder manager and audio context
+const recorderManager = uni.getRecorderManager();
+const innerAudioContext = uni.createInnerAudioContext();
+innerAudioContext.autoplay = true;
+
+// Define reactive variables
+const voicePath = ref('');
+
+// Setup recorder manager event handlers
+onMounted(() => {
+  recorderManager.onStop((res) => {
+    console.log('Recorder stopped:', res);
+    voicePath.value = res.tempFilePath;
+  });
+});
+
+// Methods for recording and playback
+const startRecord = () => {
+  console.log('Start recording');
+  recorderManager.start();
+};
+
+const endRecord = () => {
+  console.log('Stop recording');
+  recorderManager.stop();
+};
+
+const playVoice = () => {
+  if (voicePath.value) {
+    console.log('Play recording:', voicePath.value);
+    innerAudioContext.src = voicePath.value;
+    innerAudioContext.play();
+  }
+};
+// import VoiceRecorder from 'uni-voice-record';
+
+// const startRecording = async () => {
+//   try {
+//     const result = await VoiceRecorder.start({
+//       duration: 60000, // Max duration in ms
+//       format: 'mp3', // Output format
+//     });
+//     console.log('Recording started:', result);
+//   } catch (error) {
+//     console.error('Error starting recording:', error);
+//   }
+// };
+// const startRecording = () => {
+//   if (typeof uni.startRecord === 'function') {
+//     uni.startRecord({
+//       success: () => {
+//         console.log('Recording started.');
+//         isRecording.value = true;
+//       },
+//       fail: (err) => {
+//         console.error('Failed to start recording:', err);
+//         uni.showToast({
+//           title: 'Failed to start recording',
+//           icon: 'none',
+//         });
+//       },
+//     });
+//   } else {
+// 	console.log('Platform:', uni.getSystemInfoSync().platform);
+//     console.error('uni.startRecord is not supported in this environment.');
+//     uni.showToast({
+//       title: 'Recording not supported on this platform',
+//       icon: 'none',
+//     });
+//   }
+// };
 
 
 // Initialize the doctors array
@@ -361,5 +448,31 @@ const handleItemClick = (type) => {
       }
     }
   }
+}
+.recording-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 10px;
+  background-color: #58ffcf;
+  border: none;
+  border-radius: 5px;
+  color: black;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:disabled {
+  background-color: grey;
+  cursor: not-allowed;
+}
+
+audio {
+  margin-top: 20px;
 }
 </style>

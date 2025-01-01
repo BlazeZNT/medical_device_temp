@@ -1,7 +1,7 @@
 // src/utils/auth.js
 
 // Base URL for all API requests
-const BASE_URL = 'http://192.168.1.104:8080/api'; // Replace with your actual base URL
+const BASE_URL = 'http://172.20.10.5:8080/api'; // Replace with your actual base URL
 
 // Helper function for making a request
 const makeRequest = (method, url, data = {}, headers = {}) => {
