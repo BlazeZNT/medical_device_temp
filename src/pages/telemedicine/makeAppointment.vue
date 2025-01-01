@@ -18,22 +18,31 @@
           </view>
           <view v-else class="column">
             <uni-forms-item label="Tell your health complaints" name="healthComplaints">
-					<textarea 
-				       class="simple-textarea"
-				       placeholder="Tell us your symptoms"
-				       v-model="textInput"
-				     ></textarea>
-                <!-- <div class="textarea-content" contenteditable="true" @input="handleTextChange">{{ transcript }}</div>
-                <button class="record-button" @click="ToggleMic">Record</button>
-                  <div v-if="isRecording" class="sound-wave">
-                    <span class="wave"></span>
-                    <span class="wave"></span>
-                    <span class="wave"></span>
-                  </div> -->
-				<!--  <div class="textarea-container">
-					</div> -->
+				<div class="textarea-container">
+				   <div class="textarea-content" contenteditable="true">{{ transcription }}</div>
+					<button v-if = "isRecording" class="record-button" @click="endRecord">Stop</button>
+					<button  v-else class="record-button" @click="startRecord">Record</button>
+					  <div v-if="isRecording" class="sound-wave">
+						<span class="wave"></span>
+						<span class="wave"></span>
+						<span class="wave"></span>
+					  </div>
+				</div>
             </uni-forms-item>
           </view>
+		  <view class="page">
+		    <view class="controls">
+		      <button @click="playVoice" :disabled="!voicePath">Play Recording</button>
+		    </view>
+		    <view v-if="voicePath">
+		      <h4>Recorded File Path:</h4>
+		      <p>{{ voicePath }}</p>
+		    </view>
+		  	 <view v-if="transcription">
+		  		  <h4>Transcription:</h4>
+		  		  <p>{{ transcription }}</p>
+		  	</view>
+		  </view>
           <view class="column">
             <uni-forms-item label="Select Date" name="date">
               <BasicButton
@@ -76,10 +85,10 @@
     </view>
 
     <!-- Loading Spinner -->
-    <view v-if="isLoading" class="loading-spinner">
+<!--    <view v-if="isLoading" class="loading-spinner">
       <uni-icon type="loading" size="40" color="#58FFCF" />
       <view class="loading-text">Submitting...</view>
-    </view>
+    </view> -->
 	<view v-if="showUpdateModal" class="modal-overlay">
 	  <view class="modal">
 	    <view class="modal-header">Confirm Update</view>
@@ -104,82 +113,96 @@ import CustomCalendar from "@/components/customCalendar/index.vue";
 import { createAppointment, updateAppointment } from "@/utils/auth.ts"; 
 import { ref, reactive, onMounted } from "vue";
 import { useAppStore } from "@/stores/app"; // Import the store
+import { transcribeAudio } from '@/utils/auth';
 
 const appStore = useAppStore(); // Access the Pinia store
 
-const transcript = ref('')
+// const transcript = ref('')
 const isRecording = ref(false)
 
-// const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition
-// const sr = new Recognition()
+
 
 const times = ["08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00", "21:00", "22:00", "22:30", "23:00", "23:30"]; 
 const clickedButton = ref(null);
 
-
-// onMounted(() => {
-// 	sr.continuous = true
-// 	sr.interimResults = true
-
-// 	sr.onstart = () => {
-// 		console.log('SR Started')
-// 		isRecording.value = true
-// 	}
-
-// 	sr.onend = () => {
-// 		console.log('SR Stopped')
-// 		isRecording.value = false
-// 	}
-
-// 	sr.onresult = (evt) => {
-// 		for (let i = 0; i < evt.results.length; i++) {
-// 			const result = evt.results[i]
-
-// 			if (result.isFinal) CheckForCommand(result)
-// 		}
-
-// 		const t = Array.from(evt.results)
-// 			.map(result => result[0])
-// 			.map(result => result.transcript)
-// 			.join('')
-		
-// 		transcript.value = t
-// 	}
-// })
-
-// const CheckForCommand = (result) => {
-// 	const t = result[0].transcript;
-// 	if (t.includes('stop recording')) {
-// 		sr.stop()
-// 	} else if (
-// 		t.includes('what is the time') ||
-// 		t.includes('what\'s the time')
-// 	) {
-// 		sr.stop()
-// 		alert(new Date().toLocaleTimeString())
-// 		setTimeout(() => sr.start(), 100)
-// 	}
-// }
-
 // const ToggleMic = () => {
-// 	if (isRecording.value) {
-// 		sr.stop()
-// 	} else {
-// 		sr.start()
-// 	}
+// 	isRecording.value = !isRecording.value
 // }
+const recordingPath = ref(''); // Stores the path of the recorded audio
 
-// const ToggleMic = () => {
-//   if (isRecording.value) {
-//     sr.stop();
-//   } else {
-//     sr.start();
-//   }
-// };
 
-const handleTextChange = (event) => {
-  transcript.value = event.target.innerText;
+
+// Initialize recorder manager and audio context
+const recorderManager = uni.getRecorderManager();
+const innerAudioContext = uni.createInnerAudioContext();
+innerAudioContext.autoplay = true;
+
+// Define reactive variables
+const voicePath = ref('');
+const transcription = ref('');
+// Setup recorder manager event handlers
+onMounted(() => {
+	recorderManager.onStop((res) => {
+	  console.log('Recorder stopped:', res);
+	  voicePath.value = res.tempFilePath;
+	  if (voicePath.value) {
+		transcribeRecording(); // Ensure this function works as expected
+	  }
+	});
+});
+
+// Methods for recording and playback
+const startRecord = () => {
+  console.log('Start recording');
+  recorderManager.start();
+  isRecording.value = !isRecording.value
 };
+
+const endRecord = () => {
+  console.log('Stop recording');
+  recorderManager.stop();
+  isRecording.value = !isRecording.value
+  
+};
+
+const playVoice = () => {
+  if (voicePath.value) {
+    console.log('Play recording:', voicePath.value);
+    innerAudioContext.src = voicePath.value;
+    innerAudioContext.play();
+  }
+};
+
+
+const transcribeRecording = async () => {
+  if (voicePath.value) {
+    try {
+      console.log('Uploading audio for transcription...');
+      transcription.value = await transcribeAudio(voicePath.value); // Update the reactive variable
+      console.log('Transcription:', transcription.value);
+      uni.showToast({
+        title: 'Transcription successful',
+        icon: 'success',
+      });
+    } catch (err) {
+      console.error('Error during transcription:', err);
+      uni.showToast({
+        title: 'Transcription failed',
+        icon: 'none',
+      });
+    }
+  } else {
+    uni.showToast({
+      title: 'No audio to transcribe',
+      icon: 'none',
+    });
+  }
+};
+
+
+// const handleTextChange = (event) => {
+//   transcript.value = event.target.innerText;
+// };
 
 const handleClick = (index, time) => {
   clickedButton.value = index;
@@ -278,7 +301,6 @@ const isLoading = ref(false); // Loading state
 
   const handleClickUpdate = async () => {
     try{
-		console.log(potato)
     	isLoading.value = true;
 		potato.time = state.userInfo.time;
 		potato.date = state.userInfo.date;
@@ -293,10 +315,8 @@ const isLoading = ref(false); // Loading state
 			time: potato.time
 		};
 		
-		console.log('Request:', request);
 		const response = await updateAppointment(currentDocID.value, request);
 		if(response){
-			console.log("This is the response", response);
 			
 			 appStore.addNotification({
 				id: currentDocName.id,
