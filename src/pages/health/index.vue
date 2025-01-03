@@ -1,5 +1,5 @@
 <template>
-	<LayoutContent>
+	<LayoutContent showBack @back="handleClickCard(4)">
 		<view class="pageView">
 			<view class="pageView-title">
 				<i>Welcome, Debra.</i> What do you need today?
@@ -75,8 +75,14 @@
 					break;
 				case 3:
 					slibrary.$router.go("/pages/report/report");
+					break;
+				case 4:
+					slibrary.$router.go("/pages/login/login");
+					break;
 				case 5:
 					slibrary.$router.go("/pages/telemedicine/choicePage");
+					break;
+					
 			}
 		}
 	

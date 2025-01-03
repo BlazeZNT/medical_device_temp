@@ -14,7 +14,7 @@
             </view>
             <view>
               <view class="rightback">
-                <image src="./noti.png" class="image-link"></image>
+                <image src="./noti.png" class="image-link" @click="handleItemClick(4)"></image>
               </view>
             </view>
 
@@ -62,9 +62,7 @@
 import { ref, onMounted, watch } from 'vue';
 import Header from "@/components/Layout/Header.vue";
 import slibrary from "@/slibrary/index.js";
-import { getLiveDoctors } from "@/utils/auth.ts"; // Import the API function
-
-
+import { getLiveDoctors, transcribeAudio } from '@/utils/auth';
 // Initialize the doctors array
 const doctors = ref([]);
 const pages = ref([]);
@@ -109,7 +107,7 @@ onMounted(() => {
 const handleItemClick = (type) => {
   switch (type) {
     case 1:
-      slibrary.$router.go("/pages/telemedicine/videoCall");
+      slibrary.$router.go("/pages/telemedicine/videocall");
       break;
 	case 2:
 	  slibrary.$router.go("/pages/telemedicine/choicePage");
@@ -117,6 +115,10 @@ const handleItemClick = (type) => {
 	case 3:
 		slibrary.$router.go("/pages/telemedicine/consultNow");
 		break;
+	case 4:
+		slibrary.$router.go("/pages/telemedicine/notifications");
+		break;
+		
   }
 };
 </script>

@@ -152,6 +152,17 @@
 			}
 		},
 		{
+			"path": "pages/telemedicine/printPage",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom"
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
+			}
+		},
+		{
 			"path": "pages/telemedicine/videoCall",
 			"style": {
 				"navigationBarTitleText": "uni-app",
@@ -186,6 +197,28 @@
 		},
 		{
 			"path": "pages/telemedicine/aiChat",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom"
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
+			}
+		},
+		{
+			"path": "pages/telemedicine/ChatBot",
+			"style": {
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom"
+			},
+			"meta": {
+				"tabBar": true,
+				"ignoreAuth": true
+			}
+		},
+		{
+			"path": "pages/telemedicine/notifications",
 			"style": {
 				"navigationBarTitleText": "uni-app",
 				"navigationStyle": "custom"

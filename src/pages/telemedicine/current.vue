@@ -1,67 +1,88 @@
 <template>
   <view class="page">
     <Header />
-
     <view class="content">
-      <view class="content-border-box">
-        <swiper class="swiper" :circular="true" :interval="3000" :autoplay="false" indicator-dots>
-          <swiper-item v-for="(page, pageIndex) in pages" :key="pageIndex">
-            <view class="leftback">
-              <image src="@/static/back.png" class="image-link" @click="handleItemClick(1)"></image>
-            </view>
-            <view class="centertext">
-              My Appointments
-            </view>
-            <view>
-              <view class="rightback">
-                <image src="./noti.png" class="image-link"></image>
-              </view>
-            </view>
-
-            <view class="content-box" :class="{ 'fewer-items': page.length < 3 }">
-              <view v-for="(doctor, idx) in page" :key="idx" class="doctor-card">
-                <div class="leftItems">
-                  <image :src="'data:image/jpeg;base64,' + doctor.image" class="doctor-image" />
-                  <view class="doctor-info">
-                    <div class="doc-details">
-                      <view class="doctor-name">{{ doctor.name }}</view>
-                      <view class="doctor-specialization">{{ doctor.specialization }}</view>
-                    </div>       
-                  </view>
-                </div>
-            
-                <view class="doctor-info">
-                  <div class="doc-details">
-                    <view class="day-time">Date & Time</view>
-                    <view class="doctor-date">{{ `${doctor.date} ${doctor.year} ${doctor.time} ` }}</view>
-                  </div>
-
+      <view v-if=" doctors.length>0 " class="content-border-box">
+        <!-- Check if `hello` is true -->
+		<swiper class="swiper" :circular="true" :interval="3000" :autoplay="false" indicator-dots>
+		  <swiper-item v-for="(page, pageIndex) in pages" :key="pageIndex">
+			<view class="leftback">
+			  <image src="@/static/back.png" class="image-link" @click="handleItemClick(1)" />
+			</view>
+			<view class="centertext">My Appointments</view>
+			<view>
+			  <view class="rightback">
+				<image src="./noti.png" class="image-link" @click="handleItemClick(5)" />
+			  </view>
+			</view>
+			<view class="content-box " :class="{ 'fewer-items': page.length < 3 }">
+			  <view v-for="(doctor, idx) in page" :key="idx" class="doctor-card">
+				<div class="leftItems">
+				  <image :src="'data:image/jpeg;base64,' + doctor.image" class="doctor-image" />
+				  <view class="doctor-info">
+					<div class="doc-details">
+					  <view class="doctor-name">{{ doctor.name }}</view>
+					  <view class="doctor-specialization">{{ doctor.specialization }}</view>
+					</div>
+				  </view>
+				</div>
+				<view class="doctor-info">
+				  <div class="doc-details">
+					<view class="day-time">Date & Time</view>
+					<view class="doctor-date">{{ `${doctor.date} ${doctor.year} ${doctor.time} ` }}</view>
+				  </div>
 				</view>
-			
-			<button class="status-btn" @tap.stop="gotoVideoCall" :class="{ 'join-now-btn': doctor.status === 'upcoming', 'reschedule-btn': doctor.status === 'past' }">
-				{{ doctor.status === 'upcoming' ? "JOIN NOW" : "RESCHEDULE" }}
-			</button>
-			
+				<button
+				  class="status-btn"
+				  :class="{ 'reschedule-btn': doctor.status === 'past' }"
+				  v-if="doctor.status === 'past'"
+				  @click="handleReschedule(doctor)"
+				>
+				  RESCHEDULE
+				</button>
+				<button class="status-btn" @click="openModal(pageIndex, idx)">CANCEL</button>
+			  </view>
 			</view>
-			</view>
-          </swiper-item>
-        </swiper>
+		  </swiper-item>
+		</swiper>
+        <!-- Fallback content if `hello` is false -->
       </view>
-      <view class="appointment-button-container">
-        <button class="appointment-button" @click="handleItemClick(2)">Book an Appointment</button>
-      </view>
-	  <view v-if="showModal" class="modal-overlay">
-	    <view class="modal">
-	      <view class="modal-header">Confirm Cancellation</view>
-	      <view class="modal-body">
-	        Are you sure you want to cancel this appointment?
-	      </view>
-	      <view class="modal-footer">
-	        <button class="modal-btn cancel" @click="confirmCancel">Yes</button>
-	        <button class="modal-btn close" @click="closeModal">No</button>
-	      </view>
-	    </view>
+	  <view v-else class="newStructure">
+		  <view class="topic">
+			  <view class="leftback">
+				<image src="@/static/back.png" class="image-link" @click="handleItemClick(1)" />
+			  </view>
+			  <view class="centertext">My Appointments</view>
+			  <view>
+				<view class="rightback">
+				<image src="./noti.png" class="image-link noti" @click="handleItemClick(5)" />
+				</view>
+			  </view>
+		  </view>
+		  <view>
+			  <image src="@/static/Frame.png" class="image-link" />
+		  </view>
+		  <view class="appText">
+		  		You don't have any Appointment 
+		  </view>
 	  </view>
+      <view class="appointment-button-container">
+        <button class="appointment-button" @click="handleItemClick(2)">BOOK AN APPOINTMENT</button>
+      </view>
+    </view>
+
+    <!-- Modal -->
+    <view v-if="showModal" class="modal-overlay">
+      <view class="modal">
+        <view class="modal-header">Confirm Cancellation</view>
+        <view class="modal-body">
+          Are you sure you want to cancel this appointment?
+        </view>
+        <view class="modal-footer">
+          <button class="modal-btn cancel" @click="confirmCancel">Yes</button>
+          <button class="modal-btn close" @click="closeModal">No</button>
+        </view>
+      </view>
     </view>
   </view>
 </template>
@@ -71,13 +92,15 @@ import { ref, onMounted } from 'vue';
 import Header from "@/components/Layout/Header.vue";
 import slibrary from "@/slibrary/index.js";
 import { getAppointments, cancelAppointment } from "@/utils/auth.ts"; // Import the API function
+import { useAppStore } from '@/stores/app'; // Import the store
 
 // Initialize the doctors array
 const doctors = ref([]);
 const pages = ref([]);
 const showModal = ref(false);
 const selectedDoctor = ref({ pageIndex: null, doctorIndex: null });
-
+const hello = ref(false);
+const count = ref(0);
 // API endpoint to fetch doctor data (replace with actual API URL)
 const fetchDoctors = async () => {
   try {
@@ -96,12 +119,16 @@ const fetchDoctors = async () => {
       time: decodeURIComponent(doctor.time || 'No time'),
       status: decodeURIComponent(doctor.status || 'past'),
     }));
-    // Recalculate pages for  pagination
+		count.value = doctors.value.length
+		console.log("this is count",count.value)
+	// console.log(hello.value)
+    // Recalculate pages for pagination
     const itemsPerPage = 3;
     pages.value = [];
     for (let i = 0; i < doctors.value.length; i += itemsPerPage) {
       pages.value.push(doctors.value.slice(i, i + itemsPerPage));
     }
+	// console.log(pages.value.length)
   } catch (error) {
     console.error("Error fetching doctors data:", error);
   }
@@ -111,6 +138,7 @@ const fetchDoctors = async () => {
 onMounted(() => {
   fetchDoctors();
 });
+
 
 // Handle navigation based on the button type
 const handleItemClick = (type) => {
@@ -127,13 +155,35 @@ const handleItemClick = (type) => {
     case 4:
       slibrary.$router.go("/pages/telemedicine/makeAppointment");
       break;
+	case 5:
+	  slibrary.$router.go("/pages/telemedicine/notifications");
+	  break;
+	  
   }
 };
 
+// Handle button click for joining video call or rescheduling
+const handleButtonClick = (doctor) => {
+  if (doctor.status === 'upcoming') {
+    gotoVideoCall();
+  } else if (doctor.status === 'past') {
+    handleReschedule(doctor);
+  }
+};
 
 const gotoVideoCall = () => {
-    slibrary.$router.go("/pages/telemedicine/videocall");
+  slibrary.$router.go("/pages/telemedicine/videocall");
 }
+
+// Function to navigate to reschedule flow
+const handleReschedule = (doctor) => {
+  const sourcePage = "current"; // Change this to the actual source page name if needed
+  const query = Object.entries({ ...doctor, sourcePage })
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+    .join("&");
+
+  slibrary.$router.go(`/pages/telemedicine/makeAppointment?${query}`);
+};
 
 // Function to remove the doctor from the array and cancel the appointment
 const removeDoctor = async (pageIndex, doctorIndex) => {
@@ -154,8 +204,8 @@ const removeDoctor = async (pageIndex, doctorIndex) => {
     pages.value = [];
     for (let i = 0; i < doctors.value.length; i += itemsPerPage) {
       pages.value.push(doctors.value.slice(i, i + itemsPerPage)); 
-	  }
-	  
+  }
+  
   // Make the API call to cancel the appointment
   try {
     await cancelAppointment(doctorToRemove.id);
@@ -178,23 +228,37 @@ const closeModal = () => {
 
 // Confirm the cancellation and remove the doctor
 const confirmCancel = () => {
-  const { pageIndex, doctorIndex } = selectedDoctor.value;
-  removeDoctor(pageIndex, doctorIndex);
-  closeModal();
+
+	const appStore = useAppStore(); // Access the store
+	const { pageIndex, doctorIndex } = selectedDoctor.value;
+
+	// Get the doctor details before removing
+	const removedDoctor = pages.value[pageIndex][doctorIndex];
+
+	// Add the notification to the store
+	appStore.addNotification({
+	id: removedDoctor.id,
+	name: removedDoctor.name,
+	date: decodeURIComponent(removedDoctor.date || 'No date provided'),
+	year: decodeURIComponent(removedDoctor.year || 'No year'),
+	time: decodeURIComponent(removedDoctor.time || 'No time'),
+	image: decodeURIComponent(removedDoctor.image || 'No time'),
+	
+	message: `Appointment at ${removedDoctor.date} ${removedDoctor.year} ${removedDoctor.time} with Dr. ${removedDoctor.name} was canceled.`,
+	source: "cancel"
+	
+	});
+
+	// Remove the doctor and close the modal
+	removeDoctor(pageIndex, doctorIndex);
+	count.value -= 1;
+	console.log("This is count: ", count.value)
+	closeModal();
+
+
+	// Navigate to the notifications page
+	// slibrary.$router.go('/pages/telemedicine/notifications');	8410
 };
-
-// Handle reschedule logic
-const handleReschedule = (doctor) => {
-  const sourcePage = "current"; // Change this to the actual source page name if needed
-  const query = Object.entries({ ...doctor, sourcePage })
-    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
-    .join("&");
-
-  uni.navigateTo({
-    url: `/pages/telemedicine/makeAppointment?${query}`,
-  });
-};
-
 </script>
 
 <style lang="scss" scoped>
@@ -311,6 +375,7 @@ const handleReschedule = (doctor) => {
 		margin-right: 10px;
 		display: flex;
 		justify-content: center;
+		align-items: center;
 	  }
 	  
 	  .join-now-btn {
@@ -330,8 +395,6 @@ const handleReschedule = (doctor) => {
 	    color: #ffffff;
 	    border: 1px solid #ffffff;
 		margin-left: 5px;
-		display: flex;
-		justify-content: center;
 	  }
 	  
 	  .reschedule-btn:hover {
@@ -503,4 +566,77 @@ const handleReschedule = (doctor) => {
 .modal-btn:hover {
   opacity: 0.9;
 }
+
+h4{
+	color: white;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+.notification-message{
+	color: white;
+	font-size: 14px;
+}
+
+.currenttime {
+  font-size: 12px;         
+  color: rgba(255, 255, 255, 0.6); 
+}
+
+.newStructure {
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column; /* Ensure elements are in a horizontal row */
+  align-items: center; /* Vertically align items */
+  justify-content: space-evenly; /* Distribute space between items */
+  padding: 10px; /* Add some padding for spacing */
+  width: 80%;
+  align-items: center;
+  align-self: center;
+  
+  .topic{
+	  display: flex; /* Use flexbox for layout */
+	  flex-direction: row; /* Ensure elements are in a horizontal row */
+	  align-items: center; /* Vertically align items */
+	  justify-content: space-evenly; /* Distribute space between items */
+	  width: 100%;
+	  align-items: center;
+	  align-self: center;
+  }
+
+  .leftback,
+  .rightback {
+    display: flex; /* Flexbox for aligning the image */
+    align-items: center; /* Vertically center the image */
+  }
+
+  .centertext {
+    flex: 1; /* Take remaining space */
+    text-align: center; /* Center text horizontally */
+    font-size: 0.375rem; /* Adjust font size */
+    color: white; /* Change color if needed */
+  }
+
+  .image-link {
+    width: 80px; /* Adjust size of the image */
+    height: 80px; /* Adjust size of the image */
+    cursor: pointer; /* Add a pointer cursor for clickable images */
+  }
+  
+  .noti{
+	  width: 55px; /* Adjust size of the image */
+	  height: 55px; /* Adjust size of the image */
+	  margin-left: 20px;
+  }
+
+  & + .content-box {
+    margin-top: 20px; /* Add margin to the content below */
+    display: block; /* Ensure content goes to the next line */
+  }
+  .appText{
+	  color: white;
+	  margin-top: 20px;
+	  margin-bottom: 20px;
+  }
+}
+
 </style>

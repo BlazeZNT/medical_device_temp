@@ -20,7 +20,7 @@
             </view>
             <view>
               <view class="rightback">
-                <image src="./noti.png" ></image>
+                <image src="./noti.png" @click="handleItemClick(5)"></image>
               </view>
             </view>
 
@@ -95,6 +95,9 @@ const handleItemClick = (type) => {
     case 1:
       slibrary.$router.go("/pages/telemedicine/choicePage");
       break;
+  case 5:
+	slibrary.$router.go("/pages/telemedicine/notifications");
+	break;
   }
 };
 
@@ -279,7 +282,7 @@ const handleDoctorClick = (doctor) => {
             }
 
             .doctor-review {
-			  max-width: 0.8rem;
+			  max-width: 0.6rem;
               color: white;
 			  flex-shrink: 0; /* Prevent shrinking of the review */
 

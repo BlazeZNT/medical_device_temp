@@ -1,5 +1,5 @@
 <template>
-  <LayoutContent showBack @back="handleClickBack">
+  <LayoutContent showBack @back="handleClickBack" >
     <view class="login" v-if="state.setp == 1">
       <view class="login-title">My Appointments</view>
       <view class="login-select-box">
@@ -66,10 +66,10 @@ const handleClickBack = () => {
 const handleClickCard = (type) => {
   switch (type) {
     case 1:
-      slibrary.$router.go("/pages/telemedicine/videocall");
+      slibrary.$router.go("/pages/telemedicine/consultNow");
       break;
     case 2:
-      slibrary.$router.go("/pages/telemedicine/doctorvideocall");
+      slibrary.$router.go("/pages/telemedicine/current");
       break;
 	case 3:
 		slibrary.$router.go("/pages/telemedicine/consultHistory");
@@ -94,8 +94,10 @@ const handleClickCard = (type) => {
   &-title {
     font-family: FB;
     color: #fff;
-    font-size: 30px;
+    font-size: 20px;
     margin-bottom: 70px;
+	margin-left: 30px;
+	// DO i change the font to 20 or 30 px
 
     i {
       color: #06ffb8;

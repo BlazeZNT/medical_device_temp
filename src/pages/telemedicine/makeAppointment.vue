@@ -18,9 +18,31 @@
           </view>
           <view v-else class="column">
             <uni-forms-item label="Tell your health complaints" name="healthComplaints">
-              <uni-easyinput type="textarea" v-model="state.userInfo.name" placeholder="Name" />
+				<div class="textarea-container">
+				   <div class="textarea-content" contenteditable="true">{{ transcription }}</div>
+					<button v-if = "isRecording" class="record-button" @click="endRecord">Stop</button>
+					<button  v-else class="record-button" @click="startRecord">Record</button>
+					  <div v-if="isRecording" class="sound-wave">
+						<span class="wave"></span>
+						<span class="wave"></span>
+						<span class="wave"></span>
+					  </div>
+				</div>
             </uni-forms-item>
           </view>
+<!-- 		  <view class="page">
+		    <view class="controls">
+		      <button @click="playVoice" :disabled="!voicePath">Play Recording</button>
+		    </view>
+		    <view v-if="voicePath">
+		      <h4>Recorded File Path:</h4>
+		      <p>{{ voicePath }}</p>
+		    </view>
+		  	 <view v-if="transcription">
+		  		  <h4>Transcription:</h4>
+		  		  <p>{{ transcription }}</p>
+		  	</view>
+		  </view> -->
           <view class="column">
             <uni-forms-item label="Select Date" name="date">
               <BasicButton
@@ -52,8 +74,8 @@
             </uni-forms-item>
           </view>
           <!-- Conditionally render the button -->
-          <BasicButton v-if="doctorDataAvailable" @click="handleClickUpdate">
-            Update
+          <BasicButton v-if="doctorDataAvailable" @click="openUpdateModal">
+            UPDATE
           </BasicButton>
           <BasicButton v-else @click="handleClickSubmit">
             Submit
@@ -63,10 +85,22 @@
     </view>
 
     <!-- Loading Spinner -->
-    <view v-if="isLoading" class="loading-spinner">
+<!--    <view v-if="isLoading" class="loading-spinner">
       <uni-icon type="loading" size="40" color="#58FFCF" />
       <view class="loading-text">Submitting...</view>
-    </view>
+    </view> -->
+	<view v-if="showUpdateModal" class="modal-overlay">
+	  <view class="modal">
+	    <view class="modal-header">Confirm Update</view>
+	    <view class="modal-body">
+	      Are you sure you want to update the appointment details?
+	    </view>
+	    <view class="modal-footer">
+	      <button class="modal-btn confirm" @click="confirmUpdate">Yes</button>
+	      <button class="modal-btn cancel" @click="closeUpdateModal">No</button>
+	    </view>
+	  </view>
+	</view>
   </LayoutContent>
 </template>
 
@@ -77,11 +111,99 @@ import slibrary from "@/slibrary/index.js";
 import BasicButton from "@/components/BasicButton/index.vue";
 import CustomCalendar from "@/components/customCalendar/index.vue";
 import { createAppointment, updateAppointment } from "@/utils/auth.ts"; 
+import { ref, reactive, onMounted } from "vue";
+import { useAppStore } from "@/stores/app"; // Import the store
+import { transcribeAudio } from '@/utils/auth';
 
-import { ref, reactive } from "vue";
+const appStore = useAppStore(); // Access the Pinia store
+
+// const transcript = ref('')
+const isRecording = ref(false)
+
+
 
 const times = ["08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00", "21:00", "22:00", "22:30", "23:00", "23:30"]; 
 const clickedButton = ref(null);
+
+// const ToggleMic = () => {
+// 	isRecording.value = !isRecording.value
+// }
+const recordingPath = ref(''); // Stores the path of the recorded audio
+
+
+
+// Initialize recorder manager and audio context
+const recorderManager = uni.getRecorderManager();
+const innerAudioContext = uni.createInnerAudioContext();
+innerAudioContext.autoplay = true;
+
+// Define reactive variables
+const voicePath = ref('');
+const transcription = ref('');
+// Setup recorder manager event handlers
+onMounted(() => {
+	recorderManager.onStop((res) => {
+	  console.log('Recorder stopped:', res);
+	  voicePath.value = res.tempFilePath;
+	  if (voicePath.value) {
+		transcribeRecording(); // Ensure this function works as expected
+	  }
+	});
+});
+
+// Methods for recording and playback
+const startRecord = () => {
+  console.log('Start recording');
+  recorderManager.start();
+  isRecording.value = !isRecording.value
+};
+
+const endRecord = () => {
+  console.log('Stop recording');
+  recorderManager.stop();
+
+  
+
+  
+};
+
+const playVoice = () => {
+  if (voicePath.value) {
+    console.log('Play recording:', voicePath.value);
+    innerAudioContext.src = voicePath.value;
+    innerAudioContext.play();
+  }
+};
+
+
+const transcribeRecording = async () => {
+  if (voicePath.value) {
+    try {
+      console.log('Uploading audio for transcription...');
+      transcription.value = await transcribeAudio(voicePath.value); // Update the reactive variable
+	  isRecording.value = !isRecording.value
+      console.log('Transcription:', transcription.value);
+    } catch (err) {
+      console.error('Error during transcription:', err);
+      uni.showToast({
+        title: 'Transcription failed',
+        icon: 'none',
+      });
+	  isRecording.value = !isRecording.value
+    }
+  } else {
+    uni.showToast({
+      title: 'No audio to transcribe',
+      icon: 'none',
+    });
+	isRecording.value = !isRecording.value
+  }
+};
+
+
+// const handleTextChange = (event) => {
+//   transcript.value = event.target.innerText;
+// };
 
 const handleClick = (index, time) => {
   clickedButton.value = index;
@@ -124,12 +246,19 @@ const currentDocID = ref(0)
 const currentDocImg = ref('')
 const currentDocName = ref('')
 const currentDocSpec = ref('')
+const currentDocDate = ref('')
+const currentDocYear = ref('')
+const currentDocTime = ref('')
 const potato = [];
 onLoad((options) => {
 	currentDocID.value = decodeURIComponent(options.id);  // console.log("Routed Data:", options);
 	currentDocImg.value = decodeURIComponent(options.image);  // console.log("Routed Data:", options);
 	currentDocName.value = decodeURIComponent(options.name);  // console.log("Routed Data:", options);
 	currentDocSpec.value = decodeURIComponent(options.specialization);  // console.log("Routed Data:", options);
+	currentDocDate.value = decodeURIComponent(options.date);  // console.log("Routed Data:", options);
+	currentDocYear.value = decodeURIComponent(options.year);  // console.log("Routed Data:", options);
+	currentDocTime.value = decodeURIComponent(options.time);
+	
   // Check if options exist and have values
     if (options && Object.keys(options).length > 0) {
       // console.log("Routed Data:", options);
@@ -139,6 +268,7 @@ onLoad((options) => {
       if (options.sourcePage === "current") {
 
 			potato.push({
+			  id: decodeURIComponent(options.id || "Unknown"),
 			  name: decodeURIComponent(options.name || "Unknown"),
 			  specialization: decodeURIComponent(options.specialization || "Unknown"),
 			  year: decodeURIComponent(options.year || "2024"),
@@ -151,6 +281,7 @@ onLoad((options) => {
       } else {
         // Push the routed data into the potato array
         potato.push({
+		  id: decodeURIComponent(options.id || "Unknown"),
           name: decodeURIComponent(options.name || "Unknown"),
           specialization: decodeURIComponent(options.specialization || "Unknown"),
           year: decodeURIComponent(options.year || "2024"),
@@ -171,7 +302,6 @@ const isLoading = ref(false); // Loading state
 
   const handleClickUpdate = async () => {
     try{
-		console.log(potato)
     	isLoading.value = true;
 		potato.time = state.userInfo.time;
 		potato.date = state.userInfo.date;
@@ -186,10 +316,23 @@ const isLoading = ref(false); // Loading state
 			time: potato.time
 		};
 		
-		console.log('Request:', request);
 		const response = await updateAppointment(currentDocID.value, request);
 		if(response){
-			console.log(response);
+			
+			 appStore.addNotification({
+				id: currentDocName.id,
+				name: currentDocName.value,
+				olddate: currentDocDate.value,
+				oldtime: currentDocTime.value,
+				olddyear: currentDocYear.value,
+				date: decodeURIComponent(potato.date || 'No date provided'),
+				year: decodeURIComponent(potato.year || 'No year'),
+				time: decodeURIComponent(potato.time || 'No time'),
+				image: decodeURIComponent(currentDocName.image || 'No time'),
+				message: `Appointment with Dr. ${currentDocName.value} has been updated to ${potato[0].date} at ${potato[0].time}.`,
+				source: "update"
+			      });
+				  
 			isLoading.value = false;
 			slibrary.$router.go("/pages/telemedicine/current");
 			
@@ -247,7 +390,25 @@ const handleClickChat = () => {
 		.map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
 		.join("&")}`,
 	});	
+	// slibrary.$router.go("/pages/telemedicine/aiChat");
+	
 }
+
+const showUpdateModal = ref(false); // State to control modal visibility
+
+const openUpdateModal = () => {
+  showUpdateModal.value = true;
+};
+
+const closeUpdateModal = () => {
+  showUpdateModal.value = false;
+};
+
+const confirmUpdate = async () => {
+  closeUpdateModal(); // Close modal after confirmation
+  await handleClickUpdate(); // Call the original update function
+};
+
 
 </script>
 
@@ -396,4 +557,170 @@ const handleClickChat = () => {
 	margin-left: 20px;
 }
 
+.textarea-container {
+  display: flex;
+  position: relative; /* Set relative positioning for the parent */
+  border: 1px solid #d8d8d8;
+  border-radius: 5px;
+  padding: 8px;
+  background-color: #29353d;
+  color: white;
+  min-height: 100px;
+  width: 100%;
+}
+
+.textarea-content {
+  flex: 1;
+  outline: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+  color: white;
+  overflow-y: auto;
+  max-height: 150px;
+}
+
+.record-button {
+  position: absolute; /* Position the button absolutely within the container */
+  bottom: 8px; /* Align to the bottom of the container */
+  right: 8px; /* Align to the right side of the container */
+  background-color: #58ffcf;
+  color: black;
+  border: none;
+  border-radius: 3px; /* Slightly smaller border radius */
+  padding: 3px 6px; /* Reduce padding to make the button smaller */
+  font-size: 12px; /* Smaller font size */
+  cursor: pointer;
+}
+
+.sound-wave {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.wave {
+  width: 4px;
+  height: 10px;
+  background-color: #58ffcf;
+  border-radius: 2px;
+  animation: wave-animation 1s infinite ease-in-out;
+}
+
+.wave:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.wave:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes wave-animation {
+  0%, 100% {
+    height: 10px;
+  }
+  50% {
+    height: 20px;
+  }
+}
+
+h4{
+	color: white;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+.notification-message{
+	color: white;
+	font-size: 14px;
+}
+
+.currenttime {
+  font-size: 12px;         
+  color: rgba(255, 255, 255, 0.6); 
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  width: 400px;
+  background: linear-gradient(145deg, #1B262B, #29353D);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  color: white;
+}
+
+.modal-header {
+  font-size: 18px;
+  font-weight: bold;
+  padding: 16px;
+  border-bottom: 1px solid #ddd;
+  color: #58FFCF;
+}
+
+.modal-body {
+  padding: 16px;
+  font-size: 16px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-around;
+  padding: 16px;
+}
+
+.modal-btn {
+  padding: 0px 18px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-btn.cancel {
+  background-color: red;
+  color: white;
+}
+
+.modal-btn.close {
+  background-color: gray;
+  color: white;
+}
+
+.modal-btn:hover {
+  opacity: 0.9;
+}
+
+.simple-textarea {
+  width: 100%;
+  height: 100px;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical; /* Allows resizing vertically */
+  outline: none;
+  color:white;
+}
+
+.simple-textarea::placeholder {
+  color: #aaa;
+}
 </style>
