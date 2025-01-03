@@ -139,6 +139,12 @@
             }
         }
     },
+	"plugins": {
+	    "uni-voice-record": {
+	        "version": "1.0.0",
+	        "provider": "wx4d4d8c2p3a7b56d"
+	    }
+	},
     "quickapp" : {},
     "mp-weixin" : {
         "appid" : "",

@@ -60,12 +60,115 @@
 	const handleClickKedu = (val) => {
 		kedu.value = val;
 	};
+  const chSerialPort = uni.requireNativePlugin('Leiye-UniSerialPort')
+
+  const list = ref([])
+  const openDevice = () => {
+    const res = chSerialPort.chInit()
+    if (res.code === 'success') {
+      const devicesRes = chSerialPort.getUsbDevices()
+      if (devicesRes.code === 'success') {
+        list.value.device = devicesRes.data
+      } else {
+        uni.showToast({
+          title: devicesRes.data
+        })
+      }
+    } else {
+      uni.showToast({
+        title: res.data
+      })
+    }
+  }
 
 	onMounted(() => {
 		// 组件能被调用必须是组件的节点已经被渲染到页面上
+    openDevice()
+
+    const device = list.value.device[0]
+    console.log(device)
+    const devicesRes = chSerialPort.openDevice(device)
+
+    const serialCount = chSerialPort.getSerialCount(device)
+    const serialParameter = chSerialPort.setSerialParameter({
+      'usbDevice': device,
+      'serialCount': serialCount,
+      'baudBean': {
+        'baud': 38400,
+        'data': 8,
+        'stop': 1,
+        'parity': 0
+      }
+    })
+    chSerialPort.registerDataCallback(device, (data) => {
+      // 测量结果
+      console.log(data)
+      if (data.hex.startsWith('2450434C')) {
+        const hexData = data.hex
+        const parsedData = parseHexData(hexData);
+        demoData.value = parsedData.mmol;
+        console.log(demoData.value)
+        startDynamicUpdate();
+      }
+    })
+
 	});
 
 	const myChart = ref(null);
+
+
+  // 将十六进制字符串转换为字节数组
+  function hexToBytes(hex) {
+    let bytes = [];
+    for (let i = 0; i < hex.length; i += 2) {
+      bytes.push(parseInt(hex.substr(i, 2), 16));
+    }
+    return bytes;
+  }
+
+  // 解析十六进制数据
+  function parseHexData(hex) {
+    const bytes = hexToBytes(hex);
+
+    // 数据头 (4字节)
+    const dataHeader = bytes.slice(0, 4).map(byte => byte.toString(16).toUpperCase()).join('');
+    console.log(`Data Header: ${dataHeader}`); // 2450434C
+
+    // 序列号字段 (2字节)
+    const sequence = hex.slice(8, 10);
+    console.log(`Sequence: ${String.fromCharCode(sequence)}`); // 41 对应 'A'，血糖数据
+
+    // 数据长度 (2字节)
+    const dataLength = bytes[8] + bytes[9] * 256;
+    console.log(`Data Length: ${dataLength}`);
+
+    // 年份、月份、日期、小时、分钟等
+    const year = 2000 + bytes[12];
+    const month = bytes[13];
+    const day = bytes[14];
+    const hour = bytes[15];
+    const minute = bytes[16];
+    console.log(`Date & Time: ${year}-${month}-${day} ${hour}:${minute}`);
+
+    // 数据值 (2字节)
+    const value = bytes[17] + bytes[18] * 256;
+    console.log(`Value (mg/dL): ${value} mg/dL`);
+
+    // 校验和 (最后一个字节)
+    const checksum = bytes[bytes.length - 1];
+    console.log(`Checksum: ${checksum}`);
+
+    return {
+      dataHeader,
+      sequence,
+      dataLength,
+      date: `${year}-${month}-${day}`,
+      time: `${hour}:${minute}`,
+      value,
+      mmol:  Math.round((value/18) * 10) / 10,
+      checksum,
+    };
+  }
 
 	const showHeapler = ref(true);
 	const handleClickNext = () => {
@@ -77,27 +180,23 @@
 		}, 300);
 	};
 	const handleClickStart = () => {
-		weightValue.value = Math.min(Math.floor(Math.random() * 250), 250);
-		startDynamicUpdate();
+    const parsedData = parseHexData("2450434c4100000009000000180a1b15301001bc");
+    demoData.value = parsedData.mmol;
+    startDynamicUpdate();
 	};
 
 	let interval = null; // 定时器
 	// 开始动态更新数据
 	const startDynamicUpdate = () => {
-	    interval = setInterval(() => {
-	        demoData.value += 5; // Adjust increment for smoother updates
-	        if (demoData.value > weightValue.value) {
-	            clearInterval(interval);
-	        }
-	        updateChartData();
-	    }, 80); // Match the working example
+    updateChartData();
+    updateLevel()
 	};
 	
 	// Update the level (high, normal, low) in demoData.level
 	const updateLevel = () => {
-	    if (demoData.value < 60) {
+	    if (demoData.value < 4.4) {
 	        demoData.level = "low";
-	    } else if (demoData.value >= 60 && demoData.value < 140) {
+	    } else if (demoData.value >= 4.4 && demoData.value <= 6.1) {
 	        demoData.level = "normal";
 	    } else {
 	        demoData.level = "high";
@@ -105,7 +204,7 @@
 	};
 	
 	const updateChartData = () => {
-	    demoData.value = Math.min(demoData.value, 250); // Clamp to 250
+	    demoData.value = Math.min(demoData.value, 15.8); // Clamp to 250
 	    myChart.value.setOption(option.value);
 	};
 
@@ -131,7 +230,7 @@
 					startAngle: 205,
 					endAngle: -25,
 					min: 0,
-					max: 250,
+					max: 15.8,
 					axisLine: {
 						show: true,
 						lineStyle: {
@@ -181,7 +280,7 @@
 					startAngle: 205,
 					endAngle: -25,
 					min: 0,
-					max: 250,
+					max: 16,
 					axisLine: {
 						show: true,
 						lineStyle: {
@@ -264,10 +363,10 @@
 							// Determine dynamic text and color based on the value
 							let dynamicText = "";
 							let colorKey = ""; // Key for dynamic text color style
-							if (params < 60) {
+							if (params < 4.4) {
 								dynamicText = "Low";
 								colorKey = "low"; // Use 'low' style
-							} else if (params >= 60 && params < 140) {
+							} else if (params >= 4.4 && params <= 6.1) {
 								dynamicText = "Normal";
 								colorKey = "normal"; // Use 'normal' style
 							} else {
@@ -276,7 +375,7 @@
 							}
 
 							// Combine value, unit, and dynamic text with a space or newline
-							return `{value|${params}}   {unit|Mg/DL}\n{${colorKey}|${dynamicText}}`;
+							return `{value|${params}}   {unit|mmol/L}\n{${colorKey}|${dynamicText}}`;
 						},
 						rich: {
 							value: {
@@ -319,7 +418,7 @@
 					startAngle: 208, //刻度起始
 					endAngle: -28, //刻度结束
 					min: 0,
-					max: 250,
+					max: 16,
 					splitNumber: 1,
 					z: 4,
 					axisTick: {
