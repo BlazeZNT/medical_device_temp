@@ -28,19 +28,13 @@
 </template>
 
 <script setup>
-	import ContentBox from "@/components/HealthStep/ContentBox.vue";
-	import HelperBox from "./HelperBox.vue";
-	import {
-		onMounted,
-		ref,
-		nextTick,
-		reactive,
-		onBeforeUnmount
-	} from "vue";
-	import * as echarts from "echarts";
-	import BasicButton from "@/components/BasicButton/index.vue";
+import ContentBox from "@/components/HealthStep/ContentBox.vue";
+import HelperBox from "./HelperBox.vue";
+import {onBeforeUnmount, onMounted, reactive, ref} from "vue";
+import * as echarts from "echarts";
+import BasicButton from "@/components/BasicButton/index.vue";
 
-	const props = defineProps({
+const props = defineProps({
 		initChange: Function,
 		checkChange: Function,
 		nextFun: Function,
@@ -66,8 +60,84 @@
 		kedu.value = val;
 	};
 
+  let device = null
+
+  function searchDevices(){
+    // that.pairedList = []; 	//已配对
+
+    //取内存里面已配对的蓝牙
+    // that.pairedList = uni.getStorageSync("pairedList");
+
+    //打开蓝牙模块
+    uni.openBluetoothAdapter({
+      success(res) {
+        console.log("蓝牙模块：",res);
+        //获取本机蓝牙适配器状态
+        uni.getBluetoothAdapterState({
+          success: function(res) {
+            console.log("蓝牙适配器状态：",res);
+            if (res.available) {
+              //开始搜寻附近的蓝牙外围设备
+              uni.startBluetoothDevicesDiscovery({
+                success(res) {
+                  console.log("蓝牙设备：",res)
+                  uni.onBluetoothDeviceFound((dev) => {
+                    console.log(dev);
+                    let bluetoothDeviceInfo = dev.devices.find((device) => device.name === 'HC-08');
+                    if (bluetoothDeviceInfo) {
+                      device = bluetoothDeviceInfo;
+                      uni.createBLEConnection({
+                        deviceId: device.deviceId,  // 替换为实际的设备 ID
+                        success: (res) => {
+                          console.log("连接成功", res);
+                          // 连接成功后可以获取设备的服务和特征值
+                          setTimeout(() => getBLEDeviceServices(), 1000); // 延迟1秒获取服务
+                        },
+                        fail: (error) => {
+                          console.log("连接失败", error);
+                          if (error.errCode === 10012) {
+                            console.log('连接超时');
+                          } else if (error.errCode === 10013) {
+                            console.log('连接设备不匹配');
+                          }
+                        }
+                      });
+                      uni.stopBluetoothDevicesDiscovery({
+                        success(res) {
+                          console.log(res)
+                        }
+                      })
+                    }
+                  })
+                }
+              })
+            }
+          },
+        })
+      }
+    })
+  }
+
+  let serviceId = null;
+
+  const getBLEDeviceServices = () => {
+    console.log(device)
+    uni.getBLEDeviceServices({
+      deviceId: device.deviceId,
+      success: (res) => {
+        console.log('成功获取蓝牙设备的所有服务', res);
+        serviceId = res.services[res.services.length-2].uuid;  // 获取主要服务
+        console.log(serviceId)
+        getBLEDeviceCharacteristics();
+      },
+      fail: (error) => {
+        console.log('获取蓝牙设备的服务失败', error);
+      }
+    });
+  }
+
 	onMounted(() => {
-		// 组件能被调用必须是组件的节点已经被渲染到页面上
+    searchDevices();
 	});
 
 	const myChart = ref(null);
@@ -81,22 +151,131 @@
 			myChart.value.setOption(option.value);
 		}, 300);
 	};
+
+  let readCharacteristic = null;
+
+  const getBLEDeviceCharacteristics = () => {
+    uni.getBLEDeviceCharacteristics({
+      deviceId: device.deviceId,
+      serviceId: serviceId,
+      success: (res) => {
+        console.log('获取 characteristic 成功', res);
+        const characteristics = res.characteristics;
+        readCharacteristic = characteristics.find(c => c.properties.notify).uuid;  // 找到读特征值
+        console.log("characteristic: " + readCharacteristic)
+        startNotify();
+      },
+      fail: (error) => {
+        console.log('获取 characteristic 失败', error);
+      }
+    })
+  }
+
 	const handleClickStart = () => {
-		weightValue.value = Math.floor(Math.random() * 50);
-		startDynamicUpdate();
+		// weightValue.value = Math.floor(Math.random() * 50);
+		// startDynamicUpdate();
 	};
+
+  const ab2hex = (buffer) => {
+    const hexArr = Array.prototype.map.call(
+        new Uint8Array(buffer),
+        function(bit) {
+          return ('00' + bit.toString(16)).slice(-2)
+        }
+    )
+    return hexArr.join('')
+  }
+
+
+  // 解析温度数据函数
+  function hexToAscii(hex) {
+    let asciiStr = '';
+    // 每两个字符作为一个十六进制字节进行转换
+    for (let i = 0; i < hex.length; i += 2) {
+      let hexPair = hex.slice(i, i + 2);  // 获取两个字符的十六进制对
+      let char = String.fromCharCode(parseInt(hexPair, 16));  // 十六进制转为字符
+      asciiStr += char;  // 追加到结果字符串
+    }
+    return asciiStr;
+  }
+
+  const startNotify = () => {
+    uni.notifyBLECharacteristicValueChange({
+      state: true,
+      deviceId: device.deviceId,
+      serviceId: serviceId,
+      characteristicId: readCharacteristic,
+      success: (res) => {
+        console.log("开启 notify 功能成功", res);
+        uni.onBLECharacteristicValueChange((res) => {
+          let resHex = ab2hex(res.value);
+          console.log("接收到回传内容：", resHex);
+
+          // 导航码是5e，表示开始的数据包
+          if (!resHex.startsWith('5e')) {  // 导航码检查
+            return
+          }
+
+          // 记忆数据部分（第2、3字节）
+          let memoryData = resHex.slice(2, 6);
+          console.log("记忆数据：", memoryData === '3030' ? '00' : '01');
+
+          // 状态码部分（第4字节）
+          let statusCode = resHex.slice(6, 8);
+          console.log("状态码：", statusCode);
+
+          // 根据状态码判断具体数据
+          if (statusCode === '30') {  // 体温数据
+            console.log("回传体温数据");
+
+            //   异常数据
+            if (resHex.length === 18) {
+              // 获取体温数据部分
+              let temperatureData = resHex.slice(8, 16);  // 假设温度数据是从第8到第16字节
+              // 提示重新测量
+              if (temperatureData === '54624c6f') {
+                console.log("体温低于34°C (TbLo)");
+              } else if (temperatureData === '54624869'){
+                console.log("体温高于42.9°C (TbHi)");
+              }
+            }
+
+            if (resHex.length === 22) {
+              let unit = resHex.slice(18, 20);
+              if (unit === '43') {
+                //   摄氏度
+                const temperatureData = resHex.slice(10, 18);
+                let temperatureValue = hexToAscii(temperatureData);
+                console.log(`实际体温：${temperatureValue}°C`);
+                weightValue.value = parseFloat(temperatureValue);
+                startDynamicUpdate()
+              } else {
+                //   华摄氏
+                const temperatureData = resHex.slice(10, 18);
+                let temperatureValue = hexToAscii(temperatureData);
+                console.log(`实际体温：${temperatureValue}F`);
+                weightValue.value = parseFloat(temperatureValue);
+                startDynamicUpdate()
+              }
+            }
+          }
+          // this.handleResponse(resHex);
+        });
+      },
+      fail: (error) => {
+        console.log("监听失败", error);
+      }
+    });
+  }
 
 	let interval = null; // 定时器
 	// 开始动态更新数据
 	const startDynamicUpdate = (num) => {
-		interval = setInterval(() => {
-			demoData.value += 1; // 每次增加 1
-			if (demoData.value > weightValue.value) {
-				clearInterval(interval); // 达到目标值后停止
-			}
-			updateChartData(); // 更新图表数据
-		}, 50); // 每 100 毫秒更新一次
-	}; // 更新图表数据
+    demoData.value = weightValue.value;
+    updateChartData()
+	};
+
+  // 更新图表数据
 	const updateChartData = () => {
 		myChart.value.setOption(option.value);
 	};

@@ -1,0 +1,23 @@
+{
+    "name": "血氧仪",
+    "id": "Leiye-Oximeter",
+    "version": "1.0.0",
+    "description": "血氧仪",
+    "_dp_type":"nativeplugin",
+    "_dp_nativeplugin":{
+        "android": {
+            "plugins": [
+                {
+                    "type": "module",
+					"name": "Leiye-Oximeter",
+					"class": "io.dcloud.uniplugin.OximeterModule"
+                }
+            ],
+            "dependencies": [
+                "com.github.mik3y:usb-serial-for-android:3.8.1"
+            ],
+			"integrateType": "aar",
+            "minSdkVersion": "17"
+        }
+    }
+}

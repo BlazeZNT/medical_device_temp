@@ -2,7 +2,7 @@
     "name" : "Medical-examination-machine",
     "appid" : "__UNI__4CA4DFA",
     "description" : "",
-    "versionName" : "1.2.2",
+    "versionName" : "1.2.1",
     "versionCode" : "100",
     "transformPx" : false,
     "app-plus" : {
@@ -19,7 +19,9 @@
             "delay" : 0
         },
         "modules" : {
-            "VideoPlayer" : {}
+            "Record" : {},
+            "Camera" : {},
+            "Bluetooth" : {}
         },
         "optimization" : {
             "subPackages" : true
@@ -41,9 +43,17 @@
                     "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
                     "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
-                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
+                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>",
+                    "<uses-permission android:name=\"android.permission.BLUETOOTH_CONNECT\" />",
+                    "<uses-permission android:name=\"android.permission.BLUETOOTH_ADVERTISE\" />",
+                    "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\" />"
                 ],
-                "minSdkVersion" : 21
+                "minSdkVersion" : 21,
+                "packagingOptions" : [
+                    "exclude 'proguard.txt'",
+                    "exclude 'R.txt'",
+                    "exclude 'AndroidManifest.xml'"
+                ]
             },
             "ios" : {
                 "dSYMs" : false,
@@ -90,6 +100,34 @@
                     "name" : "ZegoExpress音视频SDK",
                     "description" : "ZegoExpressUniApp插件，进入即构官网了解更多（https://doc-zh.zego.im/article/7775?source=dcloud）",
                     "platforms" : "Android,iOS",
+                    "url" : "",
+                    "android_package_name" : "",
+                    "ios_bundle_id" : "",
+                    "isCloud" : false,
+                    "bought" : -1,
+                    "pid" : "",
+                    "parameters" : {}
+                }
+            },
+            "Leiye-Oximeter" : {
+                "__plugin_info__" : {
+                    "name" : "血氧仪",
+                    "description" : "血氧仪",
+                    "platforms" : "Android",
+                    "url" : "",
+                    "android_package_name" : "",
+                    "ios_bundle_id" : "",
+                    "isCloud" : false,
+                    "bought" : -1,
+                    "pid" : "",
+                    "parameters" : {}
+                }
+            },
+            "Leiye-Lefu" : {
+                "__plugin_info__" : {
+                    "name" : "乐福体重称",
+                    "description" : "乐福体重称",
+                    "platforms" : "Android",
                     "url" : "",
                     "android_package_name" : "",
                     "ios_bundle_id" : "",

@@ -51,7 +51,6 @@
         "@dcloudio/uni-mp-weixin": "3.0.0-alpha-4020520240808001",
         "@dcloudio/uni-quickapp-webview": "3.0.0-alpha-4020520240808001",
         "@multiavatar/multiavatar": "^1.0.7",
-        "@rollup/rollup-darwin-x64": "^4.28.0",
         "@vuepic/vue-datepicker": "^10.0.0",
         "alova": "^3.0.9",
         "axios": "^0.27.2",

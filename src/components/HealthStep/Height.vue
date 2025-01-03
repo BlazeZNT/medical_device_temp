@@ -3,7 +3,7 @@
     <view style="display: flex; flex-direction: column; align-items: center" >
       <view v-if="!showHeapler">
         <view class="title">HEIGHT</view>
-        <view class="number"> 0 <em>cm</em> </view>
+        <view class="number"> {{ height }} <em>cm</em> </view>
         <view class="container">
           <view class="heightBox">
 			<view class="scrollBox">
@@ -31,12 +31,70 @@ const props = defineProps({
   checkChange: Function,
   nextFun: Function,
 });
-
+const chSerialPort = uni.requireNativePlugin('Fvv-UniSerialPort')
 const state = reactive({});
+const height = ref(0);
+
+
+const onMessage = () => {
+  // 监听串口
+  chSerialPort.onMessageHex(rec => {
+
+    // 检查数据包长度是否合适
+    if (rec.length < 14) {
+      console.error('接收到的数据包长度无效');
+      return;
+    }
+    // 截取“0475”
+    let hex = rec.substring(8, 12);  // 从索引 8 到 12 截取字符串
+
+    // 将十六进制字符串转为十进制数 十进制数为检测到的毫米高度
+    let decimal = parseInt(hex, 16);
+    console.log(rec)
+    console.log(`距离值: ${decimal} mm`);
+    // 使用机器固定的超声探头高度减去测量高度得到身高
+    height.value = (2500 - decimal) / 10;
+  })
+}
+
+let isOpen = false;
 
 onMounted(() => {
-  // 组件能被调用必须是组件的节点已经被渲染到页面上
+  // 固定接口ttys7
+  chSerialPort.setPath('/dev/ttyS7')
+  chSerialPort.setBaudRate(9600)
+  // 打开串口
+  chSerialPort.open(res => {
+    if (!res.status) {
+      uni.showToast({
+        title: '设备连接失败，请联系管理员检查',
+        icon: 'none',
+        duration: 5000,
+      })
+      return
+    }
+    onMessage()
+    isOpen = true;
+  })
 });
+
+const initDev = () => {
+  chSerialPort.setPath('/dev/ttyS7')
+  chSerialPort.setBaudRate(9600)
+  chSerialPort.open(res => {
+    if (!res.status) {
+      uni.showToast({
+        title: '设备连接失败，请联系管理员检查',
+        icon: 'none',
+        duration: 5000,
+      })
+      return
+    }
+    onMessage()
+    isOpen = true;
+    chSerialPort.sendHex('55AA010505')
+  })
+}
 
 function onScroll(event) {}
 
@@ -45,7 +103,13 @@ const handleClickNext = () => {
   showHeapler.value = false;
 };
 const handleClickStart = () => {
-  weightValue.value = Math.floor(Math.random() * 301);
+  // 未打开串口进行重试
+  if (!isOpen) {
+    initDev()
+    return;
+  }
+  // 55AA010505 为测量命令
+  chSerialPort.sendHex('55AA010505')
 };
 
 // 在组件卸载前清理定时器

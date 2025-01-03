@@ -52,7 +52,7 @@
 	const chartRef = ref(null);
 
 	const weightValue = ref(0);
-
+  const lefu = uni.requireNativePlugin('Leiye-Lefu')
 	var demoData = reactive({
 		name: "WEIGHT",
 		value: 0,
@@ -63,8 +63,16 @@
 		kedu.value = val;
 	};
 
+  const device = ref({})
+
 	onMounted(() => {
-		// 组件能被调用必须是组件的节点已经被渲染到页面上
+		// 初始化SDK只需要调用一次
+		const res = lefu.initSDK({
+		  appKey: 'lefub3424cd357e3c6ef',
+		  secretKey: 'aC+aoX3Ce1qrSLSpliKMMuUL1OBBKSF0xeh0qJMeFnM=',
+		  configPath: 'assets/apps/__UNI__4CA4DFA/www/static/lefu.config'
+		})
+		console.log(res);
 	});
 
 	const myChart = ref(null);
@@ -79,8 +87,40 @@
 		}, 300);
 	};
 	const handleClickStart = () => {
-		weightValue.value = Math.floor(Math.random() * 301);
-		updateChartData(weightValue.value);
+    // setInterval(() => {
+    //   weightValue.value = Math.floor(Math.random() * 50);
+    //   console.log(weightValue.value )
+    //   updateChartData(weightValue.value);
+    // }, 2000)
+		// 扫描设备
+		lefu.scanDevice({}, (res) => {
+		  console.log(res)
+		  if (res.msg === 'FindDevice') {
+		    // 查找到设备
+		    device.value = res.data
+		    lefu.stopSearch({})
+
+			// 开始称重
+			lefu.startMeasuring({
+			  devMac: device.value.deviceMac,
+			  deviceName: device.value.deviceName,
+			}, (res) => {
+				console.log(res);
+			  if (res.msg === 'ProcessData') {
+			    // 正在测量
+			    weightValue.value = res.data
+			    updateChartData(weightValue.value);
+			  } else if (res.msg === 'LockData') {
+			    // 测量完成
+			    weightValue.value = res.data
+			    updateChartData(weightValue.value);
+			  }
+			})
+		  } else if (res.msg === 'BluetoothWorkState'){
+		    // 返回蓝牙状态，需要对状态进行处理
+		  }
+		})
+    
 	};
 
 	let interval = null; // 定时器
@@ -268,7 +308,7 @@
 						},
 					},
 					data: [{
-						value: demoData.value,
+						value: weightValue.value,
 						name: demoData.name,
 					}, ],
 				},
@@ -309,7 +349,7 @@
 						show: false,
 					},
 					data: [{
-						value: 0,
+						value: weightValue.value,
 						name: "",
 					}, ],
 				},

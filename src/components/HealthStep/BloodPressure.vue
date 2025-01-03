@@ -1,49 +1,28 @@
 <template>
   <ContentBox>
-    <view
-      style="
+    <view style="
         width: 100%;
         height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
-      "
-    >
-      <view
-        style="
+      ">
+      <view style="
           width: 100%;
           height: 100%;
           display: flex;
           flex-direction: column;
           align-items: center;
-        "
-        v-if="!showHeapler"
-      >
+        " v-if="!showHeapler">
         <div class="charsBox">
           <div class="charsItem" v-for="(item, index) in dataList" :key="index">
-            <GaugePie
-              :title="item.title"
-              :subTitle="item.projectName"
-              :value="item.value"
-              :min="item.min"
-              :max="item.max"
-              :unit="item.unit"
-            ></GaugePie>
+            <GaugePie :title="item.title" :subTitle="item.projectName" :value="item.value" :min="item.min"
+                      :max="item.max" :unit="item.unit"></GaugePie>
           </div>
           <div class="charsItem charsItem2">
-            <div
-              class="charsItem"
-              v-for="(item, index) in dataList2"
-              :key="index"
-            >
-              <GaugePie2
-                :title="item.title"
-                :subTitle="item.projectName"
-                :value="item.value"
-                :min="item.min"
-                :max="item.max"
-                :unit="item.unit"
-              ></GaugePie2>
+            <div class="charsItem" v-for="(item, index) in dataList2" :key="index">
+              <GaugePie2 :title="item.title" :subTitle="item.projectName" :value="item.value"
+                         :min="item.min" :max="item.max" :unit="item.unit"></GaugePie2>
             </div>
           </div>
         </div>
@@ -51,20 +30,16 @@
           <BasicButton @click="handleClickStart">START</BasicButton>
         </view>
       </view>
-      <HelperBox
-        img="../../static/health/healper/5.png"
-        :tips="tips"
-        @next="handleClickNext"
-        v-if="showHeapler"
-      ></HelperBox>
+      <HelperBox img="../../static/health/healper/5.png" :tips="tips" @next="handleClickNext" v-if="showHeapler">
+      </HelperBox>
     </view>
   </ContentBox>
 </template>
-	  
-	  <script setup>
+
+<script setup>
 import ContentBox from "@/components/HealthStep/ContentBox.vue";
 import HelperBox from "./HelperBox.vue";
-import { onMounted, ref, nextTick, reactive, onBeforeUnmount } from "vue";
+import {onMounted, ref} from "vue";
 import BasicButton from "@/components/BasicButton/index.vue";
 import GaugePie from "../Charts/GaugePie.vue";
 import GaugePie2 from "../Charts/GaugePie2.vue";
@@ -76,33 +51,30 @@ const props = defineProps({
 });
 const tips = `1.Stand on the height measurement device.<br>2.Press the start button  on the device`;
 
-const dataList = ref([
-  {
-    title: "PULSE",
-    projectName: "pulse/min",
-    value: 0,
-    min: 0,
-    max: 100,
-    unit: "",
-  },
-]);
+const dataList = ref([{
+  title: "PULSE",
+  projectName: "pulse/min",
+  value: 0,
+  min: 0,
+  max: 300,
+  unit: "",
+}, ]);
 
-const dataList2 = ref([
-  {
-    title: "SYSTOLIC",
-    projectName: "PRBPM",
-    value: 0,
-    min: 0,
-    max: 100,
-    unit: "mm Hg",
-  },
+const dataList2 = ref([{
+  title: "SYSTOLIC",
+  projectName: "PRBPM",
+  value: 0,
+  min: 0,
+  max: 300,
+  unit: "mmHg",
+},
   {
     title: "DIASTOLIC",
     projectName: "PRBPM",
     value: 0,
     min: 0,
-    max: 100,
-    unit: "mm Hg",
+    max: 300,
+    unit: "mmHg",
   },
 ]);
 
@@ -114,13 +86,94 @@ const handleClickNext = () => {
 };
 
 let timer = ref(null);
+const chSerialPort = uni.requireNativePlugin('Leiye-UniSerialPort')
+
+const list = ref([])
+
+const openDevice = () => {
+  const res = chSerialPort.chInit()
+  if (res.code === 'success') {
+    const devicesRes = chSerialPort.getUsbDevices()
+    if (devicesRes.code === 'success') {
+      list.value.device = devicesRes.data
+      console.log(list.value.device);
+    } else {
+      uni.showToast({
+        title: devicesRes.data
+      })
+    }
+  } else {
+    uni.showToast({
+      title: res.data
+    })
+  }
+}
+
+const calculateCKS = (hexString) => {
+  const data = hexString.match(/.{2}/g).map(byte => parseInt(byte, 16));
+  const cks = data.reduce((cks, byte) => cks ^ byte, 0x00);
+  return cks.toString(16).toUpperCase().padStart(2, '0');
+}
+
 const handleClickStart = () => {
-  timer.value = setInterval(() => {
-    dataList.value[0].value = generateRandomNumber(0, 100);
-	dataList2.value[0].value = generateRandomNumber(0, 100);
-    dataList2.value[1].value = generateRandomNumber(0, 100);
-    console.log(dataList.value);
-  }, 1000);
+  openDevice();
+
+  const device = list.value.device[0]
+  const devicesRes = chSerialPort.openDevice(device)
+
+  const serialCount = chSerialPort.getSerialCount(device)
+
+  const serialParameter = chSerialPort.setSerialParameter({
+    'usbDevice': device,
+    'serialCount': serialCount,
+    'baudBean': {
+      'baud': 115200,
+      'data': 8,
+      'stop': 1,
+      'parity': 0
+    }
+  })
+
+  chSerialPort.registerDataCallback(device, (data) => {
+    console.log(data);
+    // 设备连接成功
+    if (data.hex === 'AA80030301010000') {
+      // 发送测量指令
+      const writeData = chSerialPort.writeData({
+        'usbDevice': device,
+        'serialCount': serialCount,
+        'data': 'CC80030301020003'
+      })
+    }
+
+    // 测量中
+    if (data.hex.startsWith('AA8003040105')) {
+      let pressureHigh = parseInt(data.hex.substr(12, 2), 16); // 取高字节 P[15:8]
+      let pressureLow = parseInt(data.hex.substr(14, 2), 16) // 取低字节 P[7:0]
+
+      // 输出压力值
+      dataList2.value[0].value = (pressureHigh << 8) | pressureLow
+    }
+
+    // 测量结果
+    if (data.hex.startsWith('AA80030F0106')) {
+      const hexData = data.hex
+      let systolic = parseInt(hexData.substr(26, 2), 16) * 256 + parseInt(hexData.substr(28, 2), 16);
+      let diastolic = parseInt(hexData.substr(30, 2), 16) * 256 + parseInt(hexData.substr(32, 2), 16);
+      let pulse = parseInt(hexData.substr(34, 2), 16) * 256 + parseInt(hexData.substr(36, 2), 16);
+      dataList2.value[0].value = systolic
+      dataList2.value[1].value = diastolic
+      dataList.value[0].value = pulse
+    }
+  })
+
+  // 发送连接设备指令
+  const writeData = chSerialPort.writeData({
+    'usbDevice': device,
+    'serialCount': serialCount,
+    'data': 'CC80030301010000'
+  })
+
 };
 
 onMounted(() => {});
@@ -134,9 +187,9 @@ function generateRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 </script>
-	  
-	  
-  <style lang="scss" scoped>
+
+
+<style lang="scss" scoped>
 .content {
   display: flex;
   justify-content: center;
@@ -206,9 +259,11 @@ function generateRandomNumber(min, max) {
   align-items: center;
   width: 100%;
   overflow: hidden;
+
   .charsItem {
     flex: 1;
     height: 100%;
+
     &.charsItem2 {
       display: flex;
       flex-direction: column;
