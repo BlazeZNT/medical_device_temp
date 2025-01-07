@@ -49,7 +49,7 @@
                 <v-divider class="my-4"></v-divider>
 
                 <view class="recommendation-group">
-                  <img src="/static/star.png" alt="star" class="icon" />
+                  <img src="/static/star.png" class="icon" />
                   <view class="recommendation-title">Recommendations</view>
                 </view>
                 <view class="recommendations">
