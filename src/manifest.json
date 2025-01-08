@@ -1,6 +1,6 @@
 {
     "name" : "Medical-examination-machine",
-    "appid" : "__UNI__4CA4DFA",
+    "appid" : "__UNI__3B8F0BF",
     "description" : "",
     "versionName" : "1.2.1",
     "versionCode" : "100",
@@ -18,7 +18,9 @@
             "autoclose" : true,
             "delay" : 0
         },
-        "modules" : {},
+        "modules" : {
+            "Record" : {}
+        },
         "optimization" : {
             "subPackages" : true
         },
@@ -94,6 +96,20 @@
                     "isCloud" : false,
                     "bought" : -1,
                     "pid" : "",
+                    "parameters" : {}
+                }
+            },
+            "Xyjk-Speech-Recognition" : {
+                "__plugin_info__" : {
+                    "name" : "语音识别",
+                    "description" : "基于sherpa-ncnn的语音识别插件",
+                    "platforms" : "Android",
+                    "url" : "https://ext.dcloud.net.cn/plugin?id=12271",
+                    "android_package_name" : "uni.UNI4CA4DFA",
+                    "ios_bundle_id" : "",
+                    "isCloud" : true,
+                    "bought" : 1,
+                    "pid" : "12271",
                     "parameters" : {}
                 }
             }
