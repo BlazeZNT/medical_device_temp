@@ -114,9 +114,7 @@ import { createAppointment, updateAppointment } from "@/utils/auth.ts";
 import { ref, reactive, onMounted } from "vue";
 import { useAppStore } from "@/stores/app"; // Import the store
 import { transcribeAudio } from '@/utils/auth';
-
-const appStore = useAppStore(); // Access the Pinia store
-
+const appStore = useAppStore();
 // const transcript = ref('')
 const isRecording = ref(false)
 
@@ -355,8 +353,9 @@ const handleClickSubmit = async () => {
 	  try {
 		// Show loading spinner
 		isLoading.value = true;
-
+		console.log("from appointment", currentDocID.value)
 		const response = await createAppointment(
+		  currentDocID.value,
 		  potato[0]?.name,
 		  potato[0]?.specialization,
 		  potato[0].date, 
@@ -364,7 +363,6 @@ const handleClickSubmit = async () => {
 		  potato[0]?.year, 
 		  potato[0]?.image,
 		);
-		
 		if (response) {
 		  console.log("Appointment created successfully!");
 		  // Navigate to the confirmation page after successful submission

@@ -4,44 +4,12 @@
 			<view class="logo">
 				<image src="@/static/logo2.png" mode="heightFix"></image>
 			</view>
-			<view class="right">
-				<view class="textBox left">
-					<view class="label">Patient Name</view>
-					<view class="value">{{ patient?.name || 'N/A' }}</view>
-				</view>
-				<view class="textBox">
-					<view class="label">Age</view>
-					<view class="value">{{ patient?.age || 'N/A' }}</view>
-				</view>
-				<view class="textBox">
-					<view class="label">Date of Birth</view>
-					<view class="value">{{ patient?.dateOfBirth || 'N/A' }}</view>
-				</view>
-				<view class="textBox">
-					<view class="label">Gender</view>
-					<view class="value">{{ patient?.gender || 'N/A' }}</view>
-				</view>
-				<view class="textBox">
-					<view class="label">Phone</view>
-					<view class="value">{{ patient?.phoneNumber || 'N/A' }}</view>
-				</view>
-				<view class="device-connected">
-					  <view class="dot"></view>
-					  <text class="connected-text">DEVICE CONNECTED</text>
-				</view>
-			</view>
 		</view>
-		
 	</view>
 </template>
 
 <script setup>
 	import { ref, reactive } from "vue";
-	import { useAppStore } from '@/stores/app'; // Import the store
-	const appStore = useAppStore();
-	const patient = appStore.getPatient[0]; 
-	
-
 </script>
 
 <style lang="scss" scoped>

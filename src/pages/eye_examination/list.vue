@@ -10,11 +10,11 @@
               <image src="@/static/back.png" class="image-link" @click="handleItemClick(2)"></image>
             </view>
             <view class="centertext">
-              CONSULT NOW
+              Eye Checkup Reports
             </view>
             <view>
               <view class="rightback">
-                <image src="./noti.png" class="image-link" @click="handleItemClick(4)"></image>
+                <image src="@/static/noti.png" class="image-link" @click="handleItemClick(4)"></image>
               </view>
             </view>
 
@@ -22,26 +22,36 @@
               <view v-for="(doctor, idx) in page" :key="idx" class="doctor-card">
                 <div class="leftItems">
 					<div class="imageBox">
-						<image :src="'data:image/jpeg;base64,' + doctor.image" class="doctor-image" />
-						<div class="live-tag">LIVE</div>
+						<image src="@/static/Eye/orange2.png" alt="Eye Background" class="doctor-image" />
 					</div>
-                  <view class="doctor-info">
-                    <div class="doc-details">
-                      <view class="doctor-name">{{ doctor.name }}</view>
-                      <view class="doctor-specialization">{{ doctor.specialization }}</view>
-                    </div>       
-                  </view>
+					<div class="imageBox">
+						<image src="@/static/Eye/orange2.png" alt="Eye Background" class="doctor-image" />
+					</div>
+					<view class="doctor-info">
+					  <div class="doc-details">
+					    <view class="doctor-name">2901100029</view>
+					    <button class="colortext">Completed</button>
+					  </div>       
+					</view>
                 </div>
-            
-                <view class="doctor-info">
-                  <div class="doc-details">
-                    <view class="doctor-review">⭐ {{ doctor.review }}</view>
-                  </div>
-                </view>
+				
+				<view class="doctor-info">
+				  <div class="doc-details">
+				    <view class="doctor-name">Brian Binar Putra</view>
+				    <view class="doctor-specialization">29 yo, Male</view>
+				  </div>       
+				</view>
+				
+				<view class="doctor-info">
+				  <div class="doc-details">
+				    <view class="doctor-name">Doctor Rasmundsen</view>
+				    <view class="doctor-specialization">Uploaded 23/12/2024, 10:00</view>
+				  </div>       
+				</view>
 				
 				<view class="doctor-info">
 				  <button class="status-btn" @click="handleItemClick(1)">
-				  	JOIN
+				  	VIEW
 				  </button>
 				</view>
 			
@@ -50,9 +60,6 @@
             </view>
           </swiper-item>
         </swiper>
-      </view>
-      <view class="appointment-button-container">
-        <button class="appointment-button" @click="handleItemClick(3)">Book an Appointment</button>
       </view>
     </view>
   </view>
@@ -72,12 +79,11 @@ const fetchDoctors = async () => {
   try {
     // Assuming your API returns an array of doctors
     const response = await getLiveDoctors();
-	console.log("This is the one ", response)
     const data = await response;
 
     // Assuming response contains the doctors list
     doctors.value = data.map(doctor => ({
-      image: doctor.imageBase64 || '/static/doctordemo1.png',
+      image: doctor.imageBase64 || '/static/doctordemo.png',
       name: doctor.name || 'Unknown',
       specialization: doctor.specialization || 'Unknown',
       status: doctor.status || 'past',
@@ -272,7 +278,6 @@ const handleItemClick = (type) => {
           width: 100%;
           height: 1.8rem;
           display: flex;
-          justify-content: space-between;
           align-items: center;
           background: #232a31;
           border-radius: 16px;
@@ -283,8 +288,8 @@ const handleItemClick = (type) => {
             position: relative; /* Ensure the tag is positioned relative to the image box */
 
             .doctor-image {
-              width: 70px;
-              height: 70px;
+              width: 40px;
+              height: 40px;
               border-radius: 20%; /* Rounded corners for the image */
               object-fit: cover; /* Ensures the image maintains aspect ratio */
             }
@@ -313,7 +318,6 @@ const handleItemClick = (type) => {
 
           .doctor-info {
             display: flex;
-            min-width: 3rem;
             margin-left: 0.4rem;
             color: #fff;
             gap: 8rpx;
@@ -327,6 +331,15 @@ const handleItemClick = (type) => {
               text-align: left;
               margin-bottom: 4px;
             }
+			
+				
+			.colortext{
+				font-size: 10px;
+				padding: 0px 5px;
+				border-radius: 15px;
+				background-color: red;
+				color: white;
+			}
 
             .day-time {
               max-width: 3rem;
@@ -361,4 +374,6 @@ const handleItemClick = (type) => {
     }
   }
 }
+
+
 </style>

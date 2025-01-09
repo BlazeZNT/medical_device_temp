@@ -105,10 +105,11 @@ const handleDoctorClick = (doctor) => {
   console.log("Doctor Information:", {
     name: doctor.name,
     specialization: doctor.specialization,
+	id: doctor.id,
   });
 
   uni.navigateTo({
-    url: `/pages/telemedicine/makeAppointment?name=${encodeURIComponent(doctor.name)}&specialization=${encodeURIComponent(doctor.specialization)}&image=${encodeURIComponent(doctor.imageBase64)}`,
+    url: `/pages/telemedicine/makeAppointment?id=${encodeURIComponent(doctor.id)}&name=${encodeURIComponent(doctor.name)}&specialization=${encodeURIComponent(doctor.specialization)}&image=${encodeURIComponent(doctor.imageBase64)}`,
   });
 };
 </script>

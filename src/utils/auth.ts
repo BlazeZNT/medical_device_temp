@@ -1,9 +1,9 @@
 // src/utils/auth.js
-
+import { useAppStore } from '@/stores/app'; // Import the store
 // Base URL for all API requests
 const BASE_URL = 'http://192.168.1.104:8080/api'; // Replace with your actual base URL
 const OPENAI_API_URL = 'https://api.openai.com/v1/audio/transcriptions';
-const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY; // Use environment variable
+// const OPENAI_API_KEY =  // Replace with your OpenAI API Key
 
 
 
@@ -36,8 +36,6 @@ const makeRequest = (method, url, data = {}, headers = {}) => {
 
 const transcribeAudio = (audioPath) => {
   return new Promise((resolve, reject) => {
-	console.log('API Key:', OPENAI_API_KEY);
-	console.log('API Key Length:', OPENAI_API_KEY.length);  
     uni.uploadFile({
       url: OPENAI_API_URL,
       filePath: audioPath, // Path to the audio file
@@ -77,8 +75,8 @@ const getDoctors = () => {
 };
 
 // Get list of appointments
-const getAppointments = () => {
-  return makeRequest('GET', '/appointments/list');
+const getAppointments = (id) => {
+  return makeRequest('GET', `/appointments/patient/${id}`);
 };
 
 const getLiveDoctors = () => {
@@ -98,12 +96,14 @@ const updateAppointment = (id, appointmentData) => {
     };
 
 // Create a new appointment (using a Base64 image string)
-const createAppointment = (name, specialization, date, time, year, imageBase64) => {
-	return makeRequest('POST', '/appointments/add', {name, specialization, date, time, year, imageBase64}, {
+const createAppointment = (doctorid, name, specialization, date, time, year, imageBase64) => {
+	const appStore = useAppStore(); // Access the Pinia store
+	const patient = appStore.getPatient[0].id; 
+	console.log("This is auth patient", patient, doctorid)
+	const url = `/appointments/add?currentPatient=${patient}&chosenDoctor=${doctorid}`;
+	return makeRequest('POST', url, {name, specialization, date, time, year, imageBase64}, {
     'Content-Type': 'application/json', 
   });
-  
-
   
 };
 

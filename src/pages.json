@@ -36,6 +36,45 @@
 		    }
 		},
 		{
+		    "path" : "pages/eye_examination/index",
+		    "style" : {
+		        "navigationBarTitleText" : "uni-app",
+		        "navigationStyle" : "custom",
+		        "disableScroll" : true,
+		        "topWindow" : true
+		    },
+		    "meta" : {
+		        "tabBar" : true,
+		        "ignoreAuth" : true
+		    }
+		},
+		{
+		    "path" : "pages/eye_examination/assessment",
+		    "style" : {
+		        "navigationBarTitleText" : "uni-app",
+		        "navigationStyle" : "custom",
+		        "disableScroll" : true,
+		        "topWindow" : true
+		    },
+		    "meta" : {
+		        "tabBar" : true,
+		        "ignoreAuth" : true
+		    }
+		},
+		{
+		    "path" : "pages/eye_examination/list",
+		    "style" : {
+		        "navigationBarTitleText" : "uni-app",
+		        "navigationStyle" : "custom",
+		        "disableScroll" : true,
+		        "topWindow" : true
+		    },
+		    "meta" : {
+		        "tabBar" : true,
+		        "ignoreAuth" : true
+		    }
+		},
+		{
 		    "path" : "pages/telemedicine/makeAppointment",
 		    "style" : {
 		        "navigationBarTitleText" : "uni-app",

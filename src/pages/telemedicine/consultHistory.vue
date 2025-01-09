@@ -61,6 +61,7 @@ import { ref, onMounted, watch } from 'vue';
 import Header from "@/components/Layout/Header.vue";
 import slibrary from "@/slibrary/index.js";
 import { getAppointments } from "@/utils/auth.ts"; // Import the API function
+import { useAppStore } from '@/stores/app'; // Import the store
 
 
 
@@ -69,14 +70,15 @@ const doctors = ref([]);
 const pages = ref([]);
 const showModal = ref(false);
 const selectedDoctor = ref({ pageIndex: null, doctorIndex: null });
-
+const appStore = useAppStore();
+const patient = appStore.getPatient[0]; 
 
 
 // API endpoint to fetch doctor data (replace with actual API URL)
 const fetchDoctors = async () => {
   try {
     // Assuming your API returns an array of doctors
-    const response = await getAppointments();
+    const response = await getAppointments(patient.id);
     const data = await response;
 
     // Assuming response contains the doctors list
