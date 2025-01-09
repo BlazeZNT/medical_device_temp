@@ -16,33 +16,6 @@
 		  </view>
 		 <view class="divider"></view>
 		</view>
-<!-- 		<view class="uni-title uni-common-mt">
-			Vertical Scroll
-			<text>\n纵向滚动</text>
-		</view>
-		<view @tap="goTop" class="uni-link uni-center uni-common-mt">
-			点击这里返回顶部
-		</view> -->
-<!-- 		<view>
-			<scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scrolltoupper="upper"
-				@scrolltolower="lower" @scroll="scroll">
-				<view id="demo1" class="scroll-view-item uni-bg-red">A</view>
-				<view id="demo2" class="scroll-view-item uni-bg-green">B</view>
-				
-				<view class="flex-wrapper">
-				  <view
-					v-for="(message, index) in chatMessages"
-					:key="index"
-					:class="[message.className || 'chat-bubble']"
-				  >
-					<template class="scroll-view-item" v-if="message.type === 'text'">
-					  {{ message.content }}
-					</template>
-				 </view>
-				</view>
-				<view id="demo3" class="scroll-view-item uni-bg-blue">C</view>
-			</scroll-view>
-		</view> -->
 		<scroll-view
 		  class="chatContainer scroll-Y"
 		  scroll-y
@@ -122,13 +95,34 @@
 			  </view>
 			</view>
 			
-		</scroll-view>
-		
-		<!-- <view class="divider"></view>
-			<view class="speech-button">	
-				<image class="icon" src="@/static/mic.png" alt="Microphone Icon" />
-				<text class="button-text">SPEECH TO CHAT</text>
-			 </view> -->
+		</scroll-view>		
+		<view class="column">
+		  <view class="divider"></view>
+		  <view v-if = "wannatalk" class="input-section">
+				<div class="textarea-container">
+				   <div class="textarea-content" contenteditable="true" :class="{ 'placeholder-visible': !transcription.trim() }" @input="updateTranscription">{{ transcription }}</div>
+					  <div v-if="isRecording" class="sound-wave">
+						<span class="wave"></span>
+						<span class="wave"></span>
+						<span class="wave"></span>
+					  </div>
+				</div>
+				<button v-if = "isRecording" class="recordBtn" @click="endRecord">Stop</button>
+				<button  v-else class="recordBtn" @click="startRecord">Record</button>
+				<!-- Conditionally render 'Send' or 'Cancel' based on transcription.value -->
+				<button v-if="transcription && transcription.trim()" @click="sendTranscription" class="recordBtn">
+				  Send
+				</button>
+				<button v-else @click="cancelTranscription" class="recordBtn">
+				  Cancel
+				</button>
+
+		  </view>
+		  <div v-else class="speech-to-chat-button" @click="speakingchange">
+		    <image src="@/static/calendar.png" alt="Microphone Icon" class="icon" />
+		    <span>SPEECH TO CHAT</span>
+		  </div>
+		</view>
 	  </view>
 	  <!-- Popup Modal -->
 	      <div v-if="showPopup" class="popup">
@@ -148,6 +142,106 @@ import { watch } from "vue";
 import { createAppointment, updateAppointment } from "@/utils/auth.ts"; 
 import CustomCalendar from "@/components/customCalendar2/index.vue";
 import CustomCalendar2 from "@/components/customCalendar/index.vue";
+import { transcribeAudio } from '@/utils/auth';
+
+const isRecording = ref(false)
+const clickedButton = ref(null);
+const wannatalk = ref(false);
+
+const speakingchange = () => {
+  wannatalk.value = !wannatalk.value; 
+};
+
+const handleClick = (index, time) => {
+  clickedButton.value = index;
+  // console.log("Selected Time:", time);
+};
+
+// const ToggleMic = () => {
+// 	isRecording.value = !isRecording.value
+// }
+const recordingPath = ref(''); // Stores the path of the recorded audio
+
+
+
+// Initialize recorder manager and audio context
+const recorderManager = uni.getRecorderManager();
+const innerAudioContext = uni.createInnerAudioContext();
+innerAudioContext.autoplay = true;
+
+// Define reactive variables
+const voicePath = ref('');
+const transcription = ref('');
+// Setup recorder manager event handlers
+onMounted(() => {
+	recorderManager.onStop((res) => {
+	  console.log('Recorder stopped:', res);
+	  voicePath.value = res.tempFilePath;
+	  if (voicePath.value) {
+		transcribeRecording(); // Ensure this function works as expected
+	  }
+	});
+});
+
+// Methods for recording and playback
+const startRecord = () => {
+  console.log('Start recording');
+  recorderManager.start();
+  isRecording.value = !isRecording.value
+};
+
+const endRecord = () => {
+  console.log('Stop recording');
+  recorderManager.stop();
+};
+
+const playVoice = () => {
+  if (voicePath.value) {
+	console.log('Play recording:', voicePath.value);
+	innerAudioContext.src = voicePath.value;
+	innerAudioContext.play();
+  }
+};
+
+
+const transcribeRecording = async () => {
+  if (voicePath.value) {
+	try {
+	  console.log('Uploading audio for transcription...');
+	  transcription.value = await transcribeAudio(voicePath.value); // Update the reactive variable
+	  isRecording.value = !isRecording.value
+	  console.log('Transcription:', transcription.value);
+	} catch (err) {
+	  console.error('Error during transcription:', err);
+	  uni.showToast({
+		title: 'Transcription failed',
+		icon: 'none',
+	  });
+	  isRecording.value = !isRecording.value
+	}
+  } else {
+	uni.showToast({
+	  title: 'No audio to transcribe',
+	  icon: 'none',
+	});
+	isRecording.value = !isRecording.value
+  }
+};
+
+const cancelTranscription = () => {
+  transcription.value = ""; // Clear the transcription
+  wannatalk.value = false; // Close the transcription mode
+};
+
+const sendTranscription = () => {
+  console.log("Sending transcription:", transcription.value);
+  wannatalk.value = false; // Close the transcription mode
+};
+
+const updateTranscription = (event) => {
+  transcription.value = event.target.innerText.trim(); // Update transcription based on contenteditable input
+};
+
 
 
 const rescheduleClick = ref(false);
@@ -155,6 +249,7 @@ const showDates = ref(false);
 const hoho = ref(false);
 const completo = ref(false);
 const fullchoice = ref(false);
+
 
 
 // State for user and doctor details
@@ -694,11 +789,11 @@ watch(input, (newMessages, oldMessages) => {
 	background-color: white;
 }
 .divider {
-	width: 100vw; /* Full viewport width */
-	height: 1px;
-	background-color: #ccc; /* Light grey color */
-	margin-left: -40px;
-	margin-right: -40px;
+	position: relative;
+	width: calc(100% + 40px);
+    height: 1px;
+    background-color: #ccc;
+	left: -20px;
 }
 
 .chatContainer {
@@ -896,5 +991,148 @@ watch(input, (newMessages, oldMessages) => {
 	text-align: center;
 	font-size: 36rpx;
 }
+.input-section {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  // padding: 10px 20px;
+  // background-color: white;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  gap: 10px;
+  color: white;
+}
 
+.home-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.chat-input {
+  flex: 1;
+  border-radius: 20px;
+}
+.speech-to-chat-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to right, #3aadaa, #55d4c1); /* Gradient background */
+  color: #000; /* Black text color */
+  font-weight: bold;
+  font-size: 16px;
+  padding: 15px 40px; /* Padding inside the button */
+  border-radius: 50px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  cursor: pointer;
+  border: none; /* No border */
+  max-width: 180px;
+  margin-top: 20px;
+}
+
+.mic-icon {
+  height: 24px;
+  margin-right: 15px; /* Space between icon and text */
+}
+
+.speech-to-chat-button:hover {
+  transform: scale(1.05); /* Slightly enlarge on hover */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3); /* Emphasize shadow */
+}
+
+.record-button {
+  position: absolute; /* Position the button absolutely within the container */
+  bottom: 8px; /* Align to the bottom of the container */
+  right: 8px; /* Align to the right side of the container */
+  background-color: #58ffcf;
+  color: black;
+  border: none;
+  border-radius: 3px; /* Slightly smaller border radius */
+  padding: 3px 6px; /* Reduce padding to make the button smaller */
+  font-size: 12px; /* Smaller font size */
+  cursor: pointer;
+}
+
+.textarea-container {
+	  display: flex;
+	  position: relative; /* Set relative positioning for the parent */
+	  border-radius: 5px;
+	  padding: 5px;
+	  color: white;
+	  width: 100%;
+	}
+	
+	.textarea-content {
+	  flex: 1;
+	  outline: none;
+	  border: none;
+	  background: transparent;
+	  padding: 0;
+	  color: white;
+	  overflow-y: auto;
+	  max-height: 150px;
+	}
+	
+	.record-button {
+	  position: absolute; /* Position the button absolutely within the container */
+	  bottom: 8px; /* Align to the bottom of the container */
+	  right: 8px; /* Align to the right side of the container */
+	  background-color: #58ffcf;
+	  color: black;
+	  border: none;
+	  border-radius: 3px; /* Slightly smaller border radius */
+	  padding: 3px 6px; /* Reduce padding to make the button smaller */
+	  font-size: 12px; /* Smaller font size */
+	  cursor: pointer;
+	}
+	
+	.sound-wave {
+	  position: absolute;
+	  bottom: 8px;
+	  left: 50%;
+	  transform: translateX(-50%);
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  gap: 4px;
+	}
+	
+	.wave {
+	  width: 4px;
+	  height: 10px;
+	  background-color: #58ffcf;
+	  border-radius: 2px;
+	  animation: wave-animation 1s infinite ease-in-out;
+	}
+	
+	.wave:nth-child(2) {
+	  animation-delay: 0.2s;
+	}
+	
+	.wave:nth-child(3) {
+	  animation-delay: 0.4s;
+	}
+	
+	@keyframes wave-animation {
+	  0%, 100% {
+	    height: 10px;
+	  }
+	  50% {
+	    height: 20px;
+	  }
+	}
+	
+	.textarea-content {
+	  position: relative;
+	  outline: none;
+	  min-height: 50px; /* Adjust based on your needs */
+	  color: white;
+	}
+	
+	/* Placeholder styling */
+	.textarea-content.placeholder-visible::before {
+	  content: "Record to add text"; /* Your placeholder text */
+	  position: absolute;
+	  color: #ccc; /* Placeholder text color */
+	  pointer-events: none; /* Allow clicking through placeholder */
+	}
+	
 </style>

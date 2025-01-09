@@ -67,7 +67,7 @@
 		  </view>
 	  </view>
       <view class="appointment-button-container">
-        <button class="appointment-button" @click="handleItemClick(2)">Book an Appointment</button>
+        <button class="appointment-button" @click="handleItemClick(2)">BOOK AN APPOINTMENT</button>
       </view>
     </view>
 
@@ -101,13 +101,17 @@ const showModal = ref(false);
 const selectedDoctor = ref({ pageIndex: null, doctorIndex: null });
 const hello = ref(false);
 const count = ref(0);
+const appStore = useAppStore();
+const patient = appStore.getPatient[0]; 
+
+
+
 // API endpoint to fetch doctor data (replace with actual API URL)
 const fetchDoctors = async () => {
   try {
     // Assuming your API returns an array of doctors
-    const response = await getAppointments();
+    const response = await getAppointments(patient.id);
     const data = await response;
-
     // Assuming response contains the doctors list
     doctors.value = data.map(doctor => ({
       id: decodeURIComponent(doctor.id),
@@ -120,8 +124,8 @@ const fetchDoctors = async () => {
       status: decodeURIComponent(doctor.status || 'past'),
     }));
 		count.value = doctors.value.length
-		console.log("this is count",count.value)
-	// console.log(hello.value)
+
+
     // Recalculate pages for pagination
     const itemsPerPage = 3;
     pages.value = [];

@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import LayoutContent from "@/components/Layout/Content.vue";
+import LayoutContent from "@/components/Layout/logincontent.vue";
 import slibrary from "@/slibrary/index.js";
 import BasicButton from "@/components/BasicButton/index.vue";
 import { ref } from "vue";

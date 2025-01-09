@@ -5,7 +5,7 @@
         <view class="leftCardTitle">
           <uni-icons type="home" color="#58FFCF" size="34"></uni-icons>
           <view class="line">|</view>
-          <view class="title">General Checkup</view>
+          <view class="title">Eye Assessment</view>
         </view>
         <scroll-view scroll-y="true" class="scrollMenu">
           <view
@@ -20,13 +20,17 @@
             </view>
             {{ item.name }}
           </view>
+		  <view class="menuimgbox">
+			  <image src="@/static/Eye/whiteback.png" alt="Left Arrow" class = "menuimg"></image>
+			  <text class="regular">Pupil Size 4.0 mm</text>
+		  </view>
         </scroll-view>
       </view>
       <view class="pageView-content">
-        <component :is="stepComponent"></component>
+        <component :is="stepComponent" @startButtonClicked="changestage" @stopButtonClicked = "stopbutton"></component>
       </view>
     </view>
-  </LayoutContent>
+  </LayoutContent>	
 </template>
 
 <script setup>
@@ -34,78 +38,39 @@ import LayoutContent from "@/components/Layout/Content.vue";
 import slibrary from "@/slibrary/index.js";
 import BasicButton from "@/components/BasicButton/index.vue";
 import BtnCard from "@/components/Card/BtnCard.vue";
-import Height from "@/components/HealthStep/Height.vue";
-import Weight from "@/components/HealthStep/Weight.vue";
-import Temperature from "@/components/HealthStep/Temperature.vue";
-import Oximeter from "@/components/HealthStep/Oximeter.vue";
-import BloodPressure from "@/components/HealthStep/BloodPressure.vue";
-import Spirometer from "@/components/HealthStep/Spirometer.vue";
-import Egc from "@/components/HealthStep/Egc.vue";
-import BloodSugar from "@/components/HealthStep/Bloodsugar.vue";
-import Cholestrol from "@/components/HealthStep/Cholesterol.vue";
+import Eye from "@/components/Eye/auto.vue";
+import OU from "@/components/Eye/ou.vue";
+
 
 import { ref, reactive, shallowRef } from "vue"; 
 
 const ProjectList = {
-  Weight: {
-    icon: "../../static/health/icons/1.png",
-    name: "WEIGHT",
-    component: Weight,
-  },
-  Height: {
-    icon: "../../static/health/icons/2.png",
-    name: "HEIGHT",
-    component: Height,
-  },
-  Temperature: {
-    icon: "../../static/health/icons/3.png",
-    name: "TEMPERATURE",
-    component: Temperature,
-  },
-  Oximeter: {
-    icon: "../../static/health/icons/4.png",
-    name: "OXIMETER",
-    component: Oximeter,
-  },
-  BloodPressure: {
-    icon: "../../static/health/icons/5.png",
-    name: "BLOOD PRESSURE",
-    component: BloodPressure,
-  },
-  Spirometer: {
-    icon: "../../static/health/icons/5.png",
-    name: "SPIROMETER",
-    component: Spirometer,
-  },
-  Egc: {
-    icon: "../../static/health/icons/5.png",
-    name: "Egc",
-    component: Egc,
-  },
-  BloodSugar: {
-    icon: "../../static/health/icons/5.png",
-    name: "Blood Sugar",
-    component: BloodSugar,
-  },
-  Cholesterol: {
-    icon: "../../static/health/icons/4.png",
-    name: "Cholestrol",
-    component: Cholestrol,
-  },
+   Eye: {
+     icon: "../../static/Eye/1.png",
+     name: "Auto",
+     component: Eye,
+   },
+   OU: {
+     icon: "../../static/Eye/2.png",
+     name: "OU",
+     component: OU,
+   },
+   Temperature: {
+     icon: "../../static/Eye/3.png",
+     name: "SINGLE FIELD",
+     // component: Temperature,
+   },
+   Oximeter: {
+     icon: "../../static/Eye/4.png",
+     name: "IR & VIS",
+     // component: Oximeter,
+   },
 };
 
-const stepComponent = shallowRef(Weight);
+const stepComponent = ref("");
 
-const Components = {
-  Weight,
-};
 
-const active = ref("WEIGHT");
-
-// 使用 reactive 创建响应式状态
-const state = reactive({
-  step: 1,
-});
+const active = ref("");
 
 const handleClickMenu = (item, key) => {
   stepComponent.value = item.component;
@@ -116,6 +81,16 @@ const handleClickCard = () => {
   slibrary.$router.go("/pages/health/detection");
 };
 
+const changestage = () => {
+  active.value = "OU";
+  stepComponent.value = OU; // Set to the OU component
+  
+  
+};
+
+const stopbutton = () => {
+	slibrary.$router.go("/pages/eye_examination/list");
+}
 const getImg = (url) => {
   //正确方法
   return url
@@ -135,7 +110,6 @@ const getImg = (url) => {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(180deg, #2b3138 0%, #2b3138 100%, #1f252c 100%);
     // opacity: 0.6;
     flex-shrink: 0;
 
@@ -170,12 +144,13 @@ const getImg = (url) => {
           rgba(50, 61, 73, 0.8) 100%
         );
         border-radius: 10rpx 10rpx 10rpx 10rpx;
-        padding: 15rpx 15rpx;
+        padding: 10rpx 8rpx;
         color: #fff;
         font-size: 8rpx;
         color: #ffffff;
         line-height: 11rpx;
         margin-bottom: 11rpx;
+		width: 80%;
 
         .icon {
           width: 16.67rpx;
@@ -223,4 +198,21 @@ const getImg = (url) => {
     line-height: 13px;
   }
 }
+
+.menuimg{
+	height: 80px;
+	width: 120px;
+}
+
+.menuimgbox{
+	display: flex;
+	flex-direction: column;
+	// background: lightgrey;
+}
+
+.regular{
+	color: white;
+	font-size: 10px;
+}
+
 </style>

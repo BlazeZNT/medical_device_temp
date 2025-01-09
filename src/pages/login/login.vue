@@ -77,14 +77,20 @@
 </template>
 
 <script setup>
-import LayoutContent from "@/components/Layout/Content.vue";
+import LayoutContent from "@/components/Layout/logincontent.vue";
 import BtnCard from "@/components/Card/BtnCard.vue";
 import slibrary from "@/slibrary/index.js";
 import CodeInput from "@/components/CodeInput/index.vue";
 import BasicButton from "@/components/BasicButton/index.vue";
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import {sendLoginRequest} from "@/utils/auth.ts"; // Import the API function
+import { useAppStore } from '@/stores/app'; // Import the store
 
+
+
+const appStore = useAppStore();
+
+const patient = ref({});
 const state = reactive({
   setp: 1,
 });
@@ -93,6 +99,19 @@ const phoneNumber = ref("");  // Use this to bind the phone number input
 const loading = ref(false);   // This will manage the loading state for the API request
 const showModal = ref(false);
 
+
+// onMounted(() => {
+//   appStore.logOut();
+//   console.log("App store logged out on component load");
+//   state.setp = 1;
+// });
+
+// onLoad((options) => {
+// 	appStore.logOut();
+// 	console.log("App store logged out on component load");
+// 	state.setp = 1;
+// });
+	
 const handleClickBack = () => {
   if (state.setp != 1) {
 	console.log("error")
@@ -118,8 +137,31 @@ const handleClickLogin = async () => {
     console.log('Sending API request...');
     const response = await sendLoginRequest(phoneNumber.value); // Check if this request is being sent correctly
     console.log('API response:', response);
-	
+
     if (response) {
+		
+		// Create a Date object from the ISO string
+		const date = new Date(response.dateOfBirth);
+		
+		// Extract the year, month, and day components
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+		const day = String(date.getDate()).padStart(2, '0');
+		
+		// Combine the components into the desired format
+		const formattedDate = `${day}/${month}/${year}`;
+		
+		appStore.setPatient({
+		  id: response.id,
+		  name: decodeURIComponent(response.name || 'Unknown'),
+		  age: response.age || 0,
+		  gender: decodeURIComponent(response.gender || 'Unknown'),
+		  dateOfBirth: decodeURIComponent(formattedDate || 'Unknown'),
+		  phoneNumber: decodeURIComponent(response.phoneNumber || 'Unknown'),
+		});
+		console.log()
+
+	  // }));
       state.setp = 3;  // Move to next step
     } else {
       console.log("Login failed: No valid data.");
@@ -133,6 +175,7 @@ const handleClickLogin = async () => {
   }
 };
 
+
 const closeModal = () => {
   showModal.value = false; // Close the modal
 };
@@ -142,9 +185,13 @@ const handleClickRegister = () => {
 };
 
 const handleClickLoginCreate = () => {
+  appStore.logIn();
   slibrary.$router.go("/pages/health/index");
+  
 }
 </script>
+
+
 
 <style lang="scss" scoped>
 .login {

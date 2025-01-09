@@ -1,5 +1,5 @@
 <template>
-	<LayoutContent showBack @back="handleClickCard(4)">>
+	<LayoutContent >
 		<view class="pageView">
 			<view class="pageView-title">
 				<i>Welcome, Debra.</i> What do you need today?
@@ -49,12 +49,14 @@
 	import slibrary from "@/slibrary/index.js";
 	import BasicButton from "@/components/BasicButton/index.vue";
 	import BtnCard from "@/components/Card/BtnCard.vue";
+	
 
 	import { ref, reactive, computed } from "vue";
 	
 	const btnCards = [
 		{ id: 1, icon: "/static/health/1.png", name: "GENERAL CHECKUP" },
 		{ id: 2, icon: "/static/health/2.png", name: "ADVANCE TEST" },
+		{ id: 6, icon: "/static/health/6.png", name: "EYE EXAMINATION" },
 		{ id: 3, icon: "/static/health/3.png", name: "REPORT" },
 		{ id: 4, icon: "/static/health/4.png", name: "E-HEALTH RECORD" },
 		{ id: 5, icon: "/static/health/5.png", name: "TELE MEDICINE" },
@@ -81,6 +83,9 @@
 					break;
 				case 5:
 					slibrary.$router.go("/pages/telemedicine/choicePage");
+					break;
+				case 6:
+					slibrary.$router.go("/pages/eye_examination/index");
 					break;
 					
 			}
