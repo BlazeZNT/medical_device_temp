@@ -3,7 +3,7 @@ import { useAppStore } from '@/stores/app'; // Import the store
 // Base URL for all API requests
 const BASE_URL = 'http://192.168.1.104:8080/api'; // Replace with your actual base URL
 const OPENAI_API_URL = 'https://api.openai.com/v1/audio/transcriptions';
-// const OPENAI_API_KEY =  // Replace with your OpenAI API Key
+// const OPENAI_API_KEY =  ADD YOUR KEY 
 
 
 
