@@ -11,9 +11,9 @@
 				<view class="charts">
 					<view style="width: 250rpx; height: 250rpx"><l-echart ref="chartRef"></l-echart></view>
 				</view>
-				<view class="btnsbox">
+				<!-- <view class="btnsbox">
 					<BasicButton @click="handleClickStart">START</BasicButton>
-				</view>
+				</view> -->
 			</view>
 			<HelperBox img="../../static/health/healper/8.png" :tips="tips" @next="handleClickNext" v-if="showHeapler">
 			</HelperBox>
@@ -85,8 +85,12 @@
 		// 组件能被调用必须是组件的节点已经被渲染到页面上
     openDevice()
 
-    const device = list.value.device[0]
-    console.log(device)
+    console.log(list.value.device)
+    const device = list.value.device.find(item => {
+      console.log(item)
+      return item.deviceName.startsWith('/dev/bus/usb/001')
+    })
+	
     const devicesRes = chSerialPort.openDevice(device)
 
     const serialCount = chSerialPort.getSerialCount(device)
@@ -108,6 +112,8 @@
         const parsedData = parseHexData(hexData);
         demoData.value = parsedData.mmol;
         console.log(demoData.value)
+        // 回传
+        emit('callback', { name: 'Bloodsugar', value: demoData.value + ' mmol/L' })
         startDynamicUpdate();
       }
     })
@@ -203,6 +209,8 @@
 	    }
 	};
 	
+	const emit = defineEmits(['callback'])
+
 	const updateChartData = () => {
 	    demoData.value = Math.min(demoData.value, 15.8); // Clamp to 250
 	    myChart.value.setOption(option.value);

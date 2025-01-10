@@ -11,6 +11,16 @@
                     "type": "module",
 					"name": "Leiye-Oximeter",
 					"class": "io.dcloud.uniplugin.OximeterModule"
+                },
+                {
+                    "type": "module",
+					"name": "Leiye-Print",
+					"class": "io.dcloud.uniplugin.PrintModule"
+                },
+                {
+                    "type": "module",
+					"name": "Leiye-BloodlipidsModule",
+					"class": "io.dcloud.uniplugin.BloodlipidsModule"
                 }
             ],
             "dependencies": [

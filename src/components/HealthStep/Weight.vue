@@ -86,6 +86,9 @@
 			myChart.value.setOption(option.value);
 		}, 300);
 	};
+
+	const emit = defineEmits(['callback'])
+
 	const handleClickStart = () => {
     // setInterval(() => {
     //   weightValue.value = Math.floor(Math.random() * 50);
@@ -114,6 +117,8 @@
 			    // 测量完成
 			    weightValue.value = res.data
 			    updateChartData(weightValue.value);
+				// 回传
+				emit('callback', { name: 'Weight', value: weightValue.value + ' Kg' })
 			  }
 			})
 		  } else if (res.msg === 'BluetoothWorkState'){

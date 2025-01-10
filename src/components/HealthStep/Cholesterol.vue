@@ -49,7 +49,7 @@
                 <v-divider class="my-4"></v-divider>
 
                 <view class="recommendation-group">
-                  <img src="/static/star.png" class="icon" />
+                  <img src="@/static/star.png" class="icon" />
                   <view class="recommendation-title">Recommendations</view>
                 </view>
                 <view class="recommendations">
@@ -66,6 +66,11 @@
               </view>
             </view>
           </scroll-view>
+          <view class="btn-box">
+            <view class="btnsbox">
+              <BasicButton @click="printResults">Test completed print results</BasicButton>
+            </view>
+          </view>
         </view>
       </view>
       <HelperBox
@@ -82,7 +87,9 @@
 import ContentBox from "@/components/HealthStep/ContentBox.vue";
 import HelperBox from "./HelperBox.vue";
 import { ref, reactive } from "vue";
+import BasicButton from "@/components/BasicButton/index.vue";
 
+const bloodlipidsModule = uni.requireNativePlugin('Leiye-BloodlipidsModule')
 const showHeapler = ref(true);
 const handleClickNext = () => {
   showHeapler.value = false;
@@ -92,23 +99,23 @@ const handleClickNext = () => {
 const testData = reactive([
   {
     name: "Total Cholesterol",
-    value: 4.5,
-    unit: " Mmol/L",
-    thresholds: { low: 0, normal: 3.0, high: 5.0, max: 6.0 },
+    value: 0,
+    unit: " mg/dl",
+    thresholds: { low: 0, normal: 20, high: 200, max: 400 },
     recommendations: ["Regular blood monitoring", "dietary Sodium"],
   },
   {
     name: "TRIGLYCERIDE",
-    value: 120,
-    unit: " Mmol/L",
-    thresholds: { low: 0, normal: 60, high: 120, max: 130 },
+    value: 0,
+    unit: " mg/dl",
+    thresholds: { low: 40, normal: 150, high: 200, max: 400 },
     recommendations: ["Regular blood monitoring", "dietary Sodium"],
   },
   {
     name: "HDL Cholesterol",
-    value: 4.5,
-    unit: " Mmol/L",
-    thresholds: { low: 0, normal: 2.5 , high: 5, max: 5.5 },
+    value: 0,
+    unit: " mg/dl",
+    thresholds: { low: 45, normal: 2.5 , high: 5, max: 5.5 },
     recommendations: ["Regular blood monitoring", "dietary Sodium"],
   },
   {
@@ -126,6 +133,101 @@ const testData = reactive([
     recommendations: ["Regular blood monitoring", "dietary Sodium"],
   },
 ]);
+
+const init = () => {
+  bloodlipidsModule.openDevice({
+    "ProductId": 8963,
+    "VendorId": 1659
+  }, (data) => {
+    if (data.code === "success") {
+      handleReceivedData(data.message);
+    }
+  })
+}
+
+onMounted(() => {
+  // console.log(bloodlipidsModule)
+  init()
+  // handleReceivedData('5443203A20313038206D672F644C0D0A5447203A20203938206D672F644C0D0A48444C3A20203537206D')
+  // handleReceivedData('672F644C0D0A4C444C3A20203332206D672F644C0D0A54432F48444C3A20312E39300D0A323031382D30362D32392031373A35380D0A0D0A0A0A')
+})
+
+const data = ref('')
+
+const emit = defineEmits(['callback', 'printResults'])
+
+const printResults = () => {
+  console.log('printResults')
+  emit('printResults')
+}
+
+const handleReceivedData = (hex) => {
+  console.log(hex)
+  data.value += hex
+
+  // 判断data 以0D 0A 0A 0A 结尾
+  if (data.value.endsWith('0D0A0A0A')) {
+    console.log(data.value)
+    // 将data.value hex 转换为ascii码
+    const res = hexToStr(data.value)
+    // TC : 108 mg/dL
+    // TG :  98 mg/dL
+    // HDL:  57 mg/dL
+    // LDL:  32 mg/dL
+    // TC/HDL: 1.90
+    // 2018-06-29 17:58
+    const jsonData = parseToJSON(res);
+    console.log(jsonData)
+    // Total Cholesterol
+    testData[0].unit = ' ' + jsonData.TC.unit
+    testData[0].value = jsonData.TC.value
+    // TRIGLYCERIDE
+    testData[1].unit = ' ' + jsonData.TG.unit
+    testData[1].value = jsonData.TG.value
+    // HDL Cholesterol
+    testData[2].unit = ' ' + jsonData.HDL.unit
+    testData[2].value = jsonData.HDL.value
+    // TC/HDL
+    // testData[3].unit = jsonData['TC/HDL'].unit
+    testData[3].value = jsonData['TC/HDL'].value
+    // LDL
+    testData[4].unit = ' ' + jsonData.LDL.unit
+    testData[4].value = jsonData.LDL.value
+
+    // 回传
+    emit('callback', { name: 'Total Cholesterol', value: testData[0].value + testData[0].unit })
+    emit('callback', { name: 'TRIGLYCERIDE', value: testData[1].value + testData[1].unit })
+    emit('callback', { name: 'HDL Cholesterol', value: testData[2].value + testData[2].unit })
+    emit('callback', { name: 'HDL % OF TOTAL CHOLESTEROL', value: testData[3].value + ' %' })
+    emit('callback', { name: 'LDL', value: testData[4].value + testData[4].unit })
+  }
+}
+
+const parseToJSON = (str) => {
+  const lines = str.split('\n');
+  const result = {};
+
+  lines.forEach(line => {
+    const [key, value] = line.split(':').map(item => item.trim());
+    if (key && value) {
+      // 处理单位和数值
+      const [num, unit] = value.split(' ');
+      result[key] = { value: parseFloat(num), unit: unit };
+    }
+  });
+
+  return result;
+};
+
+const hexToStr = (hex) => {
+  let str = '';
+  for (let i = 0; i < hex.length; i += 2) {
+    const byte = hex.substring(i, i + 2);
+    const charCode = parseInt(byte, 16);
+    str += String.fromCharCode(charCode);
+  }
+  return str;
+};
 
 // Methods to calculate status and indicator width
 const getStatus = (value, thresholds) => {
@@ -191,6 +293,16 @@ const getIndicatorWidth = (value, max) => {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+}
+
+.btn-box {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btnsbox {
+  width: 155.21rpx;
 }
 
 .value {

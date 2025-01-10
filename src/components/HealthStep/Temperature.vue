@@ -86,6 +86,8 @@ const props = defineProps({
     }
   }
 
+  const emit = defineEmits(['callback'])
+
   function searchDevices(){
     openDevice()
     const device = list.value.device.find(item => item.productId === 29987 && item.vendorId === 6790)
@@ -130,6 +132,7 @@ const props = defineProps({
 				
 				tempValue.value = parseFloat(temp);
 				
+				emit('callback', { name: 'Temperature', value: tempValue.value + ' °C' })
                 startDynamicUpdate()
 			}
 		}

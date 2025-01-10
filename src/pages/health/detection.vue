@@ -23,7 +23,7 @@
         </scroll-view>
       </view>
       <view class="pageView-content">
-        <component :is="stepComponent"></component>
+        <component :is="stepComponent" @callback="handleCallback" @printResults="printResults"></component>
       </view>
     </view>
   </LayoutContent>
@@ -47,15 +47,15 @@ import Cholestrol from "@/components/HealthStep/Cholesterol.vue";
 import { ref, reactive, shallowRef } from "vue"; 
 
 const ProjectList = {
-  Weight: {
-    icon: "../../static/health/icons/1.png",
-    name: "WEIGHT",
-    component: Weight,
-  },
   Height: {
     icon: "../../static/health/icons/2.png",
     name: "HEIGHT",
     component: Height,
+  },
+  Weight: {
+    icon: "../../static/health/icons/1.png",
+    name: "WEIGHT",
+    component: Weight,
   },
   Temperature: {
     icon: "../../static/health/icons/3.png",
@@ -94,18 +94,38 @@ const ProjectList = {
   },
 };
 
-const stepComponent = shallowRef(Weight);
+const stepComponent = shallowRef(Height);
 
 const Components = {
-  Weight,
+  Height,
 };
 
-const active = ref("WEIGHT");
+const active = ref("HEIGHT");
 
 // 使用 reactive 创建响应式状态
 const state = reactive({
   step: 1,
 });
+
+
+const printModule = uni.requireNativePlugin('Leiye-Print')
+
+const printResults = () => {
+  console.log('printResults')
+  const devicesRes = printModule.initDevice()
+  if (devicesRes.code !== 'success') {
+    console.log('devicesRes', devicesRes)
+    uni.showToast({
+      title: 'Failed to initialize printer',
+      icon: 'none'
+    })
+    return
+  }
+  dataList.value.forEach(item => {
+    printModule.printText(item.name + '\t' +item.value +'\n')
+  })
+  printModule.printText('\n\n\n\n')
+}
 
 const handleClickMenu = (item, key) => {
   stepComponent.value = item.component;
@@ -115,6 +135,19 @@ const handleClickMenu = (item, key) => {
 const handleClickCard = () => {
   slibrary.$router.go("/pages/health/detection");
 };
+
+const dataList = ref([]);
+
+const handleCallback = (data) => {
+	console.log(data);
+  // 根据name查找对应项目避免重复
+  const index = dataList.value.findIndex(item => item.name === data.name)
+  if (index !== -1) {
+    dataList.value[index].value = data.value
+  } else {
+    dataList.value.push(data)
+  }
+}
 
 const getImg = (url) => {
   //正确方法

@@ -114,15 +114,19 @@ const calculateCKS = (hexString) => {
   const cks = data.reduce((cks, byte) => cks ^ byte, 0x00);
   return cks.toString(16).toUpperCase().padStart(2, '0');
 }
+const emit = defineEmits(['callback'])
 
 const handleClickStart = () => {
   openDevice();
-
-  const device = list.value.device[0]
+  // deviceName
+  console.log(list.value.device);
+  
+  // /dev/bus/usb/004/003
+  const device = list.value.device.find(item => item.deviceName.startsWith('/dev/bus/usb/004'))
   const devicesRes = chSerialPort.openDevice(device)
 
   const serialCount = chSerialPort.getSerialCount(device)
-
+  
   const serialParameter = chSerialPort.setSerialParameter({
     'usbDevice': device,
     'serialCount': serialCount,
@@ -164,6 +168,11 @@ const handleClickStart = () => {
       dataList2.value[0].value = systolic
       dataList2.value[1].value = diastolic
       dataList.value[0].value = pulse
+
+      // 回传
+      emit('callback', { name: 'Pulse', value: pulse + ' pulse/min' })
+      emit('callback', { name: 'Systolic', value: systolic + ' mmHg' })
+      emit('callback', { name: 'Diastolic', value: diastolic + ' mmHg' })
     }
   })
 

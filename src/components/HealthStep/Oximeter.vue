@@ -31,9 +31,9 @@
             ></GaugePie>
           </div>
         </div>
-        <view class="btnsbox">
+        <!-- <view class="btnsbox">
           <BasicButton @click="handleClickStart">START</BasicButton>
-        </view>
+        </view> -->
       </view>
       <HelperBox  img="../../static/health/healper/4.png" :tips="tips" @next="handleClickNext" v-if="showHeapler"></HelperBox>
     </view>
@@ -76,9 +76,17 @@ const dataList = ref([
 
 const myChart = ref(null);
 
+const emit = defineEmits(['callback'])
+
 const showHeapler = ref(true);
 const handleClickNext = () => {
   showHeapler.value = false;
+
+  setTimeout(() => {
+    emit('callback', { name: 'SPO2', value: dataList.value[0].value + '%' })
+    emit('callback', { name: 'PRBPM', value: dataList.value[1].value + ' pulse/min' })
+    oximeterModule.closeDevice();
+  }, 8000)
 };
 
 // CRC-8 查找表
@@ -132,6 +140,7 @@ function handleReceivedData(hexData) {
     if (parsedData.command === 83) {
       dataList.value[0].value = parsedData.data[0]
       dataList.value[1].value = parsedData.data[1]
+
     }
   }
 }
@@ -187,9 +196,9 @@ function parseOximeterData(hexData) {
 }
 
 
+
 let timer = ref(null)
 const handleClickStart = () => {
-
 };
 
 const oximeterModule = uni.requireNativePlugin('Leiye-Oximeter')

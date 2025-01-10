@@ -5,10 +5,10 @@
         <view class="title">HEIGHT</view>
         <view class="number"> {{ height }} <em>cm</em> </view>
         <view class="container">
-          <view class="heightBox">
-			<view class="scrollBox">
-			</view>
-		  </view>
+          <!-- <view class="heightBox">
+            <view class="scrollBox">
+            </view>
+          </view> -->
         </view>
         <view class="btnsbox">
           <BasicButton @click="handleClickStart">START</BasicButton>
@@ -35,6 +35,7 @@ const chSerialPort = uni.requireNativePlugin('Fvv-UniSerialPort')
 const state = reactive({});
 const height = ref(0);
 
+const emit = defineEmits(['callback'])
 
 const onMessage = () => {
   // 监听串口
@@ -54,6 +55,9 @@ const onMessage = () => {
     console.log(`距离值: ${decimal} mm`);
     // 使用机器固定的超声探头高度减去测量高度得到身高
     height.value = (2500 - decimal) / 10;
+
+    // 回传高度
+    emit('callback', { name: 'Height', value: height.value + ' cm' })
   })
 }
 
